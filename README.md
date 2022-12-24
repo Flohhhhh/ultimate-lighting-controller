@@ -1,4 +1,4 @@
-# ULC FiveM 
+# Ultimate Lighting Controller
 
 ULC is an all-in-one lighting controller for Non-ELS vehicles in FiveM! It uses the extra-based lighting stages on your vehicles and adds extra automation and improvements to create amazing, realistic, and fully-configurable lighting controls.
 
