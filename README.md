@@ -35,7 +35,7 @@ The top of the config file has a series of global settings which affect the way 
 ```lua
     muteBeepForLights = true,
     useKPH = false,
-    healthThreshold = 990, -- 999 would disable effect with ANY damage to vehicle, between 900-999 are good values
+    healthThreshold = 990,
 
     ParkSettings = {
         speedThreshold = 1,
