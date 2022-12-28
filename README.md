@@ -1,7 +1,7 @@
 # Ultimate Lighting Controller
 ![ulc_banner](https://user-images.githubusercontent.com/48927090/209438952-b931af04-f7b5-45bb-b2df-514d6c28d751.png)<br><br>
-<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/Flohhhhh/ultimate-lighting-controller/total">
-<img alt="GitHub issues" src="https://img.shields.io/github/issues/Flohhhhh/ultimate-lighting-controller">
+<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/Flohhhhh/ultimate-lighting-controller/total?label=Downloads">
+<img alt="GitHub issues" src="https://img.shields.io/github/issues/Flohhhhh/ultimate-lighting-controller?label=Issues">
 <img alt="Discord" src="https://img.shields.io/discord/603591936372244501?label=Discord&logo=Discord&logoColor=white">
 
 
