@@ -7,6 +7,8 @@
 
 ULC is an all-in-one lighting controller for Non-ELS vehicles in FiveM! It uses the extra-based lighting stages on your vehicles and adds extra automation and improvements to create amazing, realistic, and fully-configurable lighting controls.
 
+If you are a vehicle developer, view the full documentation.
+
 [Join Discord](https://discord.gg/dwnstr-fivem)<br>
 [Full ULC documentation](https://github.com/dwnstr/vehicle-docs/wiki/ULC)<br>
 
@@ -25,9 +27,17 @@ place ``ulc`` in your ``resources`` folder<br>
 add ``ensure ulc`` to your ``server.cfg``
 
 # Configuration
-ULC offers a wide range of configuration settings, as well as a table of vehicle configurations.
+ULC offers a wide range of configuration settings, as well as granular vehicle configurations.
 
-By default, no vehicles are affected by ULC's functionality. In order to enable ULC for a vehicle, you must add it to the ``Vehicles`` table in the config file.
+**By default, no vehicles are affected by ULC's functionality.** In order to enable ULC for a vehicle, you must configure it. There are two methods for doing so.
+
+## Importing Included ``ulc.lua`` Config File
+Some vehicle resources may come with a ``ulc.lua`` file. 
+
+If this is the case all you have to do to configure the vehicle is add the resource name to the ``Config.ExternalVehResources`` table.
+
+## How to Manually Configure a Vehicle
+If the vehicle did not come with a ``ulc.lua`` file, you will need to manually create a configuration for the vehicle. You can either add this configuration directly to the ``config.lua`` in the ``Config.Vehicles`` table, or you can create a ``ulc.lua`` file in the vehicle resource and follow the same instructions as above.
 
 For details about each config value, view your own ``config.lua`` file which has comments, or view the [full ULC documentation.](https://github.com/dwnstr/vehicle-docs/wiki/ULC)
 
