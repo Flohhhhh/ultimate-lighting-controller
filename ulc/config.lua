@@ -1,6 +1,6 @@
 -- Ultimate Lighting Controller by Dawnstar FiveM
 -- Written by Floh and Imperfection from Dawnstar
--- For support: https://discord.com/invite/zH3k624aSv
+-- For support: https://discord.gg/dwnstr-fivem
 
 Config = {
     -- whether to mute beep when sirens/lights are turned on and off;
