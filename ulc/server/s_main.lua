@@ -1,43 +1,20 @@
-local myVersion = 'v.1.0.0 Release - Door Fix'
+local myVersion = 'v0.1.1'
 local latestVersion = ''
 
-RegisterNetEvent('baseevents:enteredVehicle')
-AddEventHandler('baseevents:enteredVehicle', function()
-
-  TriggerClientEvent('ulc:checkLightTime', source)
-  TriggerClientEvent('ulc:checkVehicle', source)
-  TriggerClientEvent('ulc:checkparkState', source, true)
-
-end)
-
-RegisterNetEvent('baseevents:leftVehicle')
-AddEventHandler('baseevents:leftVehicle', function()
-
-  TriggerClientEvent('ulc:cleanupHUD', source)
-
-end)
-
-RegisterNetEvent('ulc:sync:send')
-AddEventHandler('ulc:sync:send', function(vehicles)
-    print("Player ".. source .. " sent a sync request.")
-    local players = GetPlayers()
-    for i,v in ipairs(players) do
-        if not v == source then 
-            --print("Sending veh sync array to player: " .. v)
-            TriggerClientEvent('ulc:sync:receive', v)
-        end
-    end
-end)
-
-RegisterNetEvent('ulc:error', function(error)
+AddEventHandler('ulc:error', function(error)
   print("^1[ULC ERROR] " .. error)
 end)
+
+AddEventHandler('ulc:warn', function(error)
+  print("^3[ULC WARNING] " .. error)
+end)
+
 
 PerformHttpRequest("https://api.github.com/repos/Flohhhhh/simple-park-patterns/releases/latest", function (errorCode, resultData, resultHeaders)
   print("Returned code" .. tostring(errorCode))
   latestVersion = json.decode(resultData).name
 
-  print("Latest Version: [" .. latestVersion .. "]")
+  print("^0Latest Version: [" .. latestVersion .. "]")
   print("My Version: [" .. myVersion .. "]")
   print([[
     ___  ___   ___        ________     
@@ -59,3 +36,166 @@ PerformHttpRequest("https://api.github.com/repos/Flohhhhh/simple-park-patterns/r
     print("^1YOUR VERSION: " .. myVersion .. "^0")
   end
 end)
+
+
+local function IsIntInTable(table, int)
+  for k, v in ipairs(table) do
+      if v == int then
+          return true
+      end
+  end
+  return false
+end
+
+local function CheckData(data, resourceName)
+
+  if Config.ParkSettings.delay < 0.5 then
+      TriggerEvent("ulc:warn", 'Park Pattern delay is too short! This will hurt performance! Recommended values are above 0.5s.')
+  end
+
+  if Config.SteadyBurnSettings.delay <= 2 then
+      TriggerEvent("ulc:error", 'Steady burn delay is too short! Steady burns will be unstable or not work!')
+  end
+
+  if Config.SteadyBurnSettings.nightStartHour < Config.SteadyBurnSettings.nightEndHour then
+      TriggerEvent("ulc:error", 'Steady burn night start hour should be later/higher than night end hour.')
+  end
+
+  --for k, v in pairs(Config.Vehicles) do
+
+      if not data.name then
+          TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" does not include a name!^0")
+          return false
+      end
+
+      if not data.parkConfig or not data.brakeConfig or not data.buttons or not data.hornConfig then
+        TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" is missing data or not formatted properly.^0")
+        return false
+      end
+
+      -- check if steady burns are enabled but no extras specified
+      if (data.steadyBurnConfig.forceOn or data.steadyBurnConfig.useTime) and #data.steadyBurnConfig.sbExtras == 0 then
+          TriggerEvent("ulc:warn", '"' .. data.name .. '"uses Steady Burns, but no extras were specified (sbExtras = {})')
+      end
+  
+      -- check if park pattern enabled but no extras specified
+      if data.parkConfig.usePark then
+          if #data.parkConfig.pExtras == 0 and #data.parkConfig.dExtras == 0 then
+              TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Park Pattern is enabled, but no park or drive extras were specified (pExtras = {}, dExtras = {})')
+          end
+      end
+  
+      -- check if brakes enabled but no extras specified
+      if data.brakeConfig.useBrakes and #data.brakeConfig.brakeExtras == 0 then
+          TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Brake Pattern, but no brake extras were specified.')
+      end
+
+      -- check if horn enabled but no extras specified
+      if data.hornConfig.useHorn and #data.hornConfig.hornExtras == 0 then
+        TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Horn Extras, but no horn extras were specified.')
+      end
+      
+      local usedButtons = {}
+      local usedExtras = {}
+      for i, b in ipairs(data.buttons) do
+          -- check if key is valid
+          if b.key > 9 or b.key < 1 then
+              Trigger('ulc:error', '"' .. data.name .. '" button ".. i .. " key is invalid. Key must be 1-9 representing number keys.')
+              return false
+          end
+          -- check if label is empty
+          if b.label == '' then
+              TriggerEvent("ulc:error", '"' .. data.name .. '" has an unlabeled button using extra: ' .. b.extra)
+              return false
+          end
+          -- check if any keys are used twice
+          if IsIntInTable(usedButtons, b.key) then
+              TriggerEvent("ulc:error", '"' .. data.name .. '" uses key: " .. b.key .. " more than once in button config.')
+              return false
+          end
+          -- check if any extras are used twice
+          if IsIntInTable(usedExtras, b.extra) then
+              TriggerEvent("ulc:error", '"' .. data.name .. '" uses extra: " .. b.extra .. " more than once in button config.')
+              return false
+          end
+      end
+  --end
+  return true
+end
+
+RegisterNetEvent('baseevents:enteredVehicle')
+AddEventHandler('baseevents:enteredVehicle', function()
+  local src = source
+  TriggerClientEvent('ulc:checkVehicle', src)
+end)
+
+RegisterNetEvent('baseevents:leftVehicle')
+AddEventHandler('baseevents:leftVehicle', function()
+
+  TriggerClientEvent('ulc:cleanupHUD', source)
+
+end)
+
+RegisterNetEvent('ulc:sync:send')
+AddEventHandler('ulc:sync:send', function(vehicles)
+    print("Player ".. source .. " sent a sync request.")
+    local players = GetPlayers()
+    for i,v in ipairs(players) do
+        if not v == source then 
+            --print("Sending veh sync array to player: " .. v)
+            TriggerClientEvent('ulc:sync:receive', v)
+        end
+    end
+end)
+
+
+local function LoadExternalVehicleConfig(resourceName)
+  local resourceState = GetResourceState(resourceName)
+
+  if resourceState == "missing" then
+    TriggerEvent("ulc:error", "^1Couldn't load external config from resource: \"" .. resourceName .. "\". Resource is missing.^0")
+    return
+  end
+
+  if resourceState == "stopped" then
+    TriggerEvent("ulc:error", "^1Couldn't load external config from resource: \"" .. resourceName .. "\". Resource is stopped.^0")
+    return
+  end
+
+  if resourceState == "uninitialized" or resourceState == "unknown" then
+    TriggerEvent("ulc:error", "^1Couldn't load external config from resource: \"" .. resourceName .. "\". Resource could not be loaded. Unknown issue.^0" )
+    return
+  end
+
+  local data = LoadResourceFile(resourceName, "data/ulc.lua")
+  local f, err = load(data)
+  if err then
+    print(err)
+    return
+  end
+  if CheckData(f(), resourceName) then
+    print('^2Loaded external configuration for "' .. f().name .. '"^0')
+    table.insert(Config.Vehicles, f())
+  else
+    TriggerEvent("ulc:error", '^1Could not load external configuration for "' .. f().name .. '"^0')
+  end
+end
+
+CreateThread(function ()
+  Wait(1000)
+  print("[ULC] Checking for external vehicle resources.")
+  for k, v in ipairs(Config.ExternalVehResources) do
+    local resourceState = GetResourceState(v)
+    while resourceState == "starting" do
+      print("^3Waiting for resource: " .. resourceName .. " to load.")
+      Wait(100)
+    end
+    LoadExternalVehicleConfig(v)
+  end
+  print("Done loading external vehicle resources.")
+  TriggerClientEvent("UpdateVehicleConfigs", -1 , Config.Vehicles)
+  for k, v in ipairs(Config.Vehicles) do
+    print(v.name)
+  end
+end)
+

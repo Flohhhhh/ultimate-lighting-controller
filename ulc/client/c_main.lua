@@ -3,6 +3,7 @@ print("[ULC]: Stage Controls Loaded")
 Lights = false
 local activeButtons = {}
 local showingHelp = false
+local waitingForLoad = true
 
 -- if IsPedInAnyVehicle(startPed) then
 --   TriggerServerEvent('baseevents:enteredVehicle')
@@ -119,11 +120,17 @@ end)
 -- this event is called whenever player enters vehicle
 RegisterNetEvent('ulc:checkVehicle')
 AddEventHandler('ulc:checkVehicle', function()
-  --print("Checking for vehicle configuration")
   CreateThread(function()
+    while waitingForLoad do
+      print("ULC: Waiting for load.")
+      Wait(100)
+    end
+    print("Checking for vehicle configuration")
     local ped = PlayerPedId()
     local vehicle = GetVehiclePedIsIn(ped)
     local passed, vehicleConfig = GetVehicleFromConfig(vehicle)
+
+    print(passed, vehicleCOnfig)
 
     if passed then
       --print("Found vehicle.")
@@ -173,6 +180,9 @@ AddEventHandler('ulc:checkVehicle', function()
         SendNUIMessage({
           type = 'showLightsHUD',
         })
+
+        TriggerEvent('ulc:checkLightTime')
+        TriggerEvent('ulc:checkParkState', true)
       end
     end
   end)
@@ -186,7 +196,6 @@ AddEventHandler('ulc:cleanupHUD', function()
     type = 'hideLightsHUD',
   })
 end)
-
 -----------------
 --- NEW STUFF ---
 -----------------
@@ -273,6 +282,12 @@ AddEventHandler('ulc:setStage', function(key, action, playSound)
       end
     end
   end
+end)
+
+RegisterNetEvent('UpdateVehicleConfigs', function(newData)
+  print("Updating Vehicle Table")
+  Config.Vehicles = newData
+  waitingForLoad = false
 end)
 
 -----------------------

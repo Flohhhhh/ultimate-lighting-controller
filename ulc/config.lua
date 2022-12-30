@@ -50,18 +50,19 @@ Config = {
         speedThreshold = 30
     },
 
+    -- the resource names of vehicle resources that include a ulc.lua config file
+    ExternalVehResources = {
+        -- ex. "my-police-vehicle",
+    },
 
     Vehicles = {
-        {name = 'sp20', -- Vehicle Spawn Name
+        -- EXAMPLE -- COPY AND PASTE AND REMOVE --[[ ]]
+        --[[{name = 'example', -- Vehicle Spawn Name
         
             -- Steady Burn/Alaways On Settings
             steadyBurnConfig = {
-                -- whether to force steady burns on this vehicle;
-                -- overrides useTime
                 forceOn = false,
-                -- whether to enable steady burns at night on this vehicle
                 useTime = true,
-                -- extras to enable for steady burns
                 sbExtras = {1}
             },
 
@@ -69,12 +70,8 @@ Config = {
             parkConfig = {
                 usePark = true,
                 useSync = true,
-                -- array of vehicles that this vehicle should sync with
-                -- ex. syncWith = {'police1, police2, police4}
-                syncWith = {'sp20', 'sp18chrg'},
-                -- park extras
+                syncWith = {'example', 'sp18chrg'},
                 pExtras = {10, 11},
-                -- drive extras
                 dExtras = {}
             },
 
@@ -94,7 +91,7 @@ Config = {
 
             -- Stage Control Button Mappings
             -- label = text that appears on the button 
-            -- key that the button uses (num pad numbers)
+            -- key = key that the button uses (num pad numbers)
             -- there are 9 keys, and you don't have to use 1 first, then 2
             -- only order matters, a button using key 1 will always show before (left of) key 5 on the UI
             -- only keys you define appear as buttons, the rest are hidden
@@ -106,61 +103,6 @@ Config = {
                 {label = 'AUX 2',key = 8,extra = 11},
                 {label = 'SCENE',key = 9,extra = 12},
             }
-        },
-        {name = 'pdram', -- Vehicle Spawn Name
-        
-            -- Steady Burn/Alaways On Settings
-            steadyBurnConfig = {
-                -- whether to force steady burns on this vehicle;
-                -- overrides useTime
-                forceOn = false,
-                -- whether to enable steady burns at night on this vehicle
-                useTime = false,
-                -- extras to enable for steady burns
-                sbExtras = {}
-            },
-
-            -- Park Pattern Settings
-            parkConfig = {
-                usePark = false,
-                useSync = false,
-                -- array of vehicles that this vehicle should sync with
-                -- ex. syncWith = {'police1, police2, police4}
-                syncWith = {},
-                -- park extras
-                pExtras = {9},
-                -- drive extras
-                dExtras = {}
-            },
-
-            -- Extras on Airhorn (E key)
-            -- Could be scene lighting or another pattern
-            hornConfig = {
-                useHorn = true,
-                hornExtras = {12}
-            },
-
-            -- Brake Lights/Patterns Settings;
-            -- Could be another pattern or extra brake lights
-            brakeConfig = {
-                useBrakes = false,
-                brakeExtras = {12}
-            },
-
-            -- Stage Control Button Mappings
-            -- label = text that appears on the button 
-            -- key that the button uses (num pad numbers)
-            -- there are 9 keys, and you don't have to use 1 first, then 2
-            -- only order matters, a button using key 1 will always show before (left of) key 5 on the UI
-            -- only keys you define appear as buttons, the rest are hidden
-            -- extra = extra that is toggled by the button
-            buttons = {
-                {label = 'STAGE 2', key = 5, extra = 8},
-                {label = 'AMBERS', key = 6, extra = 9},
-                {label = 'AUX', key = 7, extra = 10},
-                {label = 'BED', key = 8, extra = 11},
-                {label = 'SCENE',key = 9,extra = 12},
-            }
-        },
+        },]]
     }
 }

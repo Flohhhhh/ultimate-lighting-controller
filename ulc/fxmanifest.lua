@@ -5,7 +5,7 @@ lua54 'yes'
 name "Ultimate Lighting Controls"
 description "The ultimate non-els lighting controller."
 author "Dawnstar"
-version "0.1.0"
+version "0.1.1"
 
 ui_page "ui/lights.html"
 

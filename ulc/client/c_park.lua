@@ -1,7 +1,7 @@
 print("[ULC]: Park Patterns Loaded")
 
 local veh = GetVehiclePedIsIn(PlayerPedId())
-local parkPattern = false
+local parked = false
 local lastSync = 0
 
 function AreChecksPassed()
@@ -45,8 +45,8 @@ RegisterNetEvent("ulc:checkParkState", function(vehicle, delay)
         veh = GetVehiclePedIsIn(PlayerPedId())
         local speed = GetVehicleSpeedConverted(vehicle)
 
-        --if parkPattern then
-            if speed > Config.ParkSettings.speedThreshold then
+        --if parked then
+            if speed > Config.ParkSettings.speedThreshold and parked then
                 TriggerEvent("ulc:vehDrive")
                 SendNUIMessage({
                     type = 'toggleParkIndicator',
@@ -54,7 +54,7 @@ RegisterNetEvent("ulc:checkParkState", function(vehicle, delay)
                 })
             end
         --else
-            if speed < Config.ParkSettings.speedThreshold then
+            if speed < Config.ParkSettings.speedThreshold and not parked then
                 TriggerEvent('ulc:vehPark')
                 SendNUIMessage({
                     type = 'toggleParkIndicator',
@@ -68,8 +68,8 @@ end)
 AddEventHandler('ulc:vehPark', function()
     
     if Lights then
-		print('[ulc:vehPark] My vehicle is parked.')
-        parkPattern = true
+		--print('[ulc:vehPark] My vehicle is parked.')
+        parked = true
         local passed, vehConfig = GetVehicleFromConfig(veh)
 
         if passed and AreChecksPassed() and vehConfig.parkConfig.usePark then
@@ -163,7 +163,7 @@ AddEventHandler('ulc:vehDrive', function()
 
     if Lights then
 		--print('[ulc:vehDrive] My vehicle is driving.')
-        parkPattern = false
+        parked = false
         local passed, vehConfig = GetVehicleFromConfig(veh)
         if passed and AreChecksPassed() and vehConfig.parkConfig.usePark then
 

@@ -3,7 +3,7 @@
 function GetVehicleFromConfig(vehicle)
     for k,v in pairs(Config.Vehicles) do
         -- find which vehicle matches
-        --print(GetEntityModel(vehicle), GetHashKey(v.name))
+        print(GetEntityModel(vehicle), GetHashKey(v.name))
         if GetEntityModel(vehicle) == GetHashKey(v.name) then
             --print("Vehicle [" .. v.name .. "] was found in Config.")
             return true, v
