@@ -10,7 +10,7 @@ AddEventHandler('ulc:warn', function(error)
 end)
 
 
-PerformHttpRequest("https://api.github.com/repos/Flohhhhh/simple-park-patterns/releases/latest", function (errorCode, resultData, resultHeaders)
+PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-controller/releases/latest", function (errorCode, resultData, resultHeaders)
   print("Returned code" .. tostring(errorCode))
   latestVersion = json.decode(resultData).name
 
