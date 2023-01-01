@@ -133,7 +133,8 @@ end)
 
 RegisterNetEvent('baseevents:leftVehicle')
 AddEventHandler('baseevents:leftVehicle', function()
-  TriggerClientEvent('ulc:cleanupHUD', source)
+  local src = source
+  TriggerClientEvent('ulc:cleanupHUD', src)
 end)
 
 RegisterNetEvent('ulc:sync:send')
