@@ -194,8 +194,8 @@ CreateThread(function ()
     end
     LoadExternalVehicleConfig(v)
   end
-  print("Done loading external vehicle resources.")
   TriggerClientEvent("UpdateVehicleConfigs", -1 , Config.Vehicles)
+  print("Done loading external vehicle resources.")
   for k, v in ipairs(Config.Vehicles) do
     print(v.name)
   end
