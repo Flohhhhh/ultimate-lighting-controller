@@ -31,7 +31,7 @@ function ShowHelp()
       -- show help
       showingHelp = true
       for k, v in ipairs(activeButtons) do
-        print('Showing help for button: ' .. k .. ' : ' .. v.key)
+        --print('Showing help for button: ' .. k .. ' : ' .. v.key)
         SendNUIMessage({
           type = 'showHelp',
           button = k,
@@ -123,14 +123,14 @@ AddEventHandler('ulc:checkVehicle', function()
   CreateThread(function()
     while waitingForLoad do
       print("ULC: Waiting for load.")
-      Wait(100)
+      Wait(500)
     end
-    print("Checking for vehicle configuration")
+    --print("Checking for vehicle configuration")
     local ped = PlayerPedId()
     local vehicle = GetVehiclePedIsIn(ped)
     local passed, vehicleConfig = GetVehicleFromConfig(vehicle)
 
-    print(passed, vehicleCOnfig)
+    --print(passed, vehicleCOnfig)
 
     if passed then
       --print("Found vehicle.")
@@ -151,7 +151,7 @@ AddEventHandler('ulc:checkVehicle', function()
             extraState = 0
           end 
           -- add/show and configure the button
-          print("Adding button: " .. v.label)
+          --print("Adding button: " .. v.label)
           table.insert(activeButtons, v)
           SendNUIMessage({
             type = 'addButton',
@@ -285,7 +285,7 @@ AddEventHandler('ulc:setStage', function(key, action, playSound)
 end)
 
 RegisterNetEvent('UpdateVehicleConfigs', function(newData)
-  print("Updating Vehicle Table")
+  print("[ULC] Updating vehicle table; done loading.")
   Config.Vehicles = newData
   waitingForLoad = false
 end)

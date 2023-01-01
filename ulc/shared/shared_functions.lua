@@ -3,7 +3,7 @@
 function GetVehicleFromConfig(vehicle)
     for k,v in pairs(Config.Vehicles) do
         -- find which vehicle matches
-        print(GetEntityModel(vehicle), GetHashKey(v.name))
+        --print(GetEntityModel(vehicle), GetHashKey(v.name))
         if GetEntityModel(vehicle) == GetHashKey(v.name) then
             --print("Vehicle [" .. v.name .. "] was found in Config.")
             return true, v
@@ -15,12 +15,12 @@ end
 
 -- Returns whether a vehicle is in a table of vehicle spawn names given a vehicle handle
 function IsVehicleInTable(vehicle, table)
-    print(table)
+    --print(table)
     for _, v in pairs(table) do
-        print(v)
-        print(GetHashKey(v))
-        print(vehicle)
-        print(GetEntityModel(vehicle))
+        --print(v)
+        --print(GetHashKey(v))
+        --print(vehicle)
+        --print(GetEntityModel(vehicle))
         if GetEntityModel(vehicle) == GetHashKey(v) then
             return true, v
         else
