@@ -1,5 +1,6 @@
 local myVersion = 'v1.0.0'
 local latestVersion = ''
+GlobalState.ulcloaded = false
 
 AddEventHandler('ulc:error', function(error)
   print("^1[ULC ERROR] " .. error)
@@ -194,6 +195,7 @@ CreateThread(function ()
     end
     LoadExternalVehicleConfig(v)
   end
+  GlobalState.ulcloaded = true
   TriggerClientEvent("UpdateVehicleConfigs", -1 , Config.Vehicles)
   print("Done loading external vehicle resources.")
   for k, v in ipairs(Config.Vehicles) do

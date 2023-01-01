@@ -121,7 +121,7 @@ end)
 RegisterNetEvent('ulc:checkVehicle')
 AddEventHandler('ulc:checkVehicle', function()
   CreateThread(function()
-    while waitingForLoad do
+    while not GlobalState.ulcloaded do
       print("ULC: Waiting for load.")
       Wait(500)
     end
@@ -287,7 +287,6 @@ end)
 RegisterNetEvent('UpdateVehicleConfigs', function(newData)
   print("[ULC] Updating vehicle table; done loading.")
   Config.Vehicles = newData
-  waitingForLoad = false
 end)
 
 -----------------------
