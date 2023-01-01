@@ -132,9 +132,7 @@ end)
 
 RegisterNetEvent('baseevents:leftVehicle')
 AddEventHandler('baseevents:leftVehicle', function()
-
   TriggerClientEvent('ulc:cleanupHUD', source)
-
 end)
 
 RegisterNetEvent('ulc:sync:send')
@@ -172,6 +170,9 @@ local function LoadExternalVehicleConfig(resourceName)
   local f, err = load(data)
   if err then
     print(err)
+    return
+  end
+  if not f then
     return
   end
   if CheckData(f(), resourceName) then
