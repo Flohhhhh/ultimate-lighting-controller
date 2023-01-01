@@ -26,6 +26,9 @@ If you are a vehicle developer, view the full documentation.
 place ``ulc`` in your ``resources`` folder<br>
 add ``ensure ulc`` to your ``server.cfg``
 
+# Dependencies
+``baseevents``
+
 # Configuration
 ULC offers a wide range of configuration settings, as well as granular vehicle configurations.
 
