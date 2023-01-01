@@ -47,79 +47,80 @@ local function IsIntInTable(table, int)
   return false
 end
 
+if Config.ParkSettings.delay < 0.5 then
+    TriggerEvent("ulc:warn", 'Park Pattern delay is too short! This will hurt performance! Recommended values are above 0.5s.')
+end
+
+if Config.SteadyBurnSettings.delay <= 2 then
+    TriggerEvent("ulc:error", 'Steady burn delay is too short! Steady burns will be unstable or not work!')
+end
+
+if Config.SteadyBurnSettings.nightStartHour < Config.SteadyBurnSettings.nightEndHour then
+    TriggerEvent("ulc:error", 'Steady burn night start hour should be later/higher than night end hour.')
+end
+
+if Config.SteadyBurnSettings.delay < 2 then
+    TriggerEvent("ulc:error", "Steady burn check delay can never be lower than 2 seconds. Will cause stability issues.")
+end
+
 local function CheckData(data, resourceName)
 
-  if Config.ParkSettings.delay < 0.5 then
-      TriggerEvent("ulc:warn", 'Park Pattern delay is too short! This will hurt performance! Recommended values are above 0.5s.')
+  if not data.name then
+      TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" does not include a name!^0")
+      return false
   end
 
-  if Config.SteadyBurnSettings.delay <= 2 then
-      TriggerEvent("ulc:error", 'Steady burn delay is too short! Steady burns will be unstable or not work!')
+  if not data.parkConfig or not data.brakeConfig or not data.buttons or not data.hornConfig then
+    TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" is missing data or not formatted properly.^0")
+    return false
   end
 
-  if Config.SteadyBurnSettings.nightStartHour < Config.SteadyBurnSettings.nightEndHour then
-      TriggerEvent("ulc:error", 'Steady burn night start hour should be later/higher than night end hour.')
+  -- check if steady burns are enabled but no extras specified
+  if (data.steadyBurnConfig.forceOn or data.steadyBurnConfig.useTime) and #data.steadyBurnConfig.sbExtras == 0 then
+      TriggerEvent("ulc:warn", '"' .. data.name .. '"uses Steady Burns, but no extras were specified (sbExtras = {})')
   end
 
-  --for k, v in pairs(Config.Vehicles) do
+  -- check if park pattern enabled but no extras specified
+  if data.parkConfig.usePark then
+      if #data.parkConfig.pExtras == 0 and #data.parkConfig.dExtras == 0 then
+          TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Park Pattern is enabled, but no park or drive extras were specified (pExtras = {}, dExtras = {})')
+      end
+  end
 
-      if not data.name then
-          TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" does not include a name!^0")
+  -- check if brakes enabled but no extras specified
+  if data.brakeConfig.useBrakes and #data.brakeConfig.brakeExtras == 0 then
+      TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Brake Pattern, but no brake extras were specified.')
+  end
+
+  -- check if horn enabled but no extras specified
+  if data.hornConfig.useHorn and #data.hornConfig.hornExtras == 0 then
+    TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Horn Extras, but no horn extras were specified.')
+  end
+
+  local usedButtons = {}
+  local usedExtras = {}
+  for i, b in ipairs(data.buttons) do
+      -- check if key is valid
+      if b.key > 9 or b.key < 1 then
+          Trigger('ulc:error', '"' .. data.name .. '" button ".. i .. " key is invalid. Key must be 1-9 representing number keys.')
           return false
       end
-
-      if not data.parkConfig or not data.brakeConfig or not data.buttons or not data.hornConfig then
-        TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" is missing data or not formatted properly.^0")
-        return false
+      -- check if label is empty
+      if b.label == '' then
+          TriggerEvent("ulc:error", '"' .. data.name .. '" has an unlabeled button using extra: ' .. b.extra)
+          return false
       end
-
-      -- check if steady burns are enabled but no extras specified
-      if (data.steadyBurnConfig.forceOn or data.steadyBurnConfig.useTime) and #data.steadyBurnConfig.sbExtras == 0 then
-          TriggerEvent("ulc:warn", '"' .. data.name .. '"uses Steady Burns, but no extras were specified (sbExtras = {})')
+      -- check if any keys are used twice
+      if IsIntInTable(usedButtons, b.key) then
+          TriggerEvent("ulc:error", '"' .. data.name .. '" uses key: " .. b.key .. " more than once in button config.')
+          return false
       end
-  
-      -- check if park pattern enabled but no extras specified
-      if data.parkConfig.usePark then
-          if #data.parkConfig.pExtras == 0 and #data.parkConfig.dExtras == 0 then
-              TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Park Pattern is enabled, but no park or drive extras were specified (pExtras = {}, dExtras = {})')
-          end
+      -- check if any extras are used twice
+      if IsIntInTable(usedExtras, b.extra) then
+          TriggerEvent("ulc:error", '"' .. data.name .. '" uses extra: " .. b.extra .. " more than once in button config.')
+          return false
       end
-  
-      -- check if brakes enabled but no extras specified
-      if data.brakeConfig.useBrakes and #data.brakeConfig.brakeExtras == 0 then
-          TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Brake Pattern, but no brake extras were specified.')
-      end
-
-      -- check if horn enabled but no extras specified
-      if data.hornConfig.useHorn and #data.hornConfig.hornExtras == 0 then
-        TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Horn Extras, but no horn extras were specified.')
-      end
-      
-      local usedButtons = {}
-      local usedExtras = {}
-      for i, b in ipairs(data.buttons) do
-          -- check if key is valid
-          if b.key > 9 or b.key < 1 then
-              Trigger('ulc:error', '"' .. data.name .. '" button ".. i .. " key is invalid. Key must be 1-9 representing number keys.')
-              return false
-          end
-          -- check if label is empty
-          if b.label == '' then
-              TriggerEvent("ulc:error", '"' .. data.name .. '" has an unlabeled button using extra: ' .. b.extra)
-              return false
-          end
-          -- check if any keys are used twice
-          if IsIntInTable(usedButtons, b.key) then
-              TriggerEvent("ulc:error", '"' .. data.name .. '" uses key: " .. b.key .. " more than once in button config.')
-              return false
-          end
-          -- check if any extras are used twice
-          if IsIntInTable(usedExtras, b.extra) then
-              TriggerEvent("ulc:error", '"' .. data.name .. '" uses extra: " .. b.extra .. " more than once in button config.')
-              return false
-          end
-      end
-  --end
+  end
   return true
 end
 
