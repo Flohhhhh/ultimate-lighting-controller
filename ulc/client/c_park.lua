@@ -73,12 +73,12 @@ AddEventHandler('ulc:vehPark', function()
         local passed, vehConfig = GetVehicleFromConfig(veh)
 
         if passed and AreChecksPassed() and vehConfig.parkConfig.usePark then
-            -- enable parkExtras
-            for k,v in pairs(vehConfig.parkConfig.parkExtras) do
+            -- enable pExtras
+            for k,v in pairs(vehConfig.parkConfig.pExtras) do
                 SetStageByExtra(v, 0, false)
             end
-            -- disable driveExtras
-            for k,v in pairs(vehConfig.parkConfig.driveExtras) do
+            -- disable dExtras
+            for k,v in pairs(vehConfig.parkConfig.dExtras) do
                 SetStageByExtra(v, 1, false)
             end
 
@@ -167,12 +167,12 @@ AddEventHandler('ulc:vehDrive', function()
         local passed, vehConfig = GetVehicleFromConfig(veh)
         if passed and AreChecksPassed() and vehConfig.parkConfig.usePark then
 
-            -- disable parkExtras
-            for k,v in pairs(vehConfig.parkConfig.parkExtras) do
+            -- disable pExtras
+            for k,v in pairs(vehConfig.parkConfig.pExtras) do
                 SetStageByExtra(v, 1, false)
             end
-            -- enable driveExtras
-            for k,v in pairs(vehConfig.parkConfig.driveExtras) do
+            -- enable dExtras
+            for k,v in pairs(vehConfig.parkConfig.dExtras) do
                 SetStageByExtra(v, 0, false)
             end
         end
