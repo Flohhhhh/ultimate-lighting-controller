@@ -90,8 +90,8 @@ local function CheckData(data, resourceName)
 
   -- check if park pattern enabled but no extras specified
   if data.parkConfig.usePark then
-      if #data.parkConfig.pExtras == 0 and #data.parkConfig.dExtras == 0 then
-          TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Park Pattern is enabled, but no park or drive extras were specified (pExtras = {}, dExtras = {})')
+      if #data.parkConfig.parkExtras == 0 and #data.parkConfig.driveExtras == 0 then
+          TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Park Pattern is enabled, but no park or drive extras were specified (pExtras = {}, driveExtras = {})')
       end
   end
 

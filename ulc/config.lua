@@ -67,8 +67,8 @@ Config = {
                 usePark = true,
                 useSync = true,
                 syncWith = {'example', 'sp18chrg'},
-                pExtras = {10, 11},
-                dExtras = {2}
+                parkExtras = {10, 11},
+                driveExtras = {2}
             },
 
             -- Extras on Airhorn (E key)
