@@ -23,7 +23,7 @@ PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-cont
 
   latestVersion = json.decode(resultData).name
   print("^0Latest Version: [" .. latestVersion .. "]")
-  
+
   print([[
     ___  ___   ___        ________     
    |\  \|\  \ |\  \      |\   ____\    
@@ -176,6 +176,11 @@ local function LoadExternalVehicleConfig(resourceName)
   end
 
   local data = LoadResourceFile(resourceName, "data/ulc.lua")
+  if not data then
+    print("Error loading 'ulc.lua' file. Make sure it is in the 'data' folder.")
+    TriggerEvent("ulc:error", '^1Could not load external configuration for "' .. f().name .. '"^0')
+    return
+  end
   local f, err = load(data)
   if err then
     print(err)
