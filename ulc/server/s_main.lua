@@ -12,11 +12,18 @@ end)
 
 
 PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-controller/releases/latest", function (errorCode, resultData, resultHeaders)
-  print("Returned code" .. tostring(errorCode))
-  latestVersion = json.decode(resultData).name
 
-  print("^0Latest Version: [" .. latestVersion .. "]")
   print("My Version: [" .. myVersion .. "]")
+
+  local errorString = tostring(errorCode)
+  if errorString == "403" or errorString == "404" then
+    print("Got code " .. errorString .. " when trying to get version.")
+    return
+  end
+
+  latestVersion = json.decode(resultData).name
+  print("^0Latest Version: [" .. latestVersion .. "]")
+  
   print([[
     ___  ___   ___        ________     
    |\  \|\  \ |\  \      |\   ____\    
