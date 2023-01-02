@@ -52,8 +52,8 @@ Config = {
     },
 
     Vehicles = {
-        -- EXAMPLE -- COPY AND PASTE AND REMOVE --[[ ]]
-        --[[{name = 'example', -- Vehicle Spawn Name
+        --[[
+        {name = 'example', -- Vehicle Spawn Name
         
             -- Steady Burn/Alaways On Settings
             steadyBurnConfig = {
@@ -68,7 +68,7 @@ Config = {
                 useSync = true,
                 syncWith = {'example', 'sp18chrg'},
                 pExtras = {10, 11},
-                dExtras = {}
+                dExtras = {2}
             },
 
             -- Extras on Airhorn (E key)
@@ -88,17 +88,12 @@ Config = {
             -- Stage Control Button Mappings
             -- label = text that appears on the button 
             -- key = key that the button uses (num pad numbers)
-            -- there are 9 keys, and you don't have to use 1 first, then 2
-            -- only order matters, a button using key 1 will always show before (left of) key 5 on the UI
-            -- only keys you define appear as buttons, the rest are hidden
             -- extra = extra that is toggled by the button
             buttons = {
-                {label = 'STAGE 2', key = 5, extra = 8},
-                {label = 'TA', key = 6, extra = 9},
-                {label = 'AUX1', key = 7, extra = 10},
-                {label = 'AUX 2',key = 8,extra = 11},
-                {label = 'SCENE',key = 9,extra = 12},
+                {label = 'EXAMPLE', key = 1, extra = 1},
+                {label = 'EXAMPLE2', key = 5, extra = 8},
             }
-        },]]
+        },
+        ]]
     }
 }

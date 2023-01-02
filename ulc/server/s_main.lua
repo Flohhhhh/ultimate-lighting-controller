@@ -161,24 +161,24 @@ local function LoadExternalVehicleConfig(resourceName)
   local resourceState = GetResourceState(resourceName)
 
   if resourceState == "missing" then
-    TriggerEvent("ulc:error", "^1Couldn't load external config from resource: \"" .. resourceName .. "\". Resource is missing.^0")
+    TriggerEvent("ulc:error", "^1Couldn't load external ulc.lua file from resource: \"" .. resourceName .. "\". Resource is missing.^0")
     return
   end
 
   if resourceState == "stopped" then
-    TriggerEvent("ulc:error", "^1Couldn't load external config from resource: \"" .. resourceName .. "\". Resource is stopped.^0")
+    TriggerEvent("ulc:error", "^1Couldn't load external ulc.lua file from resource: \"" .. resourceName .. "\". Resource is stopped.^0")
     return
   end
 
   if resourceState == "uninitialized" or resourceState == "unknown" then
-    TriggerEvent("ulc:error", "^1Couldn't load external config from resource: \"" .. resourceName .. "\". Resource could not be loaded. Unknown issue.^0" )
+    TriggerEvent("ulc:error", "^1Couldn't load external ulc.lua file from resource: \"" .. resourceName .. "\". Resource could not be loaded. Unknown issue.^0" )
     return
   end
 
   local data = LoadResourceFile(resourceName, "data/ulc.lua")
   if not data then
     print("Error loading 'ulc.lua' file. Make sure it is in the 'data' folder.")
-    TriggerEvent("ulc:error", '^1Could not load external configuration for "' .. f().name .. '"^0')
+    TriggerEvent("ulc:error", '^1Could not load external ulc.lua file for "' .. f().name .. '"^0')
     return
   end
   local f, err = load(data)
