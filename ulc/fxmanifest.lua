@@ -15,6 +15,10 @@ files {
 	"ui/lights.css",
 }
 
+dependencies {
+	"baseevents"
+}
+
 escrow_ignore {
 	'config.lua',
 	"ui/*"
