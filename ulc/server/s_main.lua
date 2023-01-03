@@ -78,8 +78,9 @@ local function CheckData(data, resourceName)
       return false
   end
 
+  -- check if data is missing
   if not data.parkConfig or not data.brakeConfig or not data.buttons or not data.hornConfig then
-    TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" is missing data or not formatted properly.^0")
+    TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" is missing data or not formatted properly. View docs.^0")
     return false
   end
 
@@ -91,7 +92,11 @@ local function CheckData(data, resourceName)
   -- check if park pattern enabled but no extras specified
   if data.parkConfig.usePark then
       if #data.parkConfig.pExtras == 0 and #data.parkConfig.dExtras == 0 then
-          TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Park Pattern is enabled, but no park or drive extras were specified (pExtras = {}, dExtras = {})')
+          TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Park Patterns, but no park or drive extras were specified (pExtras = {}, dExtras = {})')
+      end
+
+      if data.parkConfig.useSync and #data.parkConfig.syncWith == 0 then
+        TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Park Pattern Syncing, but no other vehicle models were specified (syncWith = {})')
       end
   end
 
@@ -187,12 +192,14 @@ local function LoadExternalVehicleConfig(resourceName)
 
   local f, err = load(data)
   if err then
-    print(err)
+    TriggerEvent("ulc:error", '^1Could not load external configuration in: "' .. resourceName .. '"; error: "' .. err .. '"^0')
     return
   end
-  if not f then
+  if not f or not f() then
+    TriggerEvent("ulc:error", '^1Could not load external configuration; data loaded from: "' .. resourceName .. '" was nil. ^0')
     return
   end
+  
   if CheckData(f(), resourceName) then
     print('^2Loaded external configuration for "' .. f().name .. '"^0')
     table.insert(Config.Vehicles, f())
