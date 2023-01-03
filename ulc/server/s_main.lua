@@ -177,10 +177,14 @@ local function LoadExternalVehicleConfig(resourceName)
 
   local data = LoadResourceFile(resourceName, "data/ulc.lua")
   if not data then
-    print("Error loading 'ulc.lua' file. Make sure it is in the 'data' folder.")
-    TriggerEvent("ulc:error", '^1Could not load external ulc.lua file for "' .. f().name .. '"^0')
-    return
+    data = LoadResourceFile(resourceName, "ulc.lua")
+    if not data then
+      print("Error loading 'ulc.lua' file. Make sure it is at the root of your resource or in the 'data' folder.")
+      TriggerEvent("ulc:error", '^1Could not load external ulc.lua file for "' .. f().name .. '"^0')
+      return
+    end
   end
+
   local f, err = load(data)
   if err then
     print(err)
