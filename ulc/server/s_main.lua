@@ -42,6 +42,7 @@ PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-cont
   else
     print("^1ULC IS OUTDATED. A NEW VERSION (" .. latestVersion .. ") IS AVAILABLE.^0")
     print("^1YOUR VERSION: " .. myVersion .. "^0")
+    print("GET LATEST VERSION HERE: https://github.com/Flohhhhh/ultimate-lighting-controller/releases/")
   end
 end)
 
