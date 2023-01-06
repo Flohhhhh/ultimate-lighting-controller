@@ -1,7 +1,10 @@
 -- Ultimate Lighting Controller by Dawnstar FiveM
 -- Written by Dawnstar
+-- Documentation: https://docs.dwnstr.com/ulc/overview
 -- For support: https://discord.gg/dwnstr-fivem
 
+-- Most of these can be left at their default values.
+-- View documentation for details on each value
 Config = {
     -- whether to mute beep when sirens/lights are turned on and off;
     -- should be true if using another resource that adds a beep (ex. Luxart V3)
@@ -41,59 +44,19 @@ Config = {
 
     -- Brake Extras/Patterns Config;
     BrakeSettings = {
-        -- brake pattern will not activate below this speed
-        -- if it's already active while you brake from 50 - 30 it will stay active until you release brakes
+
         speedThreshold = 30
     },
 
-    -- the resource names of vehicle resources that include a ulc.lua config file
+    -- Import confiurations here
+    -- Add the resource names of vehicle resources that include a ulc.lua config file
     ExternalVehResources = {
         -- ex. "my-police-vehicle",
     },
 
     Vehicles = {
-        --[[
-        {name = 'example', -- Vehicle Spawn Name
-        
-            -- Steady Burn/Alaways On Settings
-            steadyBurnConfig = {
-                forceOn = false,
-                useTime = true,
-                sbExtras = {1}
-            },
-
-            -- Park Pattern Settings
-            parkConfig = {
-                usePark = true,
-                useSync = true,
-                syncWith = {'example', 'sp18chrg'},
-                pExtras = {10, 11},
-                dExtras = {2}
-            },
-
-            -- Extras on Airhorn (E key)
-            -- Could be scene lighting or another pattern
-            hornConfig = {
-                useHorn = true,
-                hornExtras = {12}
-            },
-
-            -- Brake Lights/Patterns Settings;
-            -- Could be another pattern or extra brake lights
-            brakeConfig = {
-                useBrakes = false,
-                brakeExtras = {12}
-            },
-
-            -- Stage Control Button Mappings
-            -- label = text that appears on the button 
-            -- key = key that the button uses (num pad numbers)
-            -- extra = extra that is toggled by the button
-            buttons = {
-                {label = 'EXAMPLE', key = 1, extra = 1},
-                {label = 'EXAMPLE2', key = 5, extra = 8},
-            }
-        },
-        ]]
+        -- this is not required!
+        -- see documentation for instructions!
+        -- https://docs.dwnstr.com/ulc/configuration
     }
 }
