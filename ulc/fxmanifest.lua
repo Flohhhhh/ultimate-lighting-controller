@@ -3,9 +3,9 @@ games { 'gta5' }
 lua54 'yes'
 
 name "Ultimate Lighting Controls"
-description "The ultimate non-els lighting controller."
+description "The ultimate non-els lighting controller. Documentation: https://docs.dwnstr.com/ulc/overview"
 author "Dawnstar"
-version "0.1.1"
+version "1.2.0"
 
 ui_page "ui/lights.html"
 

@@ -9,6 +9,8 @@ Config = {
     -- whether to mute beep when sirens/lights are turned on and off;
     -- should be true if using another resource that adds a beep (ex. Luxart V3)
     muteBeepForLights = true,
+    -- global toggle for UI (affects all clients)
+    hideHud = false,
     -- whether to use KPH instead of MPH
     useKPH = false,
     -- health threshold disables these effects while vehicle is damaged to prevent unrealistic repairs upon crashing

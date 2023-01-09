@@ -177,9 +177,11 @@ AddEventHandler('ulc:checkVehicle', function()
 
         -- when done
         -- show hud
-        SendNUIMessage({
-          type = 'showLightsHUD',
-        })
+        if not Config.hideHud then
+          SendNUIMessage({
+            type = 'showLightsHUD',
+          })
+        end
 
         TriggerEvent('ulc:checkLightTime')
         TriggerEvent('ulc:checkParkState', true)

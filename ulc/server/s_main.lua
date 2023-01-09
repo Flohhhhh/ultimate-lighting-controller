@@ -1,4 +1,4 @@
-local myVersion = 'v1.1.0'
+local myVersion = 'v1.2.0'
 local latestVersion = ''
 GlobalState.ulcloaded = false
 
@@ -111,6 +111,12 @@ local function CheckData(data, resourceName)
     TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Horn Extras, but no horn extras were specified.')
   end
 
+  -- Buttons
+  -- check if vehicle uses buttons but hud is disabled
+  if #data.buttons > 0 and Config.hideHud == true then
+    TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Stage Buttons, but HUD/UI is globally disabled. This is not recommended for user experience.')
+  end
+
   local usedButtons = {}
   local usedExtras = {}
   for i, b in ipairs(data.buttons) do
@@ -200,12 +206,12 @@ local function LoadExternalVehicleConfig(resourceName)
     TriggerEvent("ulc:error", '^1Could not load external configuration; data loaded from: "' .. resourceName .. '" was nil. ^0')
     return
   end
-  
+
   if CheckData(f(), resourceName) then
-    print('^2Loaded external configuration for "' .. f().name .. '"^0')
+    print('^2Loaded external configuration for "' .. resourceName .. '"[' .. f().name .. ']^0')
     table.insert(Config.Vehicles, f())
   else
-    TriggerEvent("ulc:error", '^1Could not load external configuration for "' .. f().name .. '"^0')
+    TriggerEvent("ulc:error", '^1Could not load external configuration for "' .. resourceName .. '"[' .. f().name .. ']^0')
   end
 end
 
