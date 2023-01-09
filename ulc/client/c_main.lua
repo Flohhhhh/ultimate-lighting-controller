@@ -1,6 +1,9 @@
 print("[ULC]: Stage Controls Loaded")
 
 Lights = false
+MyVehicle = null
+MyVehicleConfig = null
+
 local activeButtons = {}
 local showingHelp = false
 
@@ -132,6 +135,8 @@ AddEventHandler('ulc:checkVehicle', function()
     --print(passed, vehicleCOnfig)
 
     if passed then
+      MyVehicle = vehicle
+      MyVehicleConfig = vehicleConfig
       --print("Found vehicle.")
       -- clear any existing buttons from hud
       SendNUIMessage({
@@ -190,8 +195,10 @@ AddEventHandler('ulc:checkVehicle', function()
 end)
 
 -- used to hide the hud
-RegisterNetEvent('ulc:cleanupHUD')
-AddEventHandler('ulc:cleanupHUD', function()
+RegisterNetEvent('ulc:cleanup')
+AddEventHandler('ulc:cleanup', function()
+  MyVehicle = null
+  MyVehicleConfig = null
   -- hide hud
   SendNUIMessage({
     type = 'hideLightsHUD',
