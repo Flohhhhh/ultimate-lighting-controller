@@ -45,7 +45,7 @@ function ShowHelp()
         SendNUIMessage({
           type = 'hideHelp',
           button = k,
-          label = v.label,
+          label = string.upper(v.label),
         })
       end
     end
@@ -155,7 +155,7 @@ AddEventHandler('ulc:checkVehicle', function()
           table.insert(activeButtons, v)
           SendNUIMessage({
             type = 'addButton',
-            label = v.label,
+            label = string.upper(v.label),
             extra = v.extra,
             state = extraState
           })
