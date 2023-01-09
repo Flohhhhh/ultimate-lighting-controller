@@ -3,7 +3,6 @@ print("[ULC]: Stage Controls Loaded")
 Lights = false
 local activeButtons = {}
 local showingHelp = false
-local waitingForLoad = true
 
 -- if IsPedInAnyVehicle(startPed) then
 --   TriggerServerEvent('baseevents:enteredVehicle')
