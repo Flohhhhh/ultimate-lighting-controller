@@ -147,6 +147,7 @@ end
 RegisterNetEvent('baseevents:enteredVehicle')
 AddEventHandler('baseevents:enteredVehicle', function()
   local src = source
+  TriggerClientEvent("UpdateVehicleConfigs", src , Config.Vehicles)
   TriggerClientEvent('ulc:checkVehicle', src)
 end)
 
