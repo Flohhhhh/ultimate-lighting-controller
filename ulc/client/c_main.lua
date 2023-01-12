@@ -132,7 +132,7 @@ AddEventHandler('ulc:checkVehicle', function()
     local vehicle = GetVehiclePedIsIn(ped)
     local passed, vehicleConfig = GetVehicleFromConfig(vehicle)
 
-    --print(passed, vehicleCOnfig)
+    --print(passed, vehicleConfig)
 
     if passed then
       MyVehicle = vehicle
@@ -214,7 +214,7 @@ function GetExtraForVehicleKey(vehicle, key)
   if passed then
     for k, v in pairs(vehicleConfig.buttons) do
       if v.key == key then
-        return v.extra
+        return v.extra, v.offExtras
       end
     end
   end
@@ -265,7 +265,7 @@ end
 AddEventHandler('ulc:setStage', function(key, action, playSound)
 
   local vehicle = GetVehiclePedIsIn(PlayerPedId())
-  local extra = GetExtraForVehicleKey(vehicle, key)
+  local extra, offExtras = GetExtraForVehicleKey(vehicle, key)
 
 
   if AreVehicleDoorsClosed(vehicle) and IsVehicleHealthy(vehicle) then
@@ -276,18 +276,22 @@ AddEventHandler('ulc:setStage', function(key, action, playSound)
 
     -- stage is on
     if state then
-	--print("[ulc:setStage] Stage is on")
+	  --print("[ulc:setStage] Stage is on")
       if action == 1 or action == 2 then
         newState = 1
         SetStageByExtra(extra, newState, playSound)
       end
     -- stage is off
     else
-	--print("[ulc:setStage] Stage is off")
+	  --print("[ulc:setStage] Stage is off")
       if action == 0 or action == 2 then
         newState = 0
         SetStageByExtra(extra, newState, playSound)
       end
+    end
+
+    for k, v in ipairs(offExtras) do
+      SetStageByExtra(v, 1, false)
     end
   end
 end)
