@@ -34,6 +34,4 @@ ULC offers a wide range of configuration settings, as well as granular vehicle c
 
 **By default, no vehicles are affected by ULC's functionality.** In order to enable ULC for a vehicle, you must configure it. There are two methods for doing so.
 
-- [View full configuration docs](https://dawnstar.gitbook.io/vehicle-docs/ulc/configuration)
-- [View server owner guide](https://dawnstar.gitbook.io/vehicle-docs/ulc/configuration#adding-vehicle-configurations-to-a-server)
-- [View vehicle developer guide](https://dawnstar.gitbook.io/vehicle-docs/ulc/configuration#configuring-vehicles-for-ulc)
+[Get Started Here!](https://dawnstar.gitbook.io/vehicle-docs/ulc/overview)
