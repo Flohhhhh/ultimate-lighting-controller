@@ -1,4 +1,4 @@
-local myVersion = 'v1.2.0'
+local myVersion = 'v1.2.1'
 local latestVersion = ''
 GlobalState.ulcloaded = false
 
