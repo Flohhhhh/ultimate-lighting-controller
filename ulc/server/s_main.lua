@@ -207,12 +207,23 @@ local function LoadExternalVehicleConfig(resourceName)
     return
   end
 
-  if CheckData(f(), resourceName) then
-    print('^2Loaded external configuration for "' .. resourceName .. '"[' .. f().name .. ']^0')
-    table.insert(Config.Vehicles, f())
-  else
-    TriggerEvent("ulc:error", '^1Could not load external configuration for "' .. resourceName .. '"[' .. f().name .. ']^0')
+  -- NEW STUFF FOR MULTIPLE CONFIGS
+  local configs = {f()}
+  for _, v in pairs(configs) do
+    if CheckData(v, resourceName) then
+      print('^2Loaded external configuration for "' .. v.name .. '"^0')
+      table.insert(Config.Vehicles, v)
+    else
+      TriggerEvent("ulc:error", '^1Could not load external configuration for "' .. v.name .. '"^0')
+    end
   end
+
+  -- if CheckData(f(), resourceName) then
+  --   print('^2Loaded external configuration for "' .. f().name .. '"^0')
+  --   table.insert(Config.Vehicles, f())
+  -- else
+  --   TriggerEvent("ulc:error", '^1Could not load external configuration for "' .. f().name .. '"^0')
+  -- end
 end
 
 CreateThread(function ()
