@@ -290,8 +290,10 @@ AddEventHandler('ulc:setStage', function(key, action, playSound)
       end
     end
 
-    for k, v in ipairs(offExtras) do
-      SetStageByExtra(v, 1, false)
+    if offExtras then
+      for k, v in ipairs(offExtras) do
+        SetStageByExtra(v, 1, false)
+      end
     end
   end
 end)
