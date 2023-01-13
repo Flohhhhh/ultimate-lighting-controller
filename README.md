@@ -10,7 +10,7 @@ If you are a vehicle developer, view the full documentation.
 [Join Discord](https://discord.gg/dwnstr-fivem)<br>
 [Full ULC documentation](https://dawnstar.gitbook.io/vehicle-docs/ulc/overview)<br>
 [Video Preview](https://www.youtube.com/watch?v=f1H6sohjTao)
-[Video Tutorial](https://youtu.be/Snd5MxatDGc)
+[Video Tutorial](https://youtu.be/FIF3qqRY0Ts)
 
 # Key Features
 - Stage Controls
