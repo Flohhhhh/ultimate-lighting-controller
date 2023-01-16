@@ -214,7 +214,7 @@ function GetExtraForVehicleKey(vehicle, key)
   if passed then
     for k, v in pairs(vehicleConfig.buttons) do
       if v.key == key then
-        return v.extra, v.offExtras
+        return v.extra, v.linkedExtras, v.offExtras
       end
     end
   end
@@ -265,7 +265,7 @@ end
 AddEventHandler('ulc:setStage', function(key, action, playSound)
 
   local vehicle = GetVehiclePedIsIn(PlayerPedId())
-  local extra, offExtras = GetExtraForVehicleKey(vehicle, key)
+  local extra, linkedExtras, offExtras = GetExtraForVehicleKey(vehicle, key)
 
 
   if AreVehicleDoorsClosed(vehicle) and IsVehicleHealthy(vehicle) then
@@ -290,8 +290,14 @@ AddEventHandler('ulc:setStage', function(key, action, playSound)
       end
     end
 
+    if linkedExtras then
+      for _, v in ipairs(linkedExtras) do
+        SetStageByExtra(v, 0, false)
+      end
+    end
+
     if offExtras then
-      for k, v in ipairs(offExtras) do
+      for _, v in ipairs(offExtras) do
         SetStageByExtra(v, 1, false)
       end
     end
@@ -299,7 +305,7 @@ AddEventHandler('ulc:setStage', function(key, action, playSound)
 end)
 
 RegisterNetEvent('UpdateVehicleConfigs', function(newData)
-  print("[ULC] Updating vehicle table; done loading.")
+  print("[ULC] Updating vehicle table. Done loading.")
   Config.Vehicles = newData
 end)
 
