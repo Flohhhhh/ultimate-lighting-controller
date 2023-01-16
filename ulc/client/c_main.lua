@@ -292,7 +292,7 @@ AddEventHandler('ulc:setStage', function(key, action, playSound)
 
     if linkedExtras then
       for _, v in ipairs(linkedExtras) do
-        SetStageByExtra(v, 0, false)
+        SetStageByExtra(v, newState, false)
       end
     end
 
