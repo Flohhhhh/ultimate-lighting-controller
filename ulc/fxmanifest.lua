@@ -16,7 +16,8 @@ files {
 }
 
 dependencies {
-	"baseevents"
+	"baseevents",
+	'/onesync',
 }
 
 escrow_ignore {
