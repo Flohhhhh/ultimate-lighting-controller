@@ -122,7 +122,7 @@ local function CheckData(data, resourceName)
   for i, b in ipairs(data.buttons) do
       -- check if key is valid
       if b.key > 9 or b.key < 1 then
-          Trigger('ulc:error', '"' .. data.name .. '" button ".. i .. " key is invalid. Key must be 1-9 representing number keys.')
+          TriggerEvent('ulc:error', '"' .. data.name .. '" button ".. i .. " key is invalid. Key must be 1-9 representing number keys.')
           return false
       end
       -- check if label is empty
