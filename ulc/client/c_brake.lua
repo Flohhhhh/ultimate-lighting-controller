@@ -15,6 +15,7 @@ RegisterCommand('+ulc:brakePattern', function()
 
     local passed, vehConfig = GetVehicleFromConfig(vehicle)
     if passed and vehConfig.brakeConfig.useBrakes then
+        if GetVehicleCurrentGear(vehicle) == 0 then return end
         if AreVehicleDoorsClosed(vehicle) and IsVehicleHealthy(vehicle) then
             local speed = GetVehicleSpeedConverted(vehicle)
             if speed > Config.BrakeSettings.speedThreshold then
