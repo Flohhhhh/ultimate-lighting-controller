@@ -14,7 +14,7 @@ RegisterNetEvent('ulc:checkLightTime', function(delay)
         local vehicle = GetVehiclePedIsIn(PlayerPedId())
         if MyVehicle then
             if delay then Wait(2000) end
-            if MyVehicleConfig.steadyBurnConfig.disableWithLights and Lights then print("Not running") return end
+            if (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) and Lights then print("Not running") return end
             if not AreVehicleDoorsClosed(vehicle) or not IsVehicleHealthy(vehicle) then return end
             if MyVehicleConfig.steadyBurnConfig.forceOn then setCruiseLights(0) return end
             if GetClockHours() > Config.SteadyBurnSettings.nightStartHour or GetClockHours() < Config.SteadyBurnSettings.nightEndHour then
@@ -39,14 +39,14 @@ end)
 
 AddEventHandler('ulc:lightsOn', function()
     print("Lights on")
-    if MyVehicle and MyVehicleConfig.steadyBurnConfig.disableWithLights then
+    if MyVehicle and (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) then
         setCruiseLights(1)
     end
 end)
 
 AddEventHandler('ulc:lightsOff', function()
     print("Lights off")
-    if MyVehicle and MyVehicleConfig.steadyBurnConfig.disableWithLights then
+    if MyVehicle and (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) then
         TriggerEvent('ulc:checkLightTime', false)
     end
 end)
