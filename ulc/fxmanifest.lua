@@ -16,8 +16,7 @@ files {
 }
 
 dependencies {
-	"baseevents",
-	'/onesync',
+	"baseevents"
 }
 
 escrow_ignore {
@@ -31,10 +30,17 @@ shared_scripts {
 }
 
 client_scripts {
-	'client/*.lua'
+	'client/c_main.lua',
+	'client/c_brake.lua',
+	'client/c_cruise.lua',
+	'client/c_horn.lua',
+	'client/c_park.lua',
+	'client/c_reverse.lua',
+	'client/c_beeps.lua'
+
 }
 
 server_scripts {
-	'server/*.lua'
+	'server/s_main.lua'
 }
 

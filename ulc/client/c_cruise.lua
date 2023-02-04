@@ -1,4 +1,4 @@
-print("[ULC]: Night Extras Loaded")
+print("[ULC]: Cruise lights Loaded")
 
 RegisterNetEvent('ulc:checkLightTime', function()
     CreateThread(function()
@@ -36,3 +36,5 @@ CreateThread(function()
         Wait(Config.SteadyBurnSettings.delay * 1000)
     end
 end)
+
+--TODO: disable when lights are on, disable when lights are off

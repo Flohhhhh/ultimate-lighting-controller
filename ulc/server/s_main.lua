@@ -1,6 +1,6 @@
 local myVersion = 'v1.2.2'
 local latestVersion = ''
-GlobalState.ulcloaded = false
+-- GlobalState.ulcloaded = false
 
 AddEventHandler('ulc:error', function(error)
   print("^1[ULC ERROR] " .. error)
@@ -74,7 +74,7 @@ end
 
 local function CheckData(data, resourceName)
 
-  if not data.name then
+  if not data.name and not data.names then
       TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" does not include a name!^0")
       return false
   end
@@ -212,10 +212,17 @@ local function LoadExternalVehicleConfig(resourceName)
   local configs = {f()}
   for _, v in pairs(configs) do
     if CheckData(v, resourceName) then
-      print('^2Loaded external configuration for "' .. v.name .. '"^0')
+      if v.name then -- if using old single name
+        print('^2Loaded external configuration for "' .. v.name .. '"^0')
+      elseif v.names then -- if using new table
+        for _, name in ipairs(v.names) do
+          print('^2Loaded external configuration for "' .. name .. '"^0')
+        end
+      end
+      
       table.insert(Config.Vehicles, v)
     else
-      TriggerEvent("ulc:error", '^1Could not load external configuration for "' .. v.name .. '"^0')
+      TriggerEvent("ulc:error", '^1Could not load external configuration in "' .. resourceName .. '"^0')
     end
   end
 
@@ -238,11 +245,18 @@ CreateThread(function ()
     end
     LoadExternalVehicleConfig(v)
   end
-  GlobalState.ulcloaded = true
+  TriggerClientEvent('ulc:Loaded', -1)
+  --GlobalState.ulcloaded = true
   TriggerClientEvent("UpdateVehicleConfigs", -1 , Config.Vehicles)
   print("Done loading external vehicle resources.")
-  for k, v in ipairs(Config.Vehicles) do
-    print("Loaded : " .. v.name)
+  for _, v in ipairs(Config.Vehicles) do
+    if v.name then -- if using old single name
+      print('Loaded: ' .. v.name)
+    elseif v.names then -- if using new table
+      for _, name in ipairs(v.names) do
+        print('Loaded: ' .. name)
+      end
+    end
   end
 end)
 

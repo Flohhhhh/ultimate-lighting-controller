@@ -1,14 +1,24 @@
 
 -- Returns: bool (whether vehicle was found), table (vehicle config info)
 function GetVehicleFromConfig(vehicle)
-    for k,v in pairs(Config.Vehicles) do
-        -- find which vehicle matches
-        --print(GetEntityModel(vehicle), GetHashKey(v.name))
-        if GetEntityModel(vehicle) == GetHashKey(v.name) then
-            --print("Vehicle [" .. v.name .. "] was found in Config.")
-            return true, v
-        else
-            --print("Vehicle [" .. v.name .. "] does not match.")
+    for _,v in pairs(Config.Vehicles) do
+
+        -- if old method with just a string
+        if v.name then
+            -- find which vehicle matches
+            if GetEntityModel(vehicle) == GetHashKey(v.name) then
+                --print("Vehicle [" .. v.name .. "] was found in Config.")
+                return true, v
+            end
+
+        elseif v.names then -- if new method with a table
+            -- for each name check if it matches the vehicle
+            for _, n in ipairs(v.names) do
+                if GetEntityModel(vehicle) == GetHashKey(n) then
+                    --print("Vehicle [" .. v.name .. "] was found in Config.")
+                    return true, v
+                end
+            end
         end
     end
 end

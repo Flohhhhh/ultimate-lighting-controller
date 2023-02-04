@@ -1,4 +1,4 @@
-return { name = "",
+return { names = { "yourVehicleName" },
     steadyBurnConfig = {
         forceOn = false,
         useTime = false,

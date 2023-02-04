@@ -1,27 +1,26 @@
 print("[ULC]: Stage Controls Loaded")
 
+-- this is just so resource can be restarted and not break for clients in server
+Loaded = false
+-- this is for when someone joins
+AddEventHandler('onClientMapStart', function()
+    print("I joined.")
+    Loaded = true
+end)
+RegisterNetEvent('ulc:Loaded', function()
+    Loaded = true
+end)
+
+-----------------
+-- DEFINITIONS --
+-----------------
+
 Lights = false
-MyVehicle = null
-MyVehicleConfig = null
+MyVehicle = nil
+MyVehicleConfig = nil
 
 local activeButtons = {}
 local showingHelp = false
-
--- if IsPedInAnyVehicle(startPed) then
---   TriggerServerEvent('baseevents:enteredVehicle')
--- end
-
--------------------------
---------- SOUND ---------
--------------------------
-
-function PlayBeep(highPitched)
-  if highPitched then
-    PlaySoundFrontend(-1, "5_SEC_WARNING", "HUD_MINI_GAME_SOUNDSET", 1)
-  else
-    PlaySoundFrontend(-1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1)
-  end
-end
 
 ------------------
 ------ HELP ------
@@ -123,9 +122,10 @@ end)
 RegisterNetEvent('ulc:checkVehicle')
 AddEventHandler('ulc:checkVehicle', function()
   CreateThread(function()
-    while not GlobalState.ulcloaded do
+    --while not GlobalState.ulcloaded do
+    while not Loaded do
       print("ULC: Waiting for load.")
-      Wait(500)
+      Wait(250)
     end
     --print("Checking for vehicle configuration")
     local ped = PlayerPedId()
@@ -189,7 +189,11 @@ AddEventHandler('ulc:checkVehicle', function()
 
         TriggerEvent('ulc:checkLightTime')
         TriggerEvent('ulc:checkParkState', true)
+        TriggerEvent('ulc:StartCheckingReverseState')
       end
+    else
+      Vehicle = nil
+      TriggerEvent('ulc:StopCheckingReverseState')
     end
   end)
 end)
@@ -197,13 +201,14 @@ end)
 -- used to hide the hud
 RegisterNetEvent('ulc:cleanup')
 AddEventHandler('ulc:cleanup', function()
-  MyVehicle = null
-  MyVehicleConfig = null
+  MyVehicle = nil
+  MyVehicleConfig = nil
   -- hide hud
   SendNUIMessage({
     type = 'hideLightsHUD',
   })
 end)
+
 -----------------
 --- NEW STUFF ---
 -----------------
