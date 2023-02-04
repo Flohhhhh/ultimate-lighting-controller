@@ -42,7 +42,6 @@ RegisterCommand('-ulc:horn', function()
 
         if passed and vehConfig.hornConfig.useHorn then
             for k, extra in ipairs(vehConfig.hornConfig.hornExtras) do
-                
                 local prevState = GetPreviousStateByExtra(extra)
                 --print("Extra " .. extra .. " previous state = " ..  tostring(prevState))
                 if not prevState then

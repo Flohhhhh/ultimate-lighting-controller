@@ -11,7 +11,6 @@ AddEventHandler('ulc:StartCheckingReverseState', function()
             if gear == 0 then
 
                 if not reversing then
-                    print("Started reversing")
                     reversing = true
                     for k, v in ipairs(MyVehicleConfig.reverseConfig.reverseExtras) do
                         SetStageByExtra(v, 0, true)
@@ -19,7 +18,6 @@ AddEventHandler('ulc:StartCheckingReverseState', function()
                 end
             else
                 if reversing then
-                    print("Stopped reversing")
                     reversing = false
                     for k, v in ipairs(MyVehicleConfig.reverseConfig.reverseExtras) do
                         SetStageByExtra(v, 1, true)

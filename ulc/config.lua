@@ -45,10 +45,8 @@ Config = {
     },
 
     -- Brake Extras/Patterns Config;
-    -- BrakeSettings = {
-    --     -- if above 3, disables real brake functionality (extra will be off when stopped)
-    --     speedThreshold = 3
-    -- },
+    -- temporarily empty as of v1.3.0
+    BrakeSettings = {},
 
     -- Import confiurations here
     -- Add the resource names of vehicle resources that include a ulc.lua config file

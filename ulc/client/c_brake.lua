@@ -2,7 +2,6 @@ print("[ULC]: Brake Patterns Loaded")
 local extraStates = {}
 local braking = false
 local realBrakeThreshold = 3 -- below this speed vehicle is always considered to be braking
-local realBrakeMode = false
 
 local function GetPreviousStateByExtra(extra)
     for k, v in pairs(extraStates) do
@@ -32,13 +31,9 @@ local function disableBrakeExtras()
     end
 end
 
--- if MyVehicleConfig.brakeConfig.speedThreshold <= realBrakeThreshold then
---     realBrakeMode = true
--- end
-
 local function shouldUseRealBrakeMode()
 
-    return MyVehicleConfig.brakeConfig.speedThreshold <= realBrakeThreshold
+    return (MyVehicleConfig.brakeConfig.speedThreshold or 3) <= realBrakeThreshold
 end
 
 CreateThread(function()
@@ -52,7 +47,8 @@ CreateThread(function()
         if not shouldUseRealBrakeMode() then sleep = 1000 goto continue end
         sleep = 250
 
-        if speed < realBrakeThreshold and shouldUseRealBrakeMode() and not (IsControlPressed(0, 71) or IsControlPressed(0, 72)) then
+        --if speed < realBrakeThreshold and shouldUseRealBrakeMode() and not (IsControlPressed(0, 71) or IsControlPressed(0, 72)) then
+        if speed < realBrakeThreshold and shouldUseRealBrakeMode() and not IsControlPressed(0, 72) then
             enableBrakeExtras()
             SendNUIMessage({
                 type = 'toggleBrakeIndicator',
@@ -84,7 +80,7 @@ RegisterCommand('+ulc:brakePattern', function()
 
             -- if using real brakes always enable
 
-            if shouldUseRealBrakeMode() or speed > MyVehicleConfig.brakeConfig.speedThreshold then
+            if shouldUseRealBrakeMode() or speed > (MyVehicleConfig.brakeConfig.speedThreshold or 3) then
                 enableBrakeExtras()
                 --[[ for k,v in pairs(vehConfig.brakeConfig.brakeExtras) do
                     local extraState = {

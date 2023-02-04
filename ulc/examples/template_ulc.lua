@@ -17,6 +17,7 @@ return { names = { "yourVehicleName" },
     },
     brakeConfig = {
         useBrakes = false,
+        speedThreshold = 3,
         brakeExtras = {}
     },
 
