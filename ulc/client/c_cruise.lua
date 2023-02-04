@@ -2,19 +2,19 @@ print("[ULC]: Cruise lights Loaded")
 
 -- 0 on, 1 off
 local function setCruiseLights(newState)
-    print("Setting cruise " .. newState)
+    --print("Setting cruise " .. newState)
     for _, v in pairs(MyVehicleConfig.steadyBurnConfig.sbExtras) do
         SetStageByExtra(v, newState, false)
     end
 end
 
 RegisterNetEvent('ulc:checkLightTime', function(delay)
-    print("Checking cruise")
+    --print("Checking cruise")
     CreateThread(function()
         local vehicle = GetVehiclePedIsIn(PlayerPedId())
         if MyVehicle then
             if delay then Wait(2000) end
-            if (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) and Lights then print("Not running") return end
+            if (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) and Lights then return end
             if not AreVehicleDoorsClosed(vehicle) or not IsVehicleHealthy(vehicle) then return end
             if MyVehicleConfig.steadyBurnConfig.forceOn then setCruiseLights(0) return end
             if GetClockHours() > Config.SteadyBurnSettings.nightStartHour or GetClockHours() < Config.SteadyBurnSettings.nightEndHour then
@@ -38,14 +38,14 @@ end)
 --TODO: disable when lights are on, disable when lights are off
 
 AddEventHandler('ulc:lightsOn', function()
-    print("Lights on")
+    --print("Lights on")
     if MyVehicle and (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) then
         setCruiseLights(1)
     end
 end)
 
 AddEventHandler('ulc:lightsOff', function()
-    print("Lights off")
+    --print("Lights off")
     if MyVehicle and (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) then
         TriggerEvent('ulc:checkLightTime', false)
     end

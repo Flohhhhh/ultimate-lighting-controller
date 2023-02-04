@@ -4,7 +4,7 @@ print("[ULC]: Stage Controls Loaded")
 Loaded = false
 -- this is for when someone joins
 AddEventHandler('onClientMapStart', function()
-    print("I joined.")
+    --print("I joined.")
     Loaded = true
 end)
 RegisterNetEvent('ulc:Loaded', function()
