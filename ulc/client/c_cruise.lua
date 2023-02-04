@@ -12,7 +12,6 @@ RegisterNetEvent('ulc:checkLightTime', function(delay)
     print("Checking cruise")
     CreateThread(function()
         local vehicle = GetVehiclePedIsIn(PlayerPedId())
-                            --SetVehicleExtra(vehicle, v, 0)
         if MyVehicle then
             if delay then Wait(2000) end
             if MyVehicleConfig.steadyBurnConfig.disableWithLights and Lights then print("Not running") return end
