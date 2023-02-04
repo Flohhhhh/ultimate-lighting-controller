@@ -6,10 +6,9 @@ AddEventHandler('ulc:StartCheckingReverseState', function()
 
     if not MyVehicleConfig.reverseConfig then return end
     CreateThread(function()
-        while MyVehicle do Wait(250)
+        while MyVehicle do 
             local gear = GetVehicleCurrentGear(MyVehicle)
             if gear == 0 then
-
                 if not reversing then
                     reversing = true
                     for k, v in ipairs(MyVehicleConfig.reverseConfig.reverseExtras) do
@@ -24,6 +23,7 @@ AddEventHandler('ulc:StartCheckingReverseState', function()
                     end
                 end
             end
+            Wait(250)
         end
     end)
 end)

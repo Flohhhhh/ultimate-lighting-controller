@@ -187,7 +187,7 @@ AddEventHandler('ulc:checkVehicle', function()
           })
         end
 
-        TriggerEvent('ulc:checkLightTime')
+        TriggerEvent('ulc:checkLightTime', true)
         TriggerEvent('ulc:checkParkState', true)
         TriggerEvent('ulc:StartCheckingReverseState')
       end
