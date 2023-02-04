@@ -15,7 +15,8 @@ If you are a vehicle developer, view the full documentation.
 # Key Features
 - Stage Controls
 - Park Patterns
-- Brake Patterns & Extras
+- Brake Extras
+- Reverse Extras
 - Smart Steady Burns
 - Horn/Honk Patterns & Extras
 - Granular Configuration per Vehicle
