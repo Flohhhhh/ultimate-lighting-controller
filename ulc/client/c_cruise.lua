@@ -4,7 +4,9 @@ print("[ULC]: Cruise lights Loaded")
 local function setCruiseLights(newState)
     --print("Setting cruise " .. newState)
     for _, v in pairs(MyVehicleConfig.steadyBurnConfig.sbExtras) do
-        SetStageByExtra(v, newState, false)
+        if AreVehicleDoorsClosed(MyVehicle) and IsVehicleHealthy(MyVehicle) then
+            SetStageByExtra(v, newState, false)
+        end
     end
 end
 
