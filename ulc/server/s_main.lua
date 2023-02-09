@@ -87,34 +87,34 @@ local function CheckData(data, resourceName)
 
   -- check if steady burns are enabled but no extras specified
   if (data.steadyBurnConfig.forceOn or data.steadyBurnConfig.useTime) and #data.steadyBurnConfig.sbExtras == 0 then
-      TriggerEvent("ulc:warn", '"' .. data.name .. '"uses Steady Burns, but no extras were specified (sbExtras = {})')
+      TriggerEvent("ulc:warn", 'A config in "' .. resourceName .. '" uses Steady Burns, but no extras were specified (sbExtras = {})')
   end
 
   -- check if park pattern enabled but no extras specified
   if data.parkConfig.usePark then
       if #data.parkConfig.pExtras == 0 and #data.parkConfig.dExtras == 0 then
-          TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Park Patterns, but no park or drive extras were specified (pExtras = {}, dExtras = {})')
+          TriggerEvent("ulc:warn", 'A config in "' .. resourceName .. '" uses Park Patterns, but no park or drive extras were specified (pExtras = {}, dExtras = {})')
       end
 
       if data.parkConfig.useSync and #data.parkConfig.syncWith == 0 then
-        TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Park Pattern Syncing, but no other vehicle models were specified (syncWith = {})')
+        TriggerEvent("ulc:warn", 'A config in "' .. resourceName .. '" uses Park Pattern Syncing, but no other vehicle models were specified (syncWith = {})')
       end
   end
 
   -- check if brakes enabled but no extras specified
   if data.brakeConfig.useBrakes and #data.brakeConfig.brakeExtras == 0 then
-      TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Brake Pattern, but no brake extras were specified.')
+      TriggerEvent("ulc:warn", 'A config in "' .. resourceName .. '" uses Brake Pattern, but no brake extras were specified.')
   end
 
   -- check if horn enabled but no extras specified
   if data.hornConfig.useHorn and #data.hornConfig.hornExtras == 0 then
-    TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Horn Extras, but no horn extras were specified.')
+    TriggerEvent("ulc:warn", 'A config in "' .. resourceName .. '" uses Horn Extras, but no horn extras were specified.')
   end
 
   -- Buttons
   -- check if vehicle uses buttons but hud is disabled
   if #data.buttons > 0 and Config.hideHud == true then
-    TriggerEvent("ulc:warn", '"' .. data.name .. '" uses Stage Buttons, but HUD/UI is globally disabled. This is not recommended for user experience.')
+    TriggerEvent("ulc:warn", 'A config in "' .. resourceName .. '" uses Stage Buttons, but HUD/UI is globally disabled. This is not recommended for user experience.')
   end
 
   local usedButtons = {}
@@ -122,22 +122,22 @@ local function CheckData(data, resourceName)
   for i, b in ipairs(data.buttons) do
       -- check if key is valid
       if b.key > 9 or b.key < 1 then
-          TriggerEvent('ulc:error', '"' .. data.name .. '" button ".. i .. " key is invalid. Key must be 1-9 representing number keys.')
+          TriggerEvent('ulc:error', 'Button ' .. i .. ' in a config found in the resource: "' .. resourceName .. '" has an invalid key. Key must be 1-9 representing number pad keys.')
           return false
       end
       -- check if label is empty
       if b.label == '' then
-          TriggerEvent("ulc:error", '"' .. data.name .. '" has an unlabeled button using extra: ' .. b.extra)
+          TriggerEvent("ulc:error", 'A config in "' .. resourceName .. '" has an un-labeled button using extra: ' .. b.extra)
           return false
       end
       -- check if any keys are used twice
       if IsIntInTable(usedButtons, b.key) then
-          TriggerEvent("ulc:error", '"' .. data.name .. '" uses key: " .. b.key .. " more than once in button config.')
+          TriggerEvent("ulc:error", 'A config in "' .. resourceName .. '" uses key: " .. b.key .. " more than once in button config.')
           return false
       end
       -- check if any extras are used twice
       if IsIntInTable(usedExtras, b.extra) then
-          TriggerEvent("ulc:error", '"' .. data.name .. '" uses extra: " .. b.extra .. " more than once in button config.')
+          TriggerEvent("ulc:error", 'A config in "' .. resourceName .. '" uses extra: " .. b.extra .. " more than once in button config.')
           return false
       end
   end
