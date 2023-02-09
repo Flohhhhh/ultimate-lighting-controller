@@ -7,13 +7,14 @@ local lastSync = 0
 function AreChecksPassed()
 
     if Config.ParkSettings.checkDoors then
-        if not AreVehicleDoorsClosed(veh) then
+        if not AreVehicleDoorsClosed(MyVehicle) then
             --print("A door was open, not setting park pattern.")
             return false
         end
     end
 
-    if not IsVehicleHealthy(vehicle) then
+    if not IsVehicleHealthy(MyVehicle) then
+        --print("Vehicle is damaged, not setting park pattern.")
         return false
     end
 
