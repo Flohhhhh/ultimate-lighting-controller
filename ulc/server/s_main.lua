@@ -164,7 +164,7 @@ AddEventHandler('ulc:sync:send', function(vehicles)
     for i,v in ipairs(players) do
         if not v == source then 
             --print("Sending veh sync array to player: " .. v)
-            TriggerClientEvent('ulc:sync:receive', v)
+            TriggerClientEvent('ulc:sync:receive', vehicles)
         end
     end
 end)
