@@ -19,25 +19,20 @@ dependencies {
 	"baseevents"
 }
 
-escrow_ignore {
-	'config.lua',
-	"ui/*"
-}
-
 shared_scripts {
 	'config.lua',
-	'shared/*.lua'
+	'shared/shared_functions.lua'
 }
 
 client_scripts {
 	'client/c_main.lua',
+	'client/c_buttons.lua',
 	'client/c_brake.lua',
 	'client/c_cruise.lua',
 	'client/c_horn.lua',
 	'client/c_park.lua',
 	'client/c_reverse.lua',
 	'client/c_beeps.lua'
-
 }
 
 server_scripts {
