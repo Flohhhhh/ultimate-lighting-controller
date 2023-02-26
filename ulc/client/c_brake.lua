@@ -18,7 +18,7 @@ local function enableBrakeExtras()
             state = IsVehicleExtraTurnedOn(vehicle, v)
         }
         table.insert(extraStates, extraState)
-        SetStageByExtra(v, 0, false)
+        SetStageByExtra(v, 0, false, true)
     end
 end
 
@@ -26,7 +26,7 @@ local function disableBrakeExtras()
     for k,v in pairs(MyVehicleConfig.brakeConfig.brakeExtras) do
         local prevState = GetPreviousStateByExtra(v)
         if not prevState then
-            SetStageByExtra(v, 1, false)
+            SetStageByExtra(v, 1, false, true)
         end
     end
 end
@@ -88,7 +88,7 @@ RegisterCommand('+ulc:brakePattern', function()
                         state = IsVehicleExtraTurnedOn(vehicle, v)
                     }
                     table.insert(extraStates, extraState)
-                    SetStageByExtra(v, 0, false)
+                    SetStageByExtra(v, 0, false, true)
                 end
                 ]]
             end
@@ -114,7 +114,7 @@ RegisterCommand('-ulc:brakePattern', function()
             --[[for k,v in pairs(vehConfig.brakeConfig.brakeExtras) do
                 local prevState = GetPreviousStateByExtra(v)
                 if not prevState then
-                    SetStageByExtra(v, 1, false)
+                    SetStageByExtra(v, 1, false, true)
                 end
             end]]
         end

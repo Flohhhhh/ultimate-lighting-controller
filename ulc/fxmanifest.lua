@@ -36,6 +36,7 @@ client_scripts {
 }
 
 server_scripts {
-	'server/s_main.lua'
+	'server/s_main.lua',
+	'server/s_buttons.lua'
 }
 

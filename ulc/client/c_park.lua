@@ -76,11 +76,11 @@ AddEventHandler('ulc:vehPark', function()
         if passed and AreChecksPassed() and vehConfig.parkConfig.usePark then
             -- enable pExtras
             for k,v in pairs(vehConfig.parkConfig.pExtras) do
-                SetStageByExtra(v, 0, false)
+                SetStageByExtra(v, 0, false, true)
             end
             -- disable dExtras
             for k,v in pairs(vehConfig.parkConfig.dExtras) do
-                SetStageByExtra(v, 1, false)
+                SetStageByExtra(v, 1, false, true)
             end
 
             -- park pattern sync stuff
@@ -170,11 +170,11 @@ AddEventHandler('ulc:vehDrive', function()
 
             -- disable pExtras
             for k,v in pairs(vehConfig.parkConfig.pExtras) do
-                SetStageByExtra(v, 1, false)
+                SetStageByExtra(v, 1, false, true)
             end
             -- enable dExtras
             for k,v in pairs(vehConfig.parkConfig.dExtras) do
-                SetStageByExtra(v, 0, false)
+                SetStageByExtra(v, 0, false, true)
             end
         end
     end

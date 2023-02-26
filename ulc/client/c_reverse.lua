@@ -13,7 +13,7 @@ AddEventHandler('ulc:StartCheckingReverseState', function()
                     reversing = true
                     for k, v in ipairs(MyVehicleConfig.reverseConfig.reverseExtras) do
                         if AreVehicleDoorsClosed(MyVehicle) and IsVehicleHealthy(MyVehicle) then
-                            SetStageByExtra(v, 0, true)
+                            SetStageByExtra(v, 0, true, true)
                         end
                     end
                 end
@@ -22,7 +22,7 @@ AddEventHandler('ulc:StartCheckingReverseState', function()
                     reversing = false
                     for k, v in ipairs(MyVehicleConfig.reverseConfig.reverseExtras) do
                         if AreVehicleDoorsClosed(MyVehicle) and IsVehicleHealthy(MyVehicle) then
-                            SetStageByExtra(v, 1, true)
+                            SetStageByExtra(v, 1, true, true)
                         end
                     end
                 end
