@@ -77,6 +77,17 @@ local function CheckData(data, resourceName)
   if not data.name and not data.names then
       TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" does not include a name!^0")
       return false
+  elseif data.name then
+    TriggerEvent("ulc:warn", "^1Vehicle config in resource \"" .. resourceName .. "\" uses deprecated 'name' field. Change to > names = {'yourvehicle'}^0")
+    if type(data.name) ~= "string" then 
+      TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" 'name' field can only accept a string.^0")
+      return false
+    end
+  elseif data.names then
+    if type(data.names) ~= "table" then
+      TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" 'names' field can only accept a table of strings.^0")
+      return false
+    end
   end
 
   -- check if data is missing
