@@ -25,7 +25,7 @@ RegisterNetEvent('ulc:SetVehicleExtra', function(src, _vehicle, data)
         SetStageByKey(data.key, data.action, data.playSound)
     end
 
-    Wait(100)
+    Wait(500)
 
     -- if i was source
     if wasMe then
@@ -52,6 +52,17 @@ function GetExtraForVehicleKey(vehicle, key)
         for k, v in pairs(vehicleConfig.buttons) do
             if v.key == key then
                 return v.extra, v.linkedExtras, v.offExtras
+            end
+        end
+    end
+end
+
+function GetKeyForVehicleExtra(vehicle, extra)
+    local passed, vehicleConfig = GetVehicleFromConfig(vehicle)
+    if passed then
+        for _, v in pairs(vehicleConfig.buttons) do
+            if v.extra == extra then
+                return v.key, v.linkedExtras, v.offExtras
             end
         end
     end
