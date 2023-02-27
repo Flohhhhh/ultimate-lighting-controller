@@ -104,6 +104,7 @@ AddEventHandler('ulc:checkVehicle', function()
     if passed then
       MyVehicle = vehicle
       MyVehicleConfig = vehicleConfig
+      local sortedButtons = SortButtonsByKey(MyVehicleConfig.buttons)
       --print("Found vehicle.")
       -- clear any existing buttons from hud
       SendNUIMessage({
@@ -115,7 +116,7 @@ AddEventHandler('ulc:checkVehicle', function()
       -- if i am driver
       if ped == GetPedInVehicleSeat(vehicle, -1) then
         -- for each configured button on this vehicle
-        for k, v in pairs(vehicleConfig.buttons) do
+        for k, v in pairs(sortedButtons) do
           -- determine state of button's extra
           local extraState = 1
           if IsVehicleExtraTurnedOn(vehicle, v.extra) then

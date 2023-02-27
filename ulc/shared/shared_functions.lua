@@ -72,3 +72,9 @@ function IsVehicleHealthy(vehicle)
         return false
     end
 end
+
+function SortButtonsByKey (arr)
+    table.sort(arr, function(a, b)
+        return a["key"] < b["key"]
+    end)
+end
