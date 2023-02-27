@@ -8,9 +8,17 @@ local function setCruiseLights(newState)
     sbState = newState
 
     for _, v in pairs(MyVehicleConfig.steadyBurnConfig.sbExtras) do
-            SetStageByExtra(v, newState, false, true) -- i want to remove checks from this, will need to check if steady burns are already in correct state.
-        local key = GetKeyForVehicleExtra(vehicle, v)
-        TriggerEvent('ulc:SetStage', key, newState, false)
+        --SetStageByExtra(v, newState, false, true) -- i want to remove checks from this, will need to check if steady burns are already in correct state.
+        print("Setting cruise lights extra: " .. v)
+        TriggerEvent('ulc:SetStageByExtra', v, newState, false)
+    end
+end
+
+local function getSteadyBurnState()
+    if IsVehicleExtraTurnedOn(MyVehicle,  MyVehicleConfig.steadyBurnConfig.sbExtras[1]) then
+        return 0
+    else
+        return 1
     end
 end
 
@@ -35,17 +43,18 @@ end)
 AddEventHandler('ulc:lightsOff', function()
     --print("Lights off")
     if MyVehicle and (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) then
-        TriggerEvent('ulc:CheckCruise', false)
+        TriggerEvent('ulc:CheckCruise')
     end
 end)
 
 AddEventHandler('ulc:CheckCruise', function()
+    sbState = getSteadyBurnState()
     if not MyVehicle then return end
 
     if MyVehicleConfig.steadyBurnConfig.forceOn then
-
         if sbState == 0 then return end
         if Lights and MyVehicleConfig.steadyBurnConfig.disableWithLights then return end
+        print("Setting cruise lights on")
         setCruiseLights(0)
 
     elseif MyVehicleConfig.steadyBurnConfig.useTime then

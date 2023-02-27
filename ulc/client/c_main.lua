@@ -104,7 +104,8 @@ AddEventHandler('ulc:checkVehicle', function()
     if passed then
       MyVehicle = vehicle
       MyVehicleConfig = vehicleConfig
-      local sortedButtons = SortButtonsByKey(MyVehicleConfig.buttons)
+	  table.sort(MyVehicleConfig.buttons, function(a,b) return a["key"] < b["key"] end)
+	  
       --print("Found vehicle.")
       -- clear any existing buttons from hud
       SendNUIMessage({
@@ -116,7 +117,7 @@ AddEventHandler('ulc:checkVehicle', function()
       -- if i am driver
       if ped == GetPedInVehicleSeat(vehicle, -1) then
         -- for each configured button on this vehicle
-        for k, v in pairs(sortedButtons) do
+        for k, v in pairs(MyVehicleConfig.buttons) do
           -- determine state of button's extra
           local extraState = 1
           if IsVehicleExtraTurnedOn(vehicle, v.extra) then
@@ -160,7 +161,8 @@ AddEventHandler('ulc:checkVehicle', function()
         TriggerEvent('ulc:StartCheckingReverseState')
       end
     else
-      Vehicle = nil
+      MyVehicle = nil
+	    TriggerEvent('ulc:cleanup')
       TriggerEvent('ulc:StopCheckingReverseState')
     end
   end)
@@ -189,11 +191,11 @@ end)
 ---------
 -- IDK --
 ---------
-
+--[[
 -- i guess this is for when you are in a vehicle and immediately spawn a new one with a menu?
 -- not sure, this was a while ago and i didn't comment it : )
 CreateThread(function()
-  local lastVehicle = nil
+  local lastVehicle
   while true do Wait(500)
     local ped = PlayerPedId()
     if IsPedInAnyVehicle(ped) then
@@ -204,4 +206,17 @@ CreateThread(function()
       lastVehicle = GetVehiclePedIsIn(ped)
     end
   end
+end)]]
+
+CreateThread(function()
+	local lastVehicle
+	while true do Wait(500)
+		if IsPedInAnyVehicle(PlayerPedId()) then
+			local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+			if currentVehicle ~= lastVehicle then
+				TriggerEvent('ulc:checkVehicle')
+			end
+			lastVehicle = currentVehicle
+		end
+	end
 end)

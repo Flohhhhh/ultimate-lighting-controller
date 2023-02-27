@@ -1,41 +1,65 @@
--- when I try to change state
--- Sets the stage of the vehicle, action 0 enables, 1 disables, 2 toggles; 
+-- -- when I try to change state
+-- -- Sets the stage of the vehicle, action 0 enables, 1 disables, 2 toggles; 
 AddEventHandler('ulc:SetStage', function(key, action, playSound)
     local data = {key = key, action = action, playSound = playSound}
-    -- tell server
-    TriggerServerEvent('ulc:ClientSetStage', VehToNet(MyVehicle), data)
+    TriggerEvent('ulc:SetVehicleStage', data)
+--     -- tell server
+--     TriggerServerEvent('ulc:ClientSetStage', VehToNet(MyVehicle), data)
 end)
 
+AddEventHandler('ulc:SetStageByExtra', function(extra, action, playSound)
+     local data = {extra = extra, action = action, playSound = playSound}
+     TriggerEvent('ulc:SetVehicleStage', data)
+--     TriggerServerEvent('ulc:ClientSetStage', VehToNet(MyVehicle), data)
+end)
 
--- when server tells me someone else changed their stage
-RegisterNetEvent('ulc:SetVehicleExtra', function(src, _vehicle, data)
+-- -- when server tells me someone else changed their stage
+-- RegisterNetEvent('ulc:SetVehicleExtra', function(src, _vehicle, data)
+-- 	print("Got event")
+--     local vehicle = NetToVeh(_vehicle)
+--     print("ulc:SetVehicleExtra: " .. vehicle, data.key)
 
-    local vehicle = NetToVeh(_vehicle)
-    print("ulc:SetVehicleExtra: " .. vehicle)
+--     print("Disabling auto repair for vehicle: " .. vehicle)
+--     -- disable auto repair on the vehicle
+--     SetVehicleAutoRepairDisabled(vehicle, true)
+--     -- if i was the source
+--     local wasMe = GetPlayerServerId(PlayerId()) == src
+--     if not wasMe then
+--         Wait(100)
+--     else
+--         print("It was me!")
+--         -- start a cooldown for stage changes
+--         -- do client stuff
+--         if data.key then
+--             SetStageByKey(data.key, data.action, data.playSound)
+--         elseif data.extra then
+--             SetStageByExtra(data.extra, data.action, data.playSound)
+--         end
+--     end
 
-    -- disable auto repair on the vehicle
-    SetVehicleAutoRepairDisabled(vehicle, true)
+--     Wait(200)
 
-    -- if i was the source
-    local wasMe = GetPlayerServerId(PlayerId()) == src
-    if wasMe then
-        print("It was me!")
-        -- start a cooldown for stage changes
-        -- do client stuff
+--     -- if i was source
+--     if wasMe then
+--         -- disable cooldown
+--     end
+
+--     --SetVehicleDeformationFixed(vehicle) -- ? need to test this
+--     -- enable auto repair on vehicle
+--     print("Enabling auto repair for vehicle: " .. vehicle)
+--     SetVehicleAutoRepairDisabled(vehicle, false)
+
+-- end)
+
+AddEventHandler('ulc:SetVehicleStage', function(data)
+    SetVehicleAutoRepairDisabled(MyVehicle, true)
+    if data.key then
         SetStageByKey(data.key, data.action, data.playSound)
+    elseif data.extra then
+        SetStageByExtra(data.extra, data.action, data.playSound)
     end
-
-    Wait(500)
-
-    -- if i was source
-    if wasMe then
-        -- disable cooldown
-    end
-
-    --SetVehicleDeformationFixed(vehicle) -- ? need to test this
-    -- enable auto repair on vehicle
-    SetVehicleAutoRepairDisabled(vehicle, false)
-
+    --do I need a wait?
+    SetVehicleAutoRepairDisabled(MyVehicle, false)
 end)
 
 
@@ -59,9 +83,11 @@ end
 
 function GetKeyForVehicleExtra(vehicle, extra)
     local passed, vehicleConfig = GetVehicleFromConfig(vehicle)
+	print("Finding key for extra: " .. extra .. " on vehicle: " .. vehicle)
     if passed then
         for _, v in pairs(vehicleConfig.buttons) do
             if v.extra == extra then
+			print("Found: " .. v.key)
                 return v.key, v.linkedExtras, v.offExtras
             end
         end
@@ -87,7 +113,6 @@ function SetStageByKey(key, action, playSound)
 
     local extra, linkedExtras, offExtras = GetExtraForVehicleKey(MyVehicle, key)
 
-    
     local state = IsVehicleExtraTurnedOn(MyVehicle, extra)
     local newState
 
@@ -117,7 +142,6 @@ function SetStageByKey(key, action, playSound)
             SetStageByExtra(v, 1, false, false)
         end
     end
-
 end
 
 function SetStageByExtra(extra, newState, playSound, doChecks)
@@ -187,4 +211,19 @@ function ShowHelp()
         end
       end
     end)
-  end
+end
+
+
+CreateThread(function()
+    while true do Wait(1000)
+        local vehicles = GetGamePool("CVehicle")
+        for _, v in pairs(vehicles) do
+            if v ~= GetVehiclePedIsIn(PlayerPedId(), false) then
+                SetVehicleAutoRepairDisabled(v, true)
+            else
+				print("Enabling repair for" .. v)
+				SetVehicleAutoRepairDisabled(v, false)
+			end
+        end
+    end
+end)
