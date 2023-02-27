@@ -38,3 +38,7 @@ ULC offers a wide range of configuration settings, as well as granular vehicle c
 **By default, no vehicles are affected by ULC's functionality.** In order to enable ULC for a vehicle, you must configure it. There are two methods for doing so.
 
 [Get Started Here!](https://dawnstar.gitbook.io/vehicle-docs/ulc/overview)
+
+# Credit
+
+[theebu](https://github.com/theebu) - for help with auto repair limitation
