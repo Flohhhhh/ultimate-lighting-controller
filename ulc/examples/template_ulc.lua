@@ -31,7 +31,6 @@ return { names = {"yourvehiclename"},
     },
     reverseConfig = {
         useReverse = false,
-        speedThreshold = 3,
         reverseExtras = {}
     },
 
