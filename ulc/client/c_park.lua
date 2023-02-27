@@ -106,7 +106,7 @@ AddEventHandler('ulc:vehPark', function()
                             if distance < Config.ParkSettings.syncDistance then
                                 if GetVehicleClass(v) == 18 then
                                     -- check if my vehicle is set to sync with this vehicle
-                                    if IsVehicleInTable(v, vehConfig.parkConfig.syncWith) then
+                                    if IsVehicleInTable(v, vehConfig.parkConfig.syncWith) or GetEntityModel(v) == GetEntityModel(MyVehicle) then
                                         --print('Vehicle' .. v .. ' should sync with me.')
 
                                         local speed = GetVehicleSpeedConverted(veh)
