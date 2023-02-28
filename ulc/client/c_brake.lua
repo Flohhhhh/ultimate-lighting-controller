@@ -18,7 +18,8 @@ local function enableBrakeExtras()
             state = IsVehicleExtraTurnedOn(vehicle, v)
         }
         table.insert(extraStates, extraState)
-        SetStageByExtra(v, 0, false, true)
+        TriggerEvent('ulc:SetStageByExtra', v, 0, false, false)
+        --SetStageByExtra(v, 0, false, true)
     end
 end
 
@@ -26,7 +27,8 @@ local function disableBrakeExtras()
     for k,v in pairs(MyVehicleConfig.brakeConfig.brakeExtras) do
         local prevState = GetPreviousStateByExtra(v)
         if not prevState then
-            SetStageByExtra(v, 1, false, true)
+            TriggerEvent('ulc:SetStageByExtra', v, 1, false, false)
+            --SetStageByExtra(v, 1, false, true)
         end
     end
 end

@@ -7,9 +7,9 @@ AddEventHandler('ulc:SetStage', function(key, action, playSound)
 --     TriggerServerEvent('ulc:ClientSetStage', VehToNet(MyVehicle), data)
 end)
 
-AddEventHandler('ulc:SetStageByExtra', function(extra, action, playSound)
+AddEventHandler('ulc:SetStageByExtra', function(extra, action, playSound, doChecks)
      local data = {extra = extra, action = action, playSound = playSound}
-     TriggerEvent('ulc:SetVehicleStage', data)
+     TriggerEvent('ulc:SetVehicleStage', data, doChecks)
 --     TriggerServerEvent('ulc:ClientSetStage', VehToNet(MyVehicle), data)
 end)
 
@@ -51,12 +51,12 @@ end)
 
 -- end)
 
-AddEventHandler('ulc:SetVehicleStage', function(data)
+AddEventHandler('ulc:SetVehicleStage', function(data, doChecks)
     SetVehicleAutoRepairDisabled(MyVehicle, true)
     if data.key then
         SetStageByKey(data.key, data.action, data.playSound)
     elseif data.extra then
-        SetStageByExtra(data.extra, data.action, data.playSound)
+        SetStageByExtra(data.extra, data.action, data.playSound, doChecks)
     end
     --do I need a wait?
     SetVehicleAutoRepairDisabled(MyVehicle, false)
