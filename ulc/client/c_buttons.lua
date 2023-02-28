@@ -221,7 +221,7 @@ CreateThread(function()
             if v ~= GetVehiclePedIsIn(PlayerPedId(), false) then
                 SetVehicleAutoRepairDisabled(v, true)
             else
-				print("Enabling repair for" .. v)
+				--print("Enabling repair for" .. v)
 				SetVehicleAutoRepairDisabled(v, false)
 			end
         end

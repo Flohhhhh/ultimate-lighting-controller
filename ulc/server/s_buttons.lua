@@ -1,7 +1,7 @@
 -- when a client wants to change their stage
 RegisterNetEvent('ulc:ClientSetStage', function(vehicle, data)
     local src = source
-    print("ulc:ClientSetStage: ", src, data.key, data.extra)
+    --print("ulc:ClientSetStage: ", src, data.key, data.extra)
 
     -- tell all clients to disable auto repair for the vehicle
     -- source client will change the extra
