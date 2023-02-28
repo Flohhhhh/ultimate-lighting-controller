@@ -1,3 +1,5 @@
+print("[ULC]: Stage Controls Loaded")
+
 -- -- when I try to change state
 -- -- Sets the stage of the vehicle, action 0 enables, 1 disables, 2 toggles; 
 AddEventHandler('ulc:SetStage', function(key, action, playSound)

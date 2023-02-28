@@ -1,4 +1,4 @@
-print("[ULC]: Stage Controls Loaded")
+print("[ULC]: Main Thread Loaded")
 
 -- this is all just so resource can be restarted and not break for clients in server
 Loaded = false
