@@ -1,5 +1,6 @@
 print("[ULC]: Main Thread Loaded")
 
+ULC = {}
 -- this is all just so resource can be restarted and not break for clients in server
 Loaded = false
 -- this is for when someone joins
@@ -222,4 +223,3 @@ CreateThread(function()
       end
   end
 end)
-

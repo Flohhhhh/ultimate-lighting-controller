@@ -8,7 +8,7 @@ print("[ULC]: Stage Controls Loaded")
 
 function GetExtraByKey(key)
     for _, v in pairs(MyVehicleConfig.buttons) do
-        if v.key == key then return v end
+        if v.key == key then return v.extra end
     end
 end
 
@@ -36,10 +36,12 @@ end)
 -- change specified extra, and if not extraOnly, and extra is in a button, act on the linked and off extras as well, acts recursively;
 -- action 0 enables, 1 disables, 2 toggles;
 -- updates ui whenever extra is used in a button
-function ULC:SetExtra(extra, action, playSound, extraOnly)
-    if not MyVehicle then print("[ULC:SetExtra()] MyVehicle is not defined right now :/") return false end
+function ULC:SetStage(extra, action, playSound, extraOnly)
+    if not MyVehicle then print("[ULC:SetStage()] MyVehicle is not defined right now :/") return false end
 
     local newState
+    --print("[ulc:SetStage]", extra, action, playSound, extraOnly)
+    
     if IsVehicleExtraTurnedOn(MyVehicle, extra) then
         if action == 1 or action == 2 then
             newState = 1
@@ -50,13 +52,10 @@ function ULC:SetExtra(extra, action, playSound, extraOnly)
         end
     end
 
-    if playSound then
-        if newState == 0 then
-            PlayBeep(true)
-        else
-            PlayBeep(false)
-        end
-    end
+    -- built in don't try to change if it's the same already!
+    if not newState then return end
+
+
 
     -- disable repair
     SetVehicleAutoRepairDisabled(MyVehicle, true)
@@ -68,15 +67,24 @@ function ULC:SetExtra(extra, action, playSound, extraOnly)
     -- if the extra corresponds to a button
     local button = GetButtonByExtra(extra)
     if button then
+        
+        if playSound then
+            if newState == 0 then
+                PlayBeep(true)
+            else
+                PlayBeep(false)
+            end
+        end
+
         if not extraOnly then
             -- set linked extras
-            for _, v in ipairs(linkedExtras) do
-                ULC:SetExtra(v, newState, false, true)
+            for _, v in ipairs(button.linkedExtras) do
+                ULC:SetStage(v, newState, false, true)
             end
 
             -- set off extras
-            for _, v in ipairs(offExtras) do
-                ULC:SetExtra(v, 1, false, true)
+            for _, v in ipairs(button.offExtras) do
+                ULC:SetStage(v, 1, false, true)
             end
         end
 

@@ -1,6 +1,4 @@
-local myVersion = GetResourceMetadata("myResource", "version", 0)
-local latestVersion = ''
--- GlobalState.ulcloaded = false
+print("Server thread loaded.")
 
 AddEventHandler('ulc:error', function(error)
   print("^1[ULC ERROR] " .. error)
@@ -10,13 +8,12 @@ AddEventHandler('ulc:warn', function(error)
   print("^3[ULC WARNING] " .. error)
 end)
 
-local loads
-PerformHttpRequest("https://api.countapi.xyz/hit/dwnstr.com/ulcloadcount", function(errorCode, resultData, resultHeaders)
-    local errorString = tostring(errorCode)
-    if not errorString then
-      loads = resultData.value
-    end
-end)
+local myVersion = GetResourceMetadata("ulc", "version", 0)
+local latestVersion = ''
+
+if GetCurrentResourceName() ~= 'ulc' then
+  TriggerEvent('ulc:error', "Resource is named incorrectly. Version checks will not work.")
+end
 
 PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-controller/releases/latest", function (errorCode, resultData, resultHeaders)
 
@@ -44,9 +41,8 @@ PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-cont
     by Dawnstar
     ^2Loaded
  ]])
-  if myVersion == latestVersion then
+  if myVersion and myVersion == latestVersion then
     print('Up to date!')
-    print('ULC has been loaded ' .. formatInt(loads) .. " times!")
   else
     print("^1ULC IS OUTDATED. A NEW VERSION (" .. latestVersion .. ") IS AVAILABLE.^0")
     print("^1YOUR VERSION: " .. myVersion .. "^0")

@@ -52,7 +52,7 @@ AddEventHandler('ulc:CheckCruise', function()
     if MyVehicleConfig.steadyBurnConfig.forceOn then
         if sbState == 0 then return end
         if Lights and MyVehicleConfig.steadyBurnConfig.disableWithLights then return end
-        print("Setting cruise lights on")
+        --print("Setting cruise lights on")
         setCruiseLights(0)
 
     elseif MyVehicleConfig.steadyBurnConfig.useTime then

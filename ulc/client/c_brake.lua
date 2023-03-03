@@ -1,60 +1,39 @@
-print("[ULC]: Brake Patterns Loaded")
-local extraStates = {}
-local braking = false
+print("[ULC] Brake Patterns Loaded")
 local realBrakeThreshold = 3 -- below this speed vehicle is always considered to be braking
 
-local function GetPreviousStateByExtra(extra)
-    for _, v in pairs(extraStates) do
-        if extra == v.extra then
-            return v.state
-        end
-    end
-end
+local function setBrakes(newState)
 
-local function enableBrakeExtras()
     for _, v in pairs(MyVehicleConfig.brakeConfig.brakeExtras) do
-        local extraState = {
-            extra = v,
-            state = IsVehicleExtraTurnedOn(MyVehicle, v)
-        }
-        table.insert(extraStates, extraState)
-        ULC:SetStage(v, 0, false, true)
+        ULC:SetStage(v, newState, false, true)
     end
+
 end
 
-local function disableBrakeExtras()
-    for _, v in pairs(MyVehicleConfig.brakeConfig.brakeExtras) do
-        local prevState = GetPreviousStateByExtra(v)
-        if not prevState then
-            ULC:SetStage(v, 1, false, true)
-        end
-    end
-end
 
+-- real brakes
 local function shouldUseRealBrakeMode()
     return (MyVehicleConfig.brakeConfig.speedThreshold or 3) <= realBrakeThreshold
 end
 
 CreateThread(function()
-    local sleep = 250
+    local sleep = 1000
     while true do Wait(sleep)
-        if not Loaded then goto continue end
-        if not MyVehicle then goto continue end
-        if braking then goto continue end
+        if not MyVehicle then sleep = 1000 goto continue end
+        if not shouldUseRealBrakeMode then sleep = 1000 goto continue end
 
-        local speed = GetEntitySpeed(MyVehicle)
-        if not shouldUseRealBrakeMode() then sleep = 1000 goto continue end
         sleep = 250
+        local speed = GetVehicleSpeedConverted(MyVehicle)
 
-        --if speed < realBrakeThreshold and shouldUseRealBrakeMode() and not (IsControlPressed(0, 71) or IsControlPressed(0, 72)) then
         if speed < realBrakeThreshold and shouldUseRealBrakeMode() and not IsControlPressed(0, 72) then
-            enableBrakeExtras()
+            --print("Enabling brakes")
+            setBrakes(0)
             SendNUIMessage({
                 type = 'toggleBrakeIndicator',
                 state = true
             })
         else
-            disableBrakeExtras()
+            --print("Disabling brakes")
+            setBrakes(1)
             SendNUIMessage({
                 type = 'toggleBrakeIndicator',
                 state = false
@@ -65,19 +44,20 @@ CreateThread(function()
     end
 end)
 
+
+-- pressed brakes
 RegisterCommand('+ulc:brakePattern', function()
- 
-    extraStates = {}
 
     if MyVehicle and MyVehicleConfig.brakeConfig.useBrakes then
         if GetVehicleCurrentGear(MyVehicle) == 0 then return end -- disable while reversing
-        braking = true
+        
+        --print("Enabling brakes")
 
         local speed = GetVehicleSpeedConverted(MyVehicle)
 
         -- if using real brakes always enable
         if shouldUseRealBrakeMode() or speed > (MyVehicleConfig.brakeConfig.speedThreshold or 3) then
-            enableBrakeExtras()
+            setBrakes(0)
         end
     end
     SendNUIMessage({
@@ -87,13 +67,13 @@ RegisterCommand('+ulc:brakePattern', function()
 end)
 
 RegisterCommand('-ulc:brakePattern', function()
-    braking = false
     --local passed, vehConfig = GetVehicleFromConfig(vehicle)
     if MyVehicle and MyVehicleConfig.brakeConfig.useBrakes then
-        local speed = GetEntitySpeed(vehicle)
+        local speed = GetVehicleSpeedConverted(MyVehicle)
         if shouldUseRealBrakeMode() and speed < realBrakeThreshold then return end
 
-        disableBrakeExtras()
+        --print("Disabling brakes")
+        setBrakes(1)
     end
     SendNUIMessage({
         type = 'toggleBrakeIndicator',

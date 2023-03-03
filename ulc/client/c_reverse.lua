@@ -12,14 +12,14 @@ AddEventHandler('ulc:StartCheckingReverseState', function()
                 if not reversing then
                     reversing = true
                     for _, v in ipairs(MyVehicleConfig.reverseConfig.reverseExtras) do
-                        SetStageByExtra(v, 0, true, true)
+                        ULC:SetStage(v, 0, false, true)
                     end
                 end
             else
                 if reversing then
                     reversing = false
                     for _, v in ipairs(MyVehicleConfig.reverseConfig.reverseExtras) do
-                        SetStageByExtra(v, 1, true, true)
+                        ULC:SetStage(v, 1, false, true)
                     end
                 end
             end
