@@ -24,7 +24,7 @@ Config = {
         -- distance at which to check for other vehicles to sync patterns with
         syncDistance = 32,
         -- seconds before a single client triggers sync again 
-        syncCooldown = 10,
+        syncCooldown = 4,
     },
 
     -- Steady Burn Config;
