@@ -15,41 +15,32 @@ end
 RegisterCommand('+ulc:horn', function()
     --print('horn')
     extraStates = {}
-    local vehicle = GetVehiclePedIsIn(PlayerPedId())
 
-    if AreVehicleDoorsClosed(vehicle) and IsVehicleHealthy(vehicle) then
-        local passed, vehConfig = GetVehicleFromConfig(vehicle)
-        if passed and vehConfig.hornConfig.useHorn then
-            for k, extra in ipairs(vehConfig.hornConfig.hornExtras) do
+    if MyVehicle and MyVehicleConfig.hornConfig.useHorn then
+        for _, extra in ipairs(MyVehicleConfig.hornConfig.hornExtras) do
 
-                local extraState = {
-                    extra = extra,
-                    state = IsVehicleExtraTurnedOn(vehicle, extra)
-                }
-                table.insert(extraStates, extraState)
-                --print("Extra: " .. extraState.extra .. " start state = " .. tostring(extraState.state))
-                SetStageByExtra(extra, 0, false, true)
-            end
+            local extraState = {
+                extra = extra,
+                state = IsVehicleExtraTurnedOn(MyVehicle, extra)
+            }
+            table.insert(extraStates, extraState)
+            --print("Extra: " .. extraState.extra .. " start state = " .. tostring(extraState.state))
+            ULC:SetStage(extra, 0, false, true)
         end
     end
 end)
 
 RegisterCommand('-ulc:horn', function()
-    local vehicle = GetVehiclePedIsIn(PlayerPedId())
-    if AreVehicleDoorsClosed(vehicle) and IsVehicleHealthy(vehicle) then
 
-        local passed, vehConfig = GetVehicleFromConfig(vehicle)
-
-        if passed and vehConfig.hornConfig.useHorn then
-            for k, extra in ipairs(vehConfig.hornConfig.hornExtras) do
+        if MyVehicle and MyVehicleConfig.hornConfig.useHorn then
+            for k, extra in ipairs(MyVehicleConfig.hornConfig.hornExtras) do
                 local prevState = GetPreviousStateByExtra(extra)
                 --print("Extra " .. extra .. " previous state = " ..  tostring(prevState))
                 if not prevState then
-                    SetStageByExtra(extra, 1, false, true)
+                    ULC:SetStage(extra, 1, false, true)
                 end
             end
         end
-    end
 end)
 
 RegisterKeyMapping('+ulc:horn', 'Toggle Horn Extras', 'keyboard', 'e')

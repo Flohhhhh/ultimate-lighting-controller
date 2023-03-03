@@ -13,15 +13,11 @@ Config = {
     hideHud = false,
     -- whether to use KPH instead of MPH
     useKPH = false,
-    -- health threshold disables these effects while vehicle is damaged to prevent unrealistic repairs upon crashing
-    healthThreshold = 990, -- 999 would disable effect with ANY damage to vehicle, between 900-999 are good values
 
     -- Park Pattern Settings;
     ParkSettings = {
         -- extras will toggle below this speed
         speedThreshold = 1,
-        -- check if any doors are fully open before executing effect (prevents doors from always snapping shut)
-        checkDoors = true,
         -- time between checks in seconds
         -- should not be any lower than .5 seconds
         delay = 0.5,

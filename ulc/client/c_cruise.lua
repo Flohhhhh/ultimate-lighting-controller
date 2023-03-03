@@ -6,11 +6,9 @@ local sbState = 1
 -- 0 on, 1 off
 local function setCruiseLights(newState)
     sbState = newState
-
     for _, v in pairs(MyVehicleConfig.steadyBurnConfig.sbExtras) do
-        --SetStageByExtra(v, newState, false, true) -- i want to remove checks from this, will need to check if steady burns are already in correct state.
-        print("Setting cruise lights extra: " .. v)
-        TriggerEvent('ulc:SetStageByExtra', v, newState, false)
+        --print("Setting cruise lights extra: " .. v)
+        ULC:SetStage(v, newState, false, true)
     end
 end
 

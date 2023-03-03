@@ -4,23 +4,6 @@ local veh = GetVehiclePedIsIn(PlayerPedId())
 local parked = false
 local lastSync = 0
 
-function AreChecksPassed()
-
-    if Config.ParkSettings.checkDoors then
-        if not AreVehicleDoorsClosed(MyVehicle) then
-            --print("A door was open, not setting park pattern.")
-            return false
-        end
-    end
-
-    if not IsVehicleHealthy(MyVehicle) then
-        --print("Vehicle is damaged, not setting park pattern.")
-        return false
-    end
-
-    return true
-end
-
 CreateThread(function()
     while true do
         if IsPedInAnyVehicle(PlayerPedId()) then
@@ -34,7 +17,7 @@ CreateThread(function()
     end
 end)
 
-RegisterNetEvent("ulc:checkParkState", function(vehicle, delay)
+RegisterNetEvent("ulc:checkParkState", function(delay)
     CreateThread(function()
         --print('Checking park state')
 
@@ -43,8 +26,7 @@ RegisterNetEvent("ulc:checkParkState", function(vehicle, delay)
             Wait(5000)
         end
 
-        veh = GetVehiclePedIsIn(PlayerPedId())
-        local speed = GetVehicleSpeedConverted(vehicle)
+        local speed = GetVehicleSpeedConverted(MyVehicle)
 
         --if parked then
             if speed > Config.ParkSettings.speedThreshold and parked then
@@ -71,20 +53,19 @@ AddEventHandler('ulc:vehPark', function()
     if Lights then
 		--print('[ulc:vehPark] My vehicle is parked.')
         parked = true
-        local passed, vehConfig = GetVehicleFromConfig(veh)
 
-        if passed and AreChecksPassed() and vehConfig.parkConfig.usePark then
+        if MyVehicle and MyVehicleConfig.parkConfig.usePark then
             -- enable pExtras
-            for k,v in pairs(vehConfig.parkConfig.pExtras) do
-                SetStageByExtra(v, 0, false, true)
+            for _, v in pairs(MyVehicleConfig.parkConfig.pExtras) do
+                ULC:SetStage(v, 0, false, true)
             end
             -- disable dExtras
-            for k,v in pairs(vehConfig.parkConfig.dExtras) do
-                SetStageByExtra(v, 1, false, true)
+            for _, v in pairs(MyVehicleConfig.parkConfig.dExtras) do
+                ULC:SetStage(v, 1, false, true)
             end
 
             -- park pattern sync stuff
-            if vehConfig.parkConfig.useSync then
+            if MyVehicleConfig.parkConfig.useSync then
 
                 -- cooldown
                 local gameSeconds = GetGameTimer() / 1000
@@ -106,7 +87,7 @@ AddEventHandler('ulc:vehPark', function()
                             if distance < Config.ParkSettings.syncDistance then
                                 if GetVehicleClass(v) == 18 then
                                     -- check if my vehicle is set to sync with this vehicle
-                                    if IsVehicleInTable(v, vehConfig.parkConfig.syncWith) or GetEntityModel(v) == GetEntityModel(MyVehicle) then
+                                    if IsVehicleInTable(v, MyVehicleConfig.parkConfig.syncWith) or GetEntityModel(v) == GetEntityModel(MyVehicle) then
                                         --print('Vehicle' .. v .. ' should sync with me.')
 
                                         local speed = GetVehicleSpeedConverted(veh)
@@ -153,7 +134,7 @@ end)
 
 RegisterNetEvent('ulc:sync:receive', function(vehicles)
     --print("[sync:receive] Trying to sync " .. #vehicles .. " vehicles.")
-    for k, v in pairs(vehicles) do
+    for _, v in pairs(vehicles) do
         --print("Attempting to sync: " .. NetToVeh(v))
         SetVehicleSiren(NetToVeh(v), false)
         SetVehicleSiren(NetToVeh(v), true)
@@ -165,16 +146,15 @@ AddEventHandler('ulc:vehDrive', function()
     if Lights then
 		--print('[ulc:vehDrive] My vehicle is driving.')
         parked = false
-        local passed, vehConfig = GetVehicleFromConfig(veh)
-        if passed and AreChecksPassed() and vehConfig.parkConfig.usePark then
+        if MyVehicle and MyVehicleConfig.parkConfig.usePark then
 
             -- disable pExtras
-            for k,v in pairs(vehConfig.parkConfig.pExtras) do
-                SetStageByExtra(v, 1, false, true)
+            for _, v in pairs(MyVehicleConfig.parkConfig.pExtras) do
+                ULC:SetStage(v, 1, false, true)
             end
             -- enable dExtras
-            for k,v in pairs(vehConfig.parkConfig.dExtras) do
-                SetStageByExtra(v, 0, false, true)
+            for _, v in pairs(MyVehicleConfig.parkConfig.dExtras) do
+                ULC:SetStage(v, 0, false, true)
             end
         end
     end

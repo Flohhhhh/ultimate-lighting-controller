@@ -188,26 +188,7 @@ RegisterNetEvent('UpdateVehicleConfigs', function(newData)
   Config.Vehicles = newData
 end)
 
----------
--- IDK --
----------
---[[
--- i guess this is for when you are in a vehicle and immediately spawn a new one with a menu?
--- not sure, this was a while ago and i didn't comment it : )
-CreateThread(function()
-  local lastVehicle
-  while true do Wait(500)
-    local ped = PlayerPedId()
-    if IsPedInAnyVehicle(ped) then
-      local vehicle = GetVehiclePedIsIn(ped)
-      if vehicle ~= lastVehicle then
-        TriggerServerEvent('baseevents:enteredVehicle')
-      end
-      lastVehicle = GetVehiclePedIsIn(ped)
-    end
-  end
-end)]]
-
+-- trigger checks when spawning from one vehicle into another directly
 CreateThread(function()
 	local lastVehicle
 	while true do Wait(500)
@@ -220,3 +201,25 @@ CreateThread(function()
 		end
 	end
 end)
+
+-------------------------
+-------------------------
+-- AUTO REPAIR HANDLER --
+-------------------------
+-------------------------
+
+-- every second set no repair on all vehicles except my own
+CreateThread(function()
+  while true do Wait(1000)
+      local vehicles = GetGamePool("CVehicle")
+      for _, v in pairs(vehicles) do
+          if v ~= GetVehiclePedIsIn(PlayerPedId(), false) then
+              SetVehicleAutoRepairDisabled(v, true)
+          else
+      --print("Enabling repair for" .. v)
+      SetVehicleAutoRepairDisabled(v, false)
+    end
+      end
+  end
+end)
+
