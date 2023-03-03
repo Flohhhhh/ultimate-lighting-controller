@@ -78,3 +78,14 @@ function SortButtonsByKey (arr)
         return a["key"] < b["key"]
     end)
 end
+
+function formatInt(num)
+  local formatted = tostring(num)
+  local length = formatted:len()
+  
+  for i = length - 3, 1, -3 do
+    formatted = formatted:sub(1, i) .. ',' .. formatted:sub(i + 1)
+  end
+  
+  return formatted
+end
