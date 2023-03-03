@@ -1,4 +1,4 @@
-local myVersion = 'v1.3.5'
+local myVersion = GetResourceMetadata("myResource", "version", 0)
 local latestVersion = ''
 -- GlobalState.ulcloaded = false
 
