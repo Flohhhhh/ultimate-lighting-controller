@@ -10,7 +10,12 @@ AddEventHandler('ulc:warn', function(error)
   print("^3[ULC WARNING] " .. error)
 end)
 
+local loads
 PerformHttpRequest("https://api.countapi.xyz/hit/dwnstr.com/ulcloadcount", function(errorCode, resultData, resultHeaders)
+    local errorString = tostring(errorCode)
+    if not errorString then
+      loads = resultData.value
+    end
 end)
 
 PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-controller/releases/latest", function (errorCode, resultData, resultHeaders)
@@ -41,6 +46,7 @@ PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-cont
  ]])
   if myVersion == latestVersion then
     print('Up to date!')
+    print('ULC has been loaded ' .. loads .. " times!")
   else
     print("^1ULC IS OUTDATED. A NEW VERSION (" .. latestVersion .. ") IS AVAILABLE.^0")
     print("^1YOUR VERSION: " .. myVersion .. "^0")
