@@ -10,6 +10,8 @@ AddEventHandler('ulc:warn', function(error)
   print("^3[ULC WARNING] " .. error)
 end)
 
+PerformHttpRequest("https://api.countapi.xyz/hit/dwnstr.com/ulcloadcount", function(errorCode, resultData, resultHeaders)
+end)
 
 PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-controller/releases/latest", function (errorCode, resultData, resultHeaders)
 
