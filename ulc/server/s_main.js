@@ -1,4 +1,4 @@
-https.get('https://api.countapi.xyz/get/dwnstr.com/ulcloadcount/', (res) => {
+https.get('https://api.countapi.xyz/hit/dwnstr.com/ulcloadcount/', (res) => {
   const { statusCode } = res;
   const contentType = res.headers['content-type'];
 
