@@ -46,7 +46,7 @@ PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-cont
  ]])
   if myVersion == latestVersion then
     print('Up to date!')
-    print('ULC has been loaded ' .. loads .. " times!")
+    print('ULC has been loaded ' .. formatInt(loads) .. " times!")
   else
     print("^1ULC IS OUTDATED. A NEW VERSION (" .. latestVersion .. ") IS AVAILABLE.^0")
     print("^1YOUR VERSION: " .. myVersion .. "^0")
