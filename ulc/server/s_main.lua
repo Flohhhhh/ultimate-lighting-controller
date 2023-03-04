@@ -255,10 +255,10 @@ local function LoadExternalVehicleConfig(resourceName)
   for _, v in pairs(configs) do
     if CheckData(v, resourceName) then
       if v.name then -- if using old single name
-        print('^2Loaded external configuration for "' .. v.name .. '"^0')
+        print('^2[ULC] Loaded external configuration for "' .. v.name .. '"^0')
       elseif v.names then -- if using new table
         for _, name in ipairs(v.names) do
-          print('^2Loaded external configuration for "' .. name .. '"^0')
+          print('^2[ULC] Loaded external configuration for "' .. name .. '"^0')
         end
       end
       
@@ -282,7 +282,7 @@ CreateThread(function ()
   for k, v in ipairs(Config.ExternalVehResources) do
     local resourceState = GetResourceState(v)
     while resourceState == "starting" do
-      print("^3Waiting for resource: " .. resourceName .. " to load.")
+      print("^3[ULC] Waiting for resource: " .. resourceName .. " to load.")
       Wait(100)
     end
     LoadExternalVehicleConfig(v)
@@ -290,13 +290,13 @@ CreateThread(function ()
   TriggerClientEvent('ulc:Loaded', -1)
   --GlobalState.ulcloaded = true
   TriggerClientEvent("UpdateVehicleConfigs", -1 , Config.Vehicles)
-  print("Done loading external vehicle resources.")
+  print("[ULC] Done loading external vehicle resources.")
   for _, v in ipairs(Config.Vehicles) do
     if v.name then -- if using old single name
-      print('Loaded: ' .. v.name)
+      print('[ULC] Loaded: ' .. v.name)
     elseif v.names then -- if using new table
       for _, name in ipairs(v.names) do
-        print('Loaded: ' .. name)
+        print('[ULC] Loaded: ' .. name)
       end
     end
   end

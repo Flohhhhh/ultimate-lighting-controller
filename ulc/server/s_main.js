@@ -25,7 +25,7 @@ https.get('https://api.countapi.xyz/hit/dwnstr.com/ulcloadcount/', (res) => {
   res.on('end', () => {
     try {
       const parsedData = JSON.parse(rawData);
-      console.log(`ULC has been loaded on servers ${parsedData.value} times :D`);
+      console.log(`[ULC] ULC has been loaded on servers ${parsedData.value} times :D`);
     } catch (e) {
       console.error(e.message);
     }
