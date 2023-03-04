@@ -5,7 +5,7 @@ lua54 'yes'
 name "Ultimate Lighting Controls"
 description "The ultimate non-els lighting controller. Documentation: https://docs.dwnstr.com/ulc/overview"
 author "Dawnstar"
-version "1.4.1"
+version "1.5.0"
 
 ui_page "ui/lights.html"
 
