@@ -131,7 +131,7 @@ local function CheckData(data, resourceName)
   --------------------
   if data.defaultStages or false then
     if data.defaultStages.useDefaults then
-      if #data.enableKeys == 0 then
+      if #data.defaultStages.enableKeys == 0 then
         TriggerEvent("ulc:warn", 'A config in "'.. resourceName .. '" uses Default Stages, but no keys were specified to enable (enableKeys = {}).')
       else
         for _, v in pairs(data.defaultStages.enableKeys) do
@@ -140,7 +140,7 @@ local function CheckData(data, resourceName)
           end
         end
       end
-      if #data.disableKeys == 0 then
+      if #data.defaultStages.disableKeys == 0 then
         TriggerEvent("ulc:warn", 'A config in "'.. resourceName .. '" uses Default Stages, but no keys were specified to disable (disableKeys = {}).')
       else
         for _, v in pairs(data.defaultStages.disableKeys) do
