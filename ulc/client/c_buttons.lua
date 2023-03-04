@@ -7,9 +7,13 @@ print("[ULC]: Stage Controls Loaded")
 -------------------
 
 function GetExtraByKey(key)
+    local result = nil
     for _, v in pairs(MyVehicleConfig.buttons) do
-        if v.key == key then return v.extra end
+        if v.key == key then
+            result = v.extra
+        end
     end
+    return result
 end
 
 function GetButtonByExtra(extra)
@@ -55,8 +59,6 @@ function ULC:SetStage(extra, action, playSound, extraOnly)
     -- built in don't try to change if it's the same already!
     if not newState then return end
 
-
-
     -- disable repair
     SetVehicleAutoRepairDisabled(MyVehicle, true)
     -- change extra
@@ -82,10 +84,20 @@ function ULC:SetStage(extra, action, playSound, extraOnly)
                 ULC:SetStage(v, newState, false, true)
             end
 
+            -- set opposite extras
+            if button.oppositeExtras or false then -- in case they have old config without the feature
+                local oppState
+                if newState == 1 then oppState = 0 elseif newState == 0 then oppState = 1 end
+                for _, v in pairs(button.oppositeExtras) do
+                    ULC:SetStage(v, oppState, false, true)
+                end
+            end
+                
             -- set off extras
             for _, v in ipairs(button.offExtras) do
                 ULC:SetStage(v, 1, false, true)
             end
+
         end
 
         -- update ui

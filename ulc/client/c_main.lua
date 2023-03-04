@@ -21,6 +21,24 @@ Lights = false
 MyVehicle = nil
 MyVehicleConfig = nil
 
+--------------------
+--------------------
+-- DEFAULT STAGES --
+--------------------
+--------------------
+
+local function setDefaultStages()
+    -- default stages
+    if not MyVehicleConfig.defaultStages or false then return end
+    if not MyVehicleConfig.defaultStages.useDefaults then return end
+    for _, e in pairs(MyVehicleConfig.defaultStages.enableKeys) do
+      ULC:SetStage(GetExtraByKey(e), 0, false, false)
+    end
+    for _, d in pairs(MyVehicleConfig.defaultStages.disableKeys) do
+      ULC:SetStage(GetExtraByKey(d), 1, false, false)
+    end
+end
+
 ------------------------------------
 ------------------------------------
 ------- LIGHTS STATE HANDLER -------
@@ -36,6 +54,8 @@ AddEventHandler('ulc:lightsOn', function()
   --print("Lights On")
   -- set Lights on
   Lights = true
+  setDefaultStages()
+
   -- check if parked or driving for park patterns
   TriggerEvent('ulc:checkParkState', GetVehiclePedIsIn(PlayerPedId()), false)
   SendNUIMessage({
@@ -66,8 +86,11 @@ end)
 -- check if lights are on 10 times a second;
 -- used to trigger above events
 CreateThread(function()
-  while true do
-    Wait(100)
+  local sleep = 1000
+  while true do Wait(sleep)
+    if not MyVehicle then sleep = 1000 goto continue end
+    sleep = 100
+
     if IsVehicleSirenOn(GetVehiclePedIsIn(PlayerPedId())) then
       if not Lights then
         TriggerEvent('ulc:lightsOn')
@@ -77,6 +100,8 @@ CreateThread(function()
         TriggerEvent('ulc:lightsOff')
       end
     end
+
+    ::continue::
   end
 end)
 
