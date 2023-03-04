@@ -79,7 +79,7 @@ end
 local function CheckData(data, resourceName)
 
   if not data.name and not data.names then
-      TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" does not include a name!^0")
+      TriggerEvent("ulc:error", "^1Vehicle config in resource \"" .. resourceName .. "\" does not include model names!^0")
       return false
   elseif data.name then
     TriggerEvent("ulc:warn", "^1Vehicle config in resource \"" .. resourceName .. "\" uses deprecated 'name' field. Change to > names = {'yourvehicle'}^0")
@@ -126,26 +126,32 @@ local function CheckData(data, resourceName)
     TriggerEvent("ulc:warn", 'A config in "' .. resourceName .. '" uses Horn Extras, but no horn extras were specified.')
   end
 
-  if data.defaultStages.useDefaults then
-    if #data.enableKeys == 0 then
-      TriggerEvent("ulc:warn", 'A config in "'.. resourceName .. '" uses Default Stages, but no keys were specified to enable (enableKeys = {}).')
-    else
-      for _, v in pairs(data.defaultStages.enableKeys) do
-        if v > 9 then
-          TriggerEvent("ulc:error", 'A config in "'.. resourceName .. '" has an invalid key in enableKeys = {}. Value must be 1-9 representing numpad keys.')
+  --------------------
+  -- DEFAULT STAGES --
+  --------------------
+  if data.defaultStages or false then
+    if data.defaultStages.useDefaults then
+      if #data.enableKeys == 0 then
+        TriggerEvent("ulc:warn", 'A config in "'.. resourceName .. '" uses Default Stages, but no keys were specified to enable (enableKeys = {}).')
+      else
+        for _, v in pairs(data.defaultStages.enableKeys) do
+          if v > 9 then
+            TriggerEvent("ulc:error", 'A config in "'.. resourceName .. '" has an invalid key in enableKeys = {}. Value must be 1-9 representing numpad keys.')
+          end
         end
       end
-    end
-    if #data.disableKeys == 0 then
-      TriggerEvent("ulc:warn", 'A config in "'.. resourceName .. '" uses Default Stages, but no keys were specified to disable (disableKeys = {}).')
-    else
-      for _, v in pairs(data.defaultStages.disableKeys) do
-        if v > 9 then
-          TriggerEvent("ulc:error", 'A config in "'.. resourceName .. '" has an invalid key in disableKeys = {}. Value must be 1-9 representing numpad keys.')
+      if #data.disableKeys == 0 then
+        TriggerEvent("ulc:warn", 'A config in "'.. resourceName .. '" uses Default Stages, but no keys were specified to disable (disableKeys = {}).')
+      else
+        for _, v in pairs(data.defaultStages.disableKeys) do
+          if v > 9 then
+            TriggerEvent("ulc:error", 'A config in "'.. resourceName .. '" has an invalid key in disableKeys = {}. Value must be 1-9 representing numpad keys.')
+          end
         end
       end
     end
   end
+
 
   -- Buttons
   -- check if vehicle uses buttons but hud is disabled
