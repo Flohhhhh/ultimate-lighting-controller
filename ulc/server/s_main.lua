@@ -41,7 +41,7 @@ PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-cont
     by Dawnstar
     ^2Loaded
  ]])
-  if myVersion and myVersion == latestVersion then
+  if ("v" .. myVersion) and myVersion == latestVersion then
     print('Up to date!')
   else
     print("^1ULC IS OUTDATED. A NEW VERSION (" .. latestVersion .. ") IS AVAILABLE.^0")
