@@ -17,7 +17,7 @@ end
 
 PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-controller/releases/latest", function (errorCode, resultData, resultHeaders)
 
-  print("My Version: [" .. myVersion .. "]")
+  print("[ULC] My Version: [" .. myVersion .. "]")
 
   local errorString = tostring(errorCode)
   if errorString == "403" or errorString == "404" then
@@ -26,7 +26,7 @@ PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-cont
   end
 
   latestVersion = json.decode(resultData).name
-  print("^0Latest Version: [" .. latestVersion .. "]")
+  print("^0[ULC] Latest Version: [" .. latestVersion .. "]")
 
   print([[
     ___  ___   ___        ________     
@@ -42,11 +42,11 @@ PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-cont
     ^2Loaded
  ]])
   if myVersion and ("v" .. myVersion) == latestVersion then
-    print('Up to date!')
+    print('[ULC] Up to date!')
   else
-    print("^1ULC IS OUTDATED. A NEW VERSION (" .. latestVersion .. ") IS AVAILABLE.^0")
-    print("^1YOUR VERSION: " .. myVersion .. "^0")
-    print("GET LATEST VERSION HERE: https://github.com/Flohhhhh/ultimate-lighting-controller/releases/")
+    print("^1[ULC] OUTDATED. A NEW VERSION (" .. latestVersion .. ") IS AVAILABLE.^0")
+    print("^1[ULC] YOUR VERSION: " .. myVersion .. "^0")
+    print("[ULC] GET LATEST VERSION HERE: https://github.com/Flohhhhh/ultimate-lighting-controller/releases/")
   end
 end)
 
