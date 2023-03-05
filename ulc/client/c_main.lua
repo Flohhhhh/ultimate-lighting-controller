@@ -130,7 +130,7 @@ AddEventHandler('ulc:checkVehicle', function()
     if passed then
       MyVehicle = vehicle
       MyVehicleConfig = vehicleConfig
-	  table.sort(MyVehicleConfig.buttons, function(a,b) return a["key"] < b["key"] end)
+	   table.sort(MyVehicleConfig.buttons, function(a,b) return a["key"] < b["key"] end)
 	  
       --print("Found vehicle.")
       -- clear any existing buttons from hud
