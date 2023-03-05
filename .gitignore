@@ -2,3 +2,4 @@
 ulc.zip
 .vscode/settings.json
 ulc/examples/example_ulc.lua
+node_modules/
