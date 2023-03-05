@@ -7,12 +7,15 @@ description "The ultimate non-els lighting controller. Documentation: https://do
 author "Dawnstar"
 version "1.5.0"
 
-ui_page "ui/lights.html"
+ui_page "html/index.html"
 
 files {
 	"ui/lights.html",
 	"ui/lights.js",
 	"ui/lights.css",
+	"html/index.html",
+	"html/assets/*.js",
+	"html/assets/*.css"
 }
 
 dependencies {
