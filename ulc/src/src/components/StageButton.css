@@ -1,0 +1,29 @@
+.button {
+
+    width: 75px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    border: 12px solid transparent;
+    background-image: url('../assets/button-background.jpg');
+    background-position: fit;
+    background-size: cover;
+    border-radius: 20px;
+    border-image: url('../assets/button.png') 40 repeat;
+
+
+    color: rgb(193, 193, 193);
+    font-weight: 700;
+    font-size: 10pt;
+    line-height: 16px;
+}
+
+/* this is method to change background image */
+/* just apply second class to the object */
+.blue {
+    background-color: blue;
+    background-image: none;
+}

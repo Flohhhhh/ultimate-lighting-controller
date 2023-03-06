@@ -1,33 +1,33 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { Box } from '@mantine/core'
+import './app.css'
+import StageButton from './components/StageButton'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [scale, setScale] = useState(1.0)
+
+  window.addEventListener('message', (event) => {
+    var data = event.data
+  });
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Box sx={{
+      position: 'absolute',
+      bottom: 20,
+      right: 20,
+      transform: `scale(${scale})`
+    }}>
+      <div className='background'>
+        
+        <StageButton enabled={false} color='' label='STAGE 1'></StageButton>
+        <StageButton enabled={false} color='' label='STAGE 2'></StageButton>
+        <StageButton enabled={false} color='' label='STAGE 3'></StageButton>
+        <StageButton enabled={false} color='' label='TA'></StageButton>
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    </Box>
+
   )
 }
 
