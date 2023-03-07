@@ -49,12 +49,12 @@ end)
 
 -- pressed brakes
 RegisterCommand('+ulc:brakePattern', function()
-
+    braking = true
     if MyVehicle and MyVehicleConfig.brakeConfig.useBrakes then
         if GetVehicleCurrentGear(MyVehicle) == 0 then return end -- disable while reversing
         
         --print("Enabling brakes")
-        braking = true
+
 
         local speed = GetVehicleSpeedConverted(MyVehicle)
 
@@ -70,13 +70,13 @@ RegisterCommand('+ulc:brakePattern', function()
 end)
 
 RegisterCommand('-ulc:brakePattern', function()
-    --local passed, vehConfig = GetVehicleFromConfig(vehicle)
+    braking = false
     if MyVehicle and MyVehicleConfig.brakeConfig.useBrakes then
         local speed = GetVehicleSpeedConverted(MyVehicle)
         if shouldUseRealBrakeMode() and speed < realBrakeThreshold then return end
 
         --print("Disabling brakes")
-        braking = false
+       
         setBrakes(1)
     end
     SendNUIMessage({
