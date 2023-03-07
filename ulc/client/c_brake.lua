@@ -1,5 +1,6 @@
 print("[ULC] Brake Patterns Loaded")
 local realBrakeThreshold = 3 -- below this speed vehicle is always considered to be braking
+local braking = false
 
 local function setBrakes(newState)
 
@@ -20,7 +21,8 @@ CreateThread(function()
     while true do Wait(sleep)
         if not MyVehicle then sleep = 1000 goto continue end
         if not shouldUseRealBrakeMode then sleep = 1000 goto continue end
-
+        if braking then goto continue end
+            
         sleep = 250
         local speed = GetVehicleSpeedConverted(MyVehicle)
 
@@ -52,6 +54,7 @@ RegisterCommand('+ulc:brakePattern', function()
         if GetVehicleCurrentGear(MyVehicle) == 0 then return end -- disable while reversing
         
         --print("Enabling brakes")
+        braking = true
 
         local speed = GetVehicleSpeedConverted(MyVehicle)
 
@@ -73,6 +76,7 @@ RegisterCommand('-ulc:brakePattern', function()
         if shouldUseRealBrakeMode() and speed < realBrakeThreshold then return end
 
         --print("Disabling brakes")
+        braking = false
         setBrakes(1)
     end
     SendNUIMessage({
