@@ -47,4 +47,5 @@ ULC offers a wide range of configuration settings, as well as granular vehicle c
 
 # Credit
 
-[theebu](https://github.com/theebu) - for help with auto repair limitation
+- [theebu](https://github.com/theebu) - for help with auto repair limitation
+- Everyone who helped test!
