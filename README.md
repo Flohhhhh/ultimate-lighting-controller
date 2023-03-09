@@ -41,6 +41,11 @@ ULC offers a wide range of configuration settings, as well as granular vehicle c
 
 [Get Started Here!](https://dawnstar.gitbook.io/vehicle-docs/ulc/overview)
 
+# Goes Well with:
+- [Real Brake Lights](https://github.com/Flohhhhh/real-brake-lights)
+- [Luxart Vehicle Control](https://github.com/TrevorBarns/luxart-vehicle-control)
+
 # Credit
 
-[theebu](https://github.com/theebu) - for help with auto repair limitation
+- [theebu](https://github.com/theebu) - for help with auto repair limitation
+- Everyone who helped test!
