@@ -100,12 +100,13 @@ function ULC:SetStage(extra, action, playSound, extraOnly)
 
         end
 
+        SetButton(extra, newState)
         -- update ui
-        SendNUIMessage({
-            type = 'setButton',
-            extra = extra,
-            state = newState
-        })
+        -- SendNUIMessage({
+        --     type = 'setButton',
+        --     extra = extra,
+        --     state = newState
+        -- })
     end
 end
 -----------------------

@@ -29,17 +29,17 @@ CreateThread(function()
         if speed < realBrakeThreshold and shouldUseRealBrakeMode() and not IsControlPressed(0, 72) then
             --print("Enabling brakes")
             setBrakes(0)
-            SendNUIMessage({
-                type = 'toggleBrakeIndicator',
-                state = true
-            })
+            -- SendNUIMessage({
+            --     type = 'toggleBrakeIndicator',
+            --     state = true
+            -- })
         else
             --print("Disabling brakes")
             setBrakes(1)
-            SendNUIMessage({
-                type = 'toggleBrakeIndicator',
-                state = false
-            })
+            -- SendNUIMessage({
+            --     type = 'toggleBrakeIndicator',
+            --     state = false
+            -- })
         end
 
         ::continue::

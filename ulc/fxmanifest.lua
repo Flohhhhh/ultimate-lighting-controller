@@ -7,7 +7,7 @@ description "The ultimate non-els lighting controller. Documentation: https://do
 author "Dawnstar"
 version "1.5.0"
 
-ui_page "ui/lights.html"
+ui_page "html/index.html"
 
 files {
 	"ui/lights.html",
@@ -15,7 +15,9 @@ files {
 	"ui/lights.css",
 	"html/index.html",
 	"html/assets/*.js",
-	"html/assets/*.css"
+	"html/assets/*.css",
+	"html/assets/*.png",
+	"html/assets/*.jpg"
 }
 
 dependencies {
@@ -29,6 +31,7 @@ shared_scripts {
 
 client_scripts {
 	'client/c_main.lua',
+	'client/c_hud.lua',
 	'client/c_buttons.lua',
 	'client/c_brake.lua',
 	'client/c_cruise.lua',

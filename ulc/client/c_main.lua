@@ -132,44 +132,40 @@ AddEventHandler('ulc:checkVehicle', function()
       MyVehicleConfig = vehicleConfig
 	   table.sort(MyVehicleConfig.buttons, function(a,b) return a["key"] < b["key"] end)
 	  
-      --print("Found vehicle.")
+      print("Found vehicle.")
       -- clear any existing buttons from hud
-      SendNUIMessage({
-        type = 'clearButtons',
-      })
+      -- ClearButtons()
 
-      activeButtons = {}
+      
+      --activeButtons = {}
 
       -- if i am driver
       if ped == GetPedInVehicleSeat(vehicle, -1) then
+        PopulateButtons(MyVehicleConfig.buttons)
         -- for each configured button on this vehicle
-        for k, v in pairs(MyVehicleConfig.buttons) do
+        -- for k, v in pairs(MyVehicleConfig.buttons) do
           -- determine state of button's extra
-          local extraState = 1
-          if IsVehicleExtraTurnedOn(vehicle, v.extra) then
-            extraState = 0
-          end 
+          -- local extraState = 1
+          -- if IsVehicleExtraTurnedOn(vehicle, v.extra) then
+          --   extraState = 0
+          -- end 
           -- add/show and configure the button
           --print("Adding button: " .. v.label)
-          table.insert(activeButtons, v)
-          SendNUIMessage({
-            type = 'addButton',
-            label = string.upper(v.label),
-            extra = v.extra,
-            state = extraState
-          })
-        end
+          --table.insert(activeButtons, v)
+          --AddButton(v.extra, 'blue', v.label)
+          
+        -- end
 
         if vehicleConfig.parkConfig.usePark then
-          SendNUIMessage({
-            type = 'showParkIndicator',
-          })
+          -- SendNUIMessage({
+          --   type = 'showParkIndicator',
+          -- })
         end
 
         if vehicleConfig.brakeConfig.useBrakes then
-          SendNUIMessage({
-            type = 'showBrakeIndicator',
-          })
+          -- SendNUIMessage({
+          --   type = 'showBrakeIndicator',
+          -- })
         end
 
         ShowHelp()
@@ -177,9 +173,9 @@ AddEventHandler('ulc:checkVehicle', function()
         -- when done
         -- show hud
         if not Config.hideHud then
-          SendNUIMessage({
-            type = 'showLightsHUD',
-          })
+          -- SendNUIMessage({
+          --   type = 'showLightsHUD',
+          -- })
         end
 
         TriggerEvent('ulc:CheckCruise')
@@ -200,9 +196,9 @@ AddEventHandler('ulc:cleanup', function()
   MyVehicle = nil
   MyVehicleConfig = nil
   -- hide hud
-  SendNUIMessage({
-    type = 'hideLightsHUD',
-  })
+  -- SendNUIMessage({
+  --   type = 'hideLightsHUD',
+  -- })
 end)
 
 -----------------

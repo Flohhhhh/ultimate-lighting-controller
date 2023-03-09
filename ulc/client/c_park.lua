@@ -31,18 +31,18 @@ RegisterNetEvent("ulc:checkParkState", function(delay)
         --if parked then
             if speed > Config.ParkSettings.speedThreshold and parked then
                 TriggerEvent("ulc:vehDrive")
-                SendNUIMessage({
-                    type = 'toggleParkIndicator',
-                    state = false
-                })
+                -- SendNUIMessage({
+                --     type = 'toggleParkIndicator',
+                --     state = false
+                -- })
             end
         --else
             if speed < Config.ParkSettings.speedThreshold and not parked then
                 TriggerEvent('ulc:vehPark')
-                SendNUIMessage({
-                    type = 'toggleParkIndicator',
-                    state = true
-                })
+                -- SendNUIMessage({
+                --     type = 'toggleParkIndicator',
+                --     state = true
+                -- })
             end
         --end
     end)

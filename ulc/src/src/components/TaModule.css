@@ -1,0 +1,13 @@
+.ta-module {
+    aspect-ratio: 256/168;
+    height: 100%;
+    
+    background-image: url('../assets/ta_off.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.on {
+    background-image: url('../assets/ta_on.png')
+}

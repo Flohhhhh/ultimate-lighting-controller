@@ -1,29 +1,41 @@
+
 .button {
 
-    width: 75px;
-    height: 45px;
+    aspect-ratio: 144/121;
+    width: 65px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
 
-    border: 12px solid transparent;
-    background-image: url('../assets/button-background.jpg');
-    background-position: fit;
-    background-size: cover;
-    border-radius: 20px;
-    border-image: url('../assets/button.png') 40 repeat;
+    background-image: url('../assets/button_off.png');
+    background-size: contain;
+    background-repeat: no-repeat;
 
+    margin: 4px;
 
-    color: rgb(193, 193, 193);
-    font-weight: 700;
+    color: rgb(81, 81, 81);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 800;
     font-size: 10pt;
-    line-height: 16px;
+    line-height: 14px;
 }
 
 /* this is method to change background image */
 /* just apply second class to the object */
 .blue {
-    background-color: blue;
-    background-image: none;
+    background-image: url('../assets/button_on_blue.png');
+    color: #4e598f
+}
+.red {
+    background-image: url('../assets/button_on_red.png');
+    color: #95665D
+}
+.amber {
+    background-image: url('../assets/button_on_amber.png');
+    color: #948255
+}
+.green {
+    background-image: url('../assets/button_on_green.png');
+    color: #596a2d
 }
