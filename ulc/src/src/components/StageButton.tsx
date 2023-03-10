@@ -11,7 +11,6 @@ function StageButton(props : any) {
 
      // color strings = 'red', 'blue, 'amber'
      useEffect(() => {
-      console.log("Props have changed!")
       if (props.enabled) {
         setClassString(`button ${props.color}`)
       } else {

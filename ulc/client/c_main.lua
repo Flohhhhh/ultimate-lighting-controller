@@ -130,7 +130,7 @@ AddEventHandler('ulc:checkVehicle', function()
     if passed then
       MyVehicle = vehicle
       MyVehicleConfig = vehicleConfig
-	   table.sort(MyVehicleConfig.buttons, function(a,b) return a["key"] < b["key"] end)
+	    table.sort(MyVehicleConfig.buttons, function(a,b) return a["key"] < b["key"] end)
 	  
       print("Found vehicle.")
       -- clear any existing buttons from hud
@@ -141,7 +141,12 @@ AddEventHandler('ulc:checkVehicle', function()
 
       -- if i am driver
       if ped == GetPedInVehicleSeat(vehicle, -1) then
-        PopulateButtons(MyVehicleConfig.buttons)
+        ULC:PopulateButtons(MyVehicleConfig.buttons)
+        --ShowHelp()
+        if not Config.hideHud then
+          ULC:SetDisplay(true)
+        end
+
         -- for each configured button on this vehicle
         -- for k, v in pairs(MyVehicleConfig.buttons) do
           -- determine state of button's extra
@@ -156,27 +161,17 @@ AddEventHandler('ulc:checkVehicle', function()
           
         -- end
 
-        if vehicleConfig.parkConfig.usePark then
-          -- SendNUIMessage({
-          --   type = 'showParkIndicator',
-          -- })
-        end
+        -- if vehicleConfig.parkConfig.usePark then
+        --   -- SendNUIMessage({
+        --   --   type = 'showParkIndicator',
+        --   -- })
+        -- end
 
-        if vehicleConfig.brakeConfig.useBrakes then
-          -- SendNUIMessage({
-          --   type = 'showBrakeIndicator',
-          -- })
-        end
-
-        ShowHelp()
-
-        -- when done
-        -- show hud
-        if not Config.hideHud then
-          -- SendNUIMessage({
-          --   type = 'showLightsHUD',
-          -- })
-        end
+        -- if vehicleConfig.brakeConfig.useBrakes then
+        --   -- SendNUIMessage({
+        --   --   type = 'showBrakeIndicator',
+        --   -- })
+        -- end
 
         TriggerEvent('ulc:CheckCruise')
         TriggerEvent('ulc:checkParkState', true)
@@ -195,6 +190,7 @@ RegisterNetEvent('ulc:cleanup')
 AddEventHandler('ulc:cleanup', function()
   MyVehicle = nil
   MyVehicleConfig = nil
+  ULC:SetDisplay(false)
   -- hide hud
   -- SendNUIMessage({
   --   type = 'hideLightsHUD',

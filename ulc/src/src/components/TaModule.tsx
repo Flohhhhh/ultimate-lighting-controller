@@ -8,9 +8,8 @@ function TaModule(props : any) {
 
      // color strings = 'red', 'blue, 'amber'
      useEffect(() => {
-      console.log("Props have changed!")
       if (props.on) {
-        setClassString(`ta-module on`)
+        setClassString(`ta-module module-on`)
       } else {
         setClassString(`ta-module`)
       }

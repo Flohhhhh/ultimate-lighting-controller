@@ -14,6 +14,8 @@ body {
     background-image: url('./assets/texture.jpg');
     border-radius: 20px;
     border-image: url('./assets/image.png') 20 repeat;
+
+    transition: all .5s ease;
 }
 
 .buttons {
@@ -30,4 +32,8 @@ body {
     justify-content: center;
     align-items: center;
 
+}
+
+.ta-off {
+    display: none;
 }
