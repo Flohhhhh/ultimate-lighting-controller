@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import Draggable from "react-draggable";
-import { Box, Button } from '@mantine/core'
+import { Box, Button, SegmentedControl } from '@mantine/core'
 import './app.css'
 import StageButton from './components/StageButton'
 import TaModule from './components/TaModule'
+import Menu from './components/Menu'
 
 function App() {
 
@@ -13,10 +14,11 @@ function App() {
   // STATE HOOKS //
   /////////////////
 
-  const [ opacity, setOpacity ] = useState(100)
+  const [ opacity, setOpacity ] = useState(0)
+  const [ menuOpacity, setMenuOpacity ] = useState(0)
   const [ scale, setScale ] = useState(1.0)
   const [ taClassString, setTaClassString ] = useState('ta ta-off')
-  const [ useLeftAnchor, setUseLeftAnchor ] = useState(false)
+  const [ useLeftAnchor, setUseLeftAnchor ] = useState('false')
 
   const [ x, setX ] = useState(0)
   const [ y, setY ] = useState(0)
@@ -72,6 +74,12 @@ function App() {
     console.log(data.x, data.y);
     let newX = data.x
     let newY = data.y
+    
+    setPosition(newX, newY)
+    //send this position back to lua to save it for later
+  }
+
+  function setPosition(newX : number, newY : number) {
     setX(newX)
     setY(newY)
     let response = fetch(`https://ulc/savePosition`, {
@@ -81,7 +89,6 @@ function App() {
       },
       body: JSON.stringify({newX, newY})
     });
-    //send this position back to lua to save it for later
   }
 
 
@@ -97,6 +104,8 @@ function App() {
     else if (data.type === 'setPosition') {setX(data.x); setY(data.y)}
     else if (data.type === 'setScale') {setScale(data.scale)}
     else if (data.type === 'setAnchor') {setUseLeftAnchor(data.bool)}
+    else if (data.type === 'showMenu') {setMenuOpacity(100)}
+    else if (data.type === 'hideMenu') {setMenuOpacity(0)}
 
     if (data.type === 'clearButtons') {
       //console.log("Clearing buttons")
@@ -141,42 +150,47 @@ function App() {
     
   ))
 
-
-
   return (
+    <>
+      {/* MENU */}
+      <Menu opacity={menuOpacity} scale={scale} setScale={setScale} useLeftAnchor={useLeftAnchor} setUseLeftAnchor={setUseLeftAnchor} setPosition={setPosition}/>
 
-    <Draggable defaultPosition={{x, y}} position={{x, y}} onStop={(e, data) => {handleDragEvent(e, data)}}>
-      <Box sx={{
-        position: 'absolute',
-        bottom: 40,
-        ...(useLeftAnchor ? { left: 40 } : { right: 40 }),
-        transform: `scale(${scale})`,
-        opacity: `${opacity}%`,
-        transition: 'opacity 0.25s ease'
-      }}>
-        <Button onClick={() => {addButton(1, false, 'green', 'STAGE 2')}}>Add button</Button>
-        <Button onClick={() => {setButton(1, true)}}>Turn on</Button>
-        <Button onClick={() => {setButtonObjects([])}}>Clear</Button>
-        <Button onClick={() => {if (opacity === 0){ setOpacity(100)} else if (opacity === 100){ setOpacity(0) }}}>Toggle</Button>
-        <div className='background'>
 
-          <div className={taClassString}>
-            <TaModule on={false}></TaModule>
-            <TaModule on={false}></TaModule>
-            <TaModule on={true}></TaModule>
-            <TaModule on={true}></TaModule>
-            <TaModule on={true}></TaModule>
-            <TaModule on={true}></TaModule>
-            <TaModule on={false}></TaModule>
+      {/* HUD */}
+      <Draggable defaultPosition={{x, y}} scale={scale} position={{x, y}} onStop={(e, data) => {handleDragEvent(e, data)}}>
+        <Box sx={{
+          position: 'absolute',
+          bottom: 40,
+          ...(useLeftAnchor === 'true' ? { left: 40 } : { right: 40 }),
+          scale: `${scale}`,
+          opacity: `${opacity}%`,
+          transition: 'opacity 0.25s ease'
+        }}>
+          {/* <Button onClick={() => {addButton(1, false, 'green', 'STAGE 2')}}>Add button</Button>
+          <Button onClick={() => {setButton(1, true)}}>Turn on</Button>
+          <Button onClick={() => {setButtonObjects([])}}>Clear</Button>
+          <Button onClick={() => {if (menuOpacity === 100) {setMenuOpacity(0)} else {setMenuOpacity(100)}}}>Menu</Button> */}
+          <div className='background'>
+
+            <div className={taClassString}>
+              <TaModule on={false}></TaModule>
+              <TaModule on={false}></TaModule>
+              <TaModule on={true}></TaModule>
+              <TaModule on={true}></TaModule>
+              <TaModule on={true}></TaModule>
+              <TaModule on={true}></TaModule>
+              <TaModule on={false}></TaModule>
+            </div>
+
+            <div className="buttons">
+              {buttons}
+            </div>
+
           </div>
-
-          <div className="buttons">
-            {buttons}
-          </div>
-
-        </div>
-      </Box>
-    </Draggable>
+        </Box>
+      </Draggable>
+    </>
+    
     
 
   )

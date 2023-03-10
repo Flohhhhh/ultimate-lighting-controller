@@ -139,8 +139,10 @@ end)
 local focus = false
 RegisterCommand('ulc', function()
     if focus then
+        ULC:SetMenuDisplay(false)
         SetNuiFocus(false, false)
     else
+        ULC:SetMenuDisplay(true)
         SetNuiFocus(true, true)
     end
 end)
@@ -161,6 +163,8 @@ RegisterCommand("ulcHide", function()
         ULC:SetDisplay(false)
     end
 end)
+
+-- NUI CALLBACKS --
 
 RegisterNUICallback("savePosition", function(data)
 
