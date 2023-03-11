@@ -143,8 +143,10 @@ AddEventHandler('ulc:checkVehicle', function()
       if ped == GetPedInVehicleSeat(vehicle, -1) then
         ULC:PopulateButtons(MyVehicleConfig.buttons)
         --ShowHelp()
-        if not Config.hideHud then
+        if not Config.hideHud and ClientPrefs.hideUi == 0 then
           ULC:SetDisplay(true)
+        else
+          print("HUD is hidden. Type /ulc to see if you disabled it. Otherwise, the server owner may have disabled the HUD.")
         end
 
         -- for each configured button on this vehicle

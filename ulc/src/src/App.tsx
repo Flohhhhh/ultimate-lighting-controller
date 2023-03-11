@@ -14,18 +14,57 @@ function App() {
   // STATE HOOKS //
   /////////////////
 
-  const [ opacity, setOpacity ] = useState(100)
-  const [ menuOpacity, setMenuOpacity ] = useState(100)
+  const [ opacity, setOpacity ] = useState(0)
+  const [ menuOpacity, setMenuOpacity ] = useState(0)
   const [ scale, setScale ] = useState(1.0)
   const [ taClassString, setTaClassString ] = useState('ta ta-off')
   const [ useLeftAnchor, setUseLeftAnchor ] = useState('false')
+  const [ hudDisabled, setHudDisabled ] = useState(false)
 
-  const [ x, setX ] = useState(0)
-  const [ y, setY ] = useState(0)
+  const [ x, setX ] = useState(0.0)
+  const [ y, setY ] = useState(0.0)
 
   interface ButtonObject{ extra: number, enabled: boolean; color: string; label: string}
   const [buttonObjects, setButtonObjects] = useState<ButtonObject[]>([]);
 
+
+  // SENDING DATA TO LUA
+
+  useEffect(() => {
+    console.log(`saveScale useEffect sending scale of ${scale} to lua`)
+    let response = fetch(`https://ulc/saveScale`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({scale})
+    });
+  }, [scale])
+
+  useEffect(() => {
+    console.log(`saveAnchor useEffect sending anchor value ${useLeftAnchor} to lua`)
+    let response = fetch(`https://ulc/saveAnchor`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({useLeftAnchor})
+    });
+  }, [useLeftAnchor])
+  
+  useEffect(() => {
+    
+    let response = fetch(`https://ulc/setHudDisabled`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({hudDisabled})
+    });
+
+}, [hudDisabled])
+
+  
 
   ///////////////
   // FUNCTIONS //
@@ -71,9 +110,9 @@ function App() {
   // DRAGGING UI
 
   const handleDragEvent = async (e: any, data : any) => {
-    console.log(data.x, data.y);
-    let newX = data.x
-    let newY = data.y
+    console.log(~~data.x, ~~data.y);
+    let newX = ~~data.x
+    let newY = ~~data.y
     
     setPosition(newX, newY)
     //send this position back to lua to save it for later
@@ -101,11 +140,12 @@ function App() {
 
     if (data.type === 'showHUD') { setOpacity(100) } 
     else if (data.type === 'hideHUD') { setOpacity(0) }
-    else if (data.type === 'setPosition') {setX(data.x); setY(data.y)}
-    else if (data.type === 'setScale') {setScale(data.scale)}
+    else if (data.type === 'setPosition') {console.log(`Received x: ${data.x} and y: ${data.y} from lua`); setX(data.x); setY(data.y)}
+    else if (data.type === 'setScale') {console.log(`Received scale: ${data.scale} from lua`); setScale(data.scale)}
     else if (data.type === 'setAnchor') {setUseLeftAnchor(data.bool)}
     else if (data.type === 'showMenu') {setMenuOpacity(100)}
     else if (data.type === 'hideMenu') {setMenuOpacity(0)}
+    else if (data.type === 'setHudDisabled') {if (data.bool === 1) {setHudDisabled(true)} else {setHudDisabled(false)}}
 
     if (data.type === 'clearButtons') {
       //console.log("Clearing buttons")
@@ -153,7 +193,7 @@ function App() {
   return (
     <>
       {/* MENU */}
-      <Menu opacity={menuOpacity} setMenuOpacity={setMenuOpacity} scale={scale} setScale={setScale} useLeftAnchor={useLeftAnchor} setUseLeftAnchor={setUseLeftAnchor} setPosition={setPosition} />
+      <Menu hudDisabled={hudDisabled} setHudDisabled={setHudDisabled} opacity={menuOpacity} setMenuOpacity={setMenuOpacity} scale={scale} setScale={setScale} useLeftAnchor={useLeftAnchor} setUseLeftAnchor={setUseLeftAnchor} setPosition={setPosition} />
 
 
       {/* HUD */}
