@@ -14,8 +14,8 @@ function App() {
   // STATE HOOKS //
   /////////////////
 
-  const [ opacity, setOpacity ] = useState(0)
-  const [ menuOpacity, setMenuOpacity ] = useState(0)
+  const [ opacity, setOpacity ] = useState(100)
+  const [ menuOpacity, setMenuOpacity ] = useState(100)
   const [ scale, setScale ] = useState(1.0)
   const [ taClassString, setTaClassString ] = useState('ta ta-off')
   const [ useLeftAnchor, setUseLeftAnchor ] = useState('false')
@@ -153,7 +153,7 @@ function App() {
   return (
     <>
       {/* MENU */}
-      <Menu opacity={menuOpacity} scale={scale} setScale={setScale} useLeftAnchor={useLeftAnchor} setUseLeftAnchor={setUseLeftAnchor} setPosition={setPosition}/>
+      <Menu opacity={menuOpacity} setMenuOpacity={setMenuOpacity} scale={scale} setScale={setScale} useLeftAnchor={useLeftAnchor} setUseLeftAnchor={setUseLeftAnchor} setPosition={setPosition} />
 
 
       {/* HUD */}

@@ -174,3 +174,10 @@ RegisterNUICallback("savePosition", function(data)
 
     --cb({valid = valid})
 end)
+
+RegisterNUICallback("focusGame", function()
+
+    ULC:SetMenuDisplay(false)
+    SetNuiFocus(false, false)
+
+end)

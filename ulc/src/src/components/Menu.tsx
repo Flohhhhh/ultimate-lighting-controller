@@ -1,28 +1,30 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { Box, Button, Center, Container, Divider, Flex, NavLink, SegmentedControl, Slider, Space } from '@mantine/core'
+import { Box, Button, Center, Container, Divider, Flex, NavLink, SegmentedControl, Slider, Space, Text } from '@mantine/core'
 
-function Menu({useLeftAnchor, setUseLeftAnchor, scale, setScale, setPosition, opacity} : any) {
+function Menu({useLeftAnchor, setUseLeftAnchor, scale, setScale, setPosition, opacity, setMenuOpacity} : any) {
 
     return (
         <Container sx={{opacity: `${opacity}%`, transition: 'opacity 0.25s ease'}}>
             <Center sx={{height: '100vh'}}>
                 <Flex direction='column' sx={(theme) => ({
                     height: '30vh',
-                    background: theme.colors.dark[7],
-                    borderRadius: theme.radius.sm,
+                    background: 'rgba(33,33,33,0.85)',
+                    borderRadius: theme.radius.md,
                     padding: '10px',
                 })}>
                     <Container sx={{
                         minWidth: '350px',
                         paddingTop: '15px',
+                        WebkitBackdropFilter: 'blur(10px)',
                         display: 'flex', 
                         flexDirection:'row', 
                         justifyContent: 'space-between', 
                         alignItems: 'center'}} 
                         w={"25vw"}>
                         <Center sx={{width: '100%'}}>
-                            Click & drag HUD to reposition!
+                            <Text fz='xl' fw='bold'>Click & drag HUD to reposition!</Text>
+                            
                         </Center>
                     </Container>
                     <Divider my={'xl'}/>
@@ -33,7 +35,9 @@ function Menu({useLeftAnchor, setUseLeftAnchor, scale, setScale, setPosition, op
                         justifyContent: 'space-between', 
                         alignItems: 'center'}} 
                         w={"25vw"}>
-                        Anchor Position
+
+                        <Text fw='bold'>Anchor Position</Text>
+
                         <SegmentedControl sx={{float: 'right'}} 
                             value={useLeftAnchor}
                             onChange={(value) => {setUseLeftAnchor(value); setPosition(0, 0)}}
@@ -51,7 +55,9 @@ function Menu({useLeftAnchor, setUseLeftAnchor, scale, setScale, setPosition, op
                         justifyContent: 'space-between', 
                         alignItems: 'center'}} 
                         w={"25vw"}>
-                            HUD Scale
+
+                        <Text fw='bold'>HUD Scale</Text>
+                            
                         <Slider
                             value={scale}
                             onChange={setScale}
@@ -69,12 +75,14 @@ function Menu({useLeftAnchor, setUseLeftAnchor, scale, setScale, setPosition, op
 
                     <Container sx={{
                         minWidth: '350px',
+                        marginTop: 'auto',
+                        marginBottom: '10px',
                         display: 'flex', 
                         flexDirection:'row', 
                         justifyContent: 'space-between', 
                         alignItems: 'center'}} 
                         w={"25vw"}>
-                        <Button uppercase onClick={() => {
+                        <Button onClick={() => {
                                 setScale(1.0)
                                 setUseLeftAnchor('false')
                                 setPosition(0, 0)
@@ -82,12 +90,29 @@ function Menu({useLeftAnchor, setUseLeftAnchor, scale, setScale, setPosition, op
                             sx={{
                                 width: '100%'
                             }}
-                        >Reset</Button>
+                        uppercase color='red'>Reset</Button>
+
+                        <Space w='md'></Space>
+
+                        <Button onClick={() => {
+                                setMenuOpacity(0)
+                                let response = fetch(`https://ulc/focusGame`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({})
+                                });
+                            }}
+                            sx={{
+                                width: '100%'
+                            }}
+                        uppercase>Done</Button>
+
                     </Container>
                 </Flex>
             </Center>
         </Container>
-
     )
 }
 
