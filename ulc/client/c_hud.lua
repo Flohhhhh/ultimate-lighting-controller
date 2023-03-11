@@ -23,7 +23,7 @@ function ULC:PopulateButtons(_buttons, placeholders)
         if IsVehicleExtraTurnedOn(MyVehicle, v.extra) then thisState = true end
         thisButton.extra = v.extra
         thisButton.enabled = thisState
-        thisButton.color = v.color
+        thisButton.color = v.color or 'blue'
         thisButton.label = v.label
 
         --print("Sending button: " .. json.encode(thisButton))
