@@ -8,11 +8,11 @@ function ULC:PopulateButtons(_buttons, placeholders)
 
     if placeholders then
         buttons = {
-            {label = 'TEST STAGE', color = 'green', enabled = true},
-            {label = 'TEST STAGE', color = 'blue', enabled = false},
-            {label = 'TEST STAGE', color = 'blue', enabled = false},
-            {label = 'TEST STAGE', color = 'blue', enabled = true},
-            {label = 'TEST STAGE', color = 'red', enabled = true}
+            {label = 'TEST STAGE', extra = 1, color = 'green', enabled = true},
+            {label = 'TEST STAGE', extra = 2, color = 'blue', enabled = false},
+            {label = 'TEST STAGE', extra = 3, color = 'blue', enabled = false},
+            {label = 'TEST STAGE', extra = 4, color = 'blue', enabled = true},
+            {label = 'TEST STAGE', extra = 5, color = 'red', enabled = true}
         }
     end
 
@@ -25,6 +25,7 @@ function ULC:PopulateButtons(_buttons, placeholders)
         thisButton.enabled = thisState
         thisButton.color = v.color or 'green'
         thisButton.label = v.label
+        thisButton.numKey = v.key
 
         --print("Sending button: " .. json.encode(thisButton))
         table.insert(buttonsToSend, thisButton)
@@ -197,7 +198,7 @@ RegisterCommand('ulc', function()
     SetNuiFocus(true, true)
 end)
 
-TriggerEvent('chat:addSuggestion', '/ulc', 'Enables dragging ULC HUD and shows settings menu.', {
+TriggerEvent('chat:addSuggestion', '/ulc', 'Enables dragging ULC HUD and shows settings menu and controls.', {
 })
 
 RegisterCommand("ulcReset", function()
@@ -239,7 +240,7 @@ RegisterNUICallback("focusGame", function(data, cb)
 
     ULC:SetMenuDisplay(false)
     SetNuiFocus(false, false)
-    ULC:SetHelpDisplay(true)
+    ULC:SetHelpDisplay(false)
 
     if not MyVehicle then
         ULC:SetDisplay(false)

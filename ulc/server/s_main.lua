@@ -172,6 +172,9 @@ local function CheckData(data, resourceName)
           TriggerEvent("ulc:error", 'A config in "' .. resourceName .. '" has an un-labeled button using extra: ' .. b.extra)
           return false
       end
+      if b.color and (b.color ~= 'blue' and b.color ~= 'green' and b.color ~= 'amber' and b.color ~= 'red') then
+        TriggerEvent("ulc:error", 'A config in "' .. resourceName .. '" has a button with an invalid color input: "' .. b.color .. '" is not a supported color.')
+      end
       -- check if any keys are used twice
       if IsIntInTable(usedButtons, b.key) then
           TriggerEvent("ulc:error", 'A config in "' .. resourceName .. '" uses key: " .. b.key .. " more than once in button config.')

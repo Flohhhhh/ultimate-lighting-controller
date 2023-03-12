@@ -61,7 +61,6 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair)
 
     local canChange = true
     if repair then
-        print("Doing checks")
         if not AreVehicleDoorsClosed(MyVehicle) then canChange = false print("Can't change stage with repair while a door is open.") end
         if not IsVehicleHealthy(MyVehicle) then canChange = false print("Can't change stage with repair while vehicle is damaged.") end
     end
@@ -131,7 +130,6 @@ for i = 1, 9, 1 do
     RegisterCommand('ulc:num' .. i, function()
         local extra = GetExtraByKey(i)
         local button = GetButtonByExtra(extra)
-        print(button.repair)
         if not button then return end
         ULC:SetStage(extra, 2, true, false, button.repair or false)
     end)

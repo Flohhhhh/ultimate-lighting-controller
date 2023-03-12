@@ -65,7 +65,7 @@ end
 function IsVehicleHealthy(vehicle)
     local vehHealth = GetVehicleBodyHealth(vehicle)
 
-    if vehHealth > 999 then
+    if vehHealth > 980 then
         return true
     else
         --print("[IsVehicleHealth())] Vehicle is damaged.")

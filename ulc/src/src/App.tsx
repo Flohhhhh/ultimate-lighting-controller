@@ -196,7 +196,13 @@ function App() {
   return (
     <>
       {/* MENU */}
-      <Menu hudDisabled={hudDisabled} setHudDisabled={setHudDisabled} opacity={menuOpacity} setMenuOpacity={setMenuOpacity} scale={scale} setScale={setScale} useLeftAnchor={useLeftAnchor} setUseLeftAnchor={setUseLeftAnchor} setPosition={setPosition} />
+      <Menu 
+        hudDisabled={hudDisabled} setHudDisabled={setHudDisabled} 
+        opacity={menuOpacity} setMenuOpacity={setMenuOpacity} 
+        scale={scale} setScale={setScale} 
+        useLeftAnchor={useLeftAnchor} setUseLeftAnchor={setUseLeftAnchor} 
+        setPosition={setPosition} 
+      />
 
 
       {/* HUD */}

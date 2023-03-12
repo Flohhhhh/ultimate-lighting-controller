@@ -4,7 +4,6 @@ import { Box } from '@mantine/core'
 import './StageButton.css'
 
 function StageButton(props : any) {
-
   const [classString, setClassString ] = useState('button')
 
   // color strings = 'red', 'blue, 'amber'
