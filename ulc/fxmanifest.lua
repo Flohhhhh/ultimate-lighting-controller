@@ -10,9 +10,6 @@ version "1.6.0"
 ui_page "html/index.html"
 
 files {
-	"ui/lights.html",
-	"ui/lights.js",
-	"ui/lights.css",
 	"html/index.html",
 	"html/assets/*.js",
 	"html/assets/*.css",
