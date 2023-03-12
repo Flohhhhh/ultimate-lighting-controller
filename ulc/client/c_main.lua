@@ -133,11 +133,6 @@ AddEventHandler('ulc:checkVehicle', function()
 	    table.sort(MyVehicleConfig.buttons, function(a,b) return a["key"] < b["key"] end)
 	  
       print("Found vehicle.")
-      -- clear any existing buttons from hud
-      -- ClearButtons()
-
-      
-      --activeButtons = {}
 
       -- if i am driver
       if ped == GetPedInVehicleSeat(vehicle, -1) then
@@ -148,32 +143,6 @@ AddEventHandler('ulc:checkVehicle', function()
         else
           print("HUD is hidden. Type /ulc to see if you disabled it. Otherwise, the server owner may have disabled the HUD.")
         end
-
-        -- for each configured button on this vehicle
-        -- for k, v in pairs(MyVehicleConfig.buttons) do
-          -- determine state of button's extra
-          -- local extraState = 1
-          -- if IsVehicleExtraTurnedOn(vehicle, v.extra) then
-          --   extraState = 0
-          -- end 
-          -- add/show and configure the button
-          --print("Adding button: " .. v.label)
-          --table.insert(activeButtons, v)
-          --AddButton(v.extra, 'blue', v.label)
-          
-        -- end
-
-        -- if vehicleConfig.parkConfig.usePark then
-        --   -- SendNUIMessage({
-        --   --   type = 'showParkIndicator',
-        --   -- })
-        -- end
-
-        -- if vehicleConfig.brakeConfig.useBrakes then
-        --   -- SendNUIMessage({
-        --   --   type = 'showBrakeIndicator',
-        --   -- })
-        -- end
 
         TriggerEvent('ulc:CheckCruise')
         TriggerEvent('ulc:checkParkState', true)
@@ -208,19 +177,26 @@ RegisterNetEvent('UpdateVehicleConfigs', function(newData)
   Config.Vehicles = newData
 end)
 
--- trigger checks when spawning from one vehicle into another directly
+-- trigger checks when spawning from one vehicle into another directly, or from another seat to driver seat
 CreateThread(function()
 	local lastVehicle
+  local wasDriving
 	while true do Wait(500)
 		if IsPedInAnyVehicle(PlayerPedId()) then
 			local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+      local driving = GetPedInVehicleSeat(MyVehicle, -1) == PlayerPedId()
 			if currentVehicle ~= lastVehicle then
 				TriggerEvent('ulc:checkVehicle')
 			end
+      if MyVehicle and not wasDriving and driving then
+        TriggerEvent('ulc:checkVehicle')
+      end
 			lastVehicle = currentVehicle
+      wasDriving = driving
 		end
 	end
 end)
+
 
 -------------------------
 -------------------------

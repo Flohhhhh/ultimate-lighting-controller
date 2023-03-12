@@ -33,14 +33,14 @@ end
 ---------------
 
 -- new event
-AddEventHandler('ulc:SetStage', function(extra, action, playSound, extraOnly)
+AddEventHandler('ulc:SetStage', function(extra, action, playSound, extraOnly, repair)
     ULC:SetStage(extra, action, playSound, extraOnly)
 end)
 
 -- change specified extra, and if not extraOnly, and extra is in a button, act on the linked and off extras as well, acts recursively;
 -- action 0 enables, 1 disables, 2 toggles;
 -- updates ui whenever extra is used in a button
-function ULC:SetStage(extra, action, playSound, extraOnly)
+function ULC:SetStage(extra, action, playSound, extraOnly, repair)
     if not MyVehicle then print("[ULC:SetStage()] MyVehicle is not defined right now :/") return false end
 
     local newState
@@ -59,8 +59,18 @@ function ULC:SetStage(extra, action, playSound, extraOnly)
     -- built in don't try to change if it's the same already!
     if not newState then return end
 
+    local canChange = true
+    if repair then
+        print("Doing checks")
+        if not AreVehicleDoorsClosed(MyVehicle) then canChange = false print("Can't change stage with repair while a door is opne.") end
+        if not IsVehicleHealthy(MyVehicle) then canChange = false print("Can't change stage with repair while vehicle is damaged.") end
+    end
+    if not canChange then return end
+
     -- disable repair
-    SetVehicleAutoRepairDisabled(MyVehicle, true)
+    if not repair then
+        SetVehicleAutoRepairDisabled(MyVehicle, true)
+    end
     -- change extra
     SetVehicleExtra(MyVehicle, extra, newState)
     -- enable repair
@@ -69,7 +79,6 @@ function ULC:SetStage(extra, action, playSound, extraOnly)
     -- if the extra corresponds to a button
     local button = GetButtonByExtra(extra)
     if button then
-        
         if playSound then
             if newState == 0 then
                 PlayBeep(true)
@@ -115,10 +124,16 @@ end
 -----------------------
 -----------------------
 
+
+
 for i = 1, 9, 1 do
     RegisterKeyMapping('ulc:num' .. i, 'Toggle ULC Slot ' .. i , 'keyboard', 'NUMPAD' .. i)
     RegisterCommand('ulc:num' .. i, function()
-        TriggerEvent('ulc:SetStage', GetExtraByKey(i), 2, true, false)
+        local extra = GetExtraByKey(i)
+        local button = GetButtonByExtra(extra)
+        print(button.repair)
+        if not button then return end
+        ULC:SetStage(extra, 2, true, false, button.repair or false)
     end)
 end
 

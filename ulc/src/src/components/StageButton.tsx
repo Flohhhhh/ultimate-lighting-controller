@@ -5,24 +5,31 @@ import './StageButton.css'
 
 function StageButton(props : any) {
 
-    // TODO change class name of button to include a color when enabling it ex. " className='button blue' "
+  const [classString, setClassString ] = useState('button')
 
-     const [classString, setClassString ] = useState('button')
+  // color strings = 'red', 'blue, 'amber'
+  useEffect(() => {
+  if (props.enabled) {
+    setClassString(`button ${props.color}`)
+  } else {
+    setClassString(`button`)
+  }
+  }), [props]
 
-     // color strings = 'red', 'blue, 'amber'
-     useEffect(() => {
-      if (props.enabled) {
-        setClassString(`button ${props.color}`)
-      } else {
-        setClassString(`button`)
-      }
-     }), [props]
-
+  if (props.showHelp) {
     return (
-    <div className={classString}>
-        {props.label}
-    </div>
-  )
+      <div className={classString}>
+          {`NUM ${props.numKey}`}
+      </div>
+    )
+  } else {
+    return (
+      <div className={classString}>
+          {props.label}
+      </div>
+    )
+  }
+
 }
 
 export default StageButton

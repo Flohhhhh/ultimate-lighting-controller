@@ -97,6 +97,14 @@ function ULC:SetHudDisabled(bool)
     })
 end
 
+function ULC:SetHelpDisplay(bool)
+    if bool then
+        SendNUIMessage({type = 'showHelp'})
+    else
+        SendNUIMessage({type = 'hideHelp'})
+    end
+end
+
 ----------
 -- MENU --
 ----------
@@ -142,7 +150,6 @@ local function loadUserPrefs()
         SetResourceKvpFloat('ulc:scale', 1.0)
         SetResourceKvpInt('ulc:hideUi', 0)
         SetResourceKvp('ulc:useLeftAnchor', 'false')
-        
     end
 end
 
@@ -184,19 +191,28 @@ RegisterCommand('ulc', function()
         ULC:SetDisplay(true)
     end
     ULC:SetMenuDisplay(true)
+    if MyVehicle then
+        ULC:SetHelpDisplay(true)
+    end
     SetNuiFocus(true, true)
 end)
+
+TriggerEvent('chat:addSuggestion', '/ulc', 'Enables dragging ULC HUD and shows settings menu.', {
+})
 
 RegisterCommand("ulcReset", function()
     DeleteResourceKvp("ulc")
     loadUserPrefs()
 end)
 
+TriggerEvent('chat:addSuggestion', '/ulcReset', 'Resets all saved ULC settings to defaults.', {
+})
+
 -- NUI CALLBACKS --
 
 RegisterNUICallback("savePosition", function(data, cb)
 
-    print("NUI Setting position", data.newX, data.newY, "type = ", type(data.newX))
+    --print("NUI Setting position", data.newX, data.newY, "type = ", type(data.newX))
     SetResourceKvpInt('ulc:x', data.newX)
     SetResourceKvpInt('ulc:y', data.newY)
 
@@ -205,7 +221,7 @@ end)
 
 RegisterNUICallback("saveScale", function(data, cb)
 
-    print("NUI Setting Scale " .. data.scale + 0.0)
+    --print("NUI Setting Scale " .. data.scale + 0.0)
     SetResourceKvpFloat('ulc:scale', data.scale + 0.0)
 
     cb({success = true})
@@ -213,7 +229,7 @@ end)
 
 RegisterNUICallback("saveAnchor", function(data, cb)
 
-    print("NUI Setting Anchor ", data.useLeftAnchor)
+    --print("NUI Setting Anchor ", data.useLeftAnchor)
     SetResourceKvp('ulc:useLeftAnchor', data.useLeftAnchor)
 
     cb({success = true})
@@ -223,6 +239,7 @@ RegisterNUICallback("focusGame", function(data, cb)
 
     ULC:SetMenuDisplay(false)
     SetNuiFocus(false, false)
+    ULC:SetHelpDisplay(true)
 
     if not MyVehicle then
         ULC:SetDisplay(false)
@@ -232,7 +249,7 @@ RegisterNUICallback("focusGame", function(data, cb)
 end)
 
 RegisterNUICallback("setHudDisabled", function(data, cb)
-    print("NUI Setting HUD Disabled ", data.hudDisabled)
+    --print("NUI Setting HUD Disabled ", data.hudDisabled)
 
     if not data.hudDisabled then
         --print("Set HUD enabled")

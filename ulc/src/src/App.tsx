@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Draggable from "react-draggable";
-import { Box, Button, SegmentedControl } from '@mantine/core'
+import { Box, Button, Center, Code, Container, Flex, Paper, Progress, SegmentedControl, Text } from '@mantine/core'
 import './app.css'
 import StageButton from './components/StageButton'
 import TaModule from './components/TaModule'
@@ -20,18 +20,19 @@ function App() {
   const [ taClassString, setTaClassString ] = useState('ta ta-off')
   const [ useLeftAnchor, setUseLeftAnchor ] = useState('false')
   const [ hudDisabled, setHudDisabled ] = useState(false)
+  const [ showHelp, setShowHelp ] = useState(false)
 
   const [ x, setX ] = useState(0.0)
   const [ y, setY ] = useState(0.0)
 
-  interface ButtonObject{ extra: number, enabled: boolean; color: string; label: string}
+  interface ButtonObject{ extra: number, numKey: number, enabled: boolean; color: string; label: string}
   const [buttonObjects, setButtonObjects] = useState<ButtonObject[]>([]);
 
 
   // SENDING DATA TO LUA
 
   useEffect(() => {
-    console.log(`saveScale useEffect sending scale of ${scale} to lua`)
+    //console.log(`saveScale useEffect sending scale of ${scale} to lua`)
     let response = fetch(`https://ulc/saveScale`, {
         method: 'POST',
         headers: {
@@ -42,7 +43,7 @@ function App() {
   }, [scale])
 
   useEffect(() => {
-    console.log(`saveAnchor useEffect sending anchor value ${useLeftAnchor} to lua`)
+    //console.log(`saveAnchor useEffect sending anchor value ${useLeftAnchor} to lua`)
     let response = fetch(`https://ulc/saveAnchor`, {
         method: 'POST',
         headers: {
@@ -70,8 +71,8 @@ function App() {
   // FUNCTIONS //
   ///////////////
 
-  function addButton(extra: number, enabled : boolean, color : string, label: string) {
-    setButtonObjects([...buttonObjects, {extra: extra, enabled: enabled, color: color, label: label}])
+  function addButton(extra: number, numKey : number, enabled : boolean, color : string, label: string) {
+    setButtonObjects([...buttonObjects, {extra: extra, numKey: numKey, enabled: enabled, color: color, label: label}])
   }
 
 
@@ -146,6 +147,8 @@ function App() {
     else if (data.type === 'showMenu') {setMenuOpacity(100)}
     else if (data.type === 'hideMenu') {setMenuOpacity(0)}
     else if (data.type === 'setHudDisabled') {if (data.bool === 1) {setHudDisabled(true)} else {setHudDisabled(false)}}
+    else if (data.type === 'showHelp') {setShowHelp(true)}
+    else if (data.type === 'hideHelp') {setShowHelp(false)}
 
     if (data.type === 'clearButtons') {
       //console.log("Clearing buttons")
@@ -185,7 +188,7 @@ function App() {
 
   let buttons = buttonObjects.map((buttonObject, index) => (
     <>
-      <StageButton key={index} extra={buttonObject.extra} enabled={buttonObject.enabled} color={buttonObject.color} label={buttonObject.label}/>
+      <StageButton showHelp={showHelp} key={index} extra={buttonObject.extra} numKey={buttonObject.numKey} enabled={buttonObject.enabled} color={buttonObject.color} label={buttonObject.label}/>
     </>
     
   ))
@@ -206,13 +209,14 @@ function App() {
           opacity: `${opacity}%`,
           transition: 'opacity 0.25s ease'
         }}>
-          {/* <Button onClick={() => {addButton(1, false, 'green', 'STAGE 2')}}>Add button</Button>
+          {/* <Button onClick={() => {addButton(1, 1, false, 'green', 'STAGE 2')}}>Add button</Button>
           <Button onClick={() => {setButton(1, true)}}>Turn on</Button>
           <Button onClick={() => {setButtonObjects([])}}>Clear</Button>
-          <Button onClick={() => {if (menuOpacity === 100) {setMenuOpacity(0)} else {setMenuOpacity(100)}}}>Menu</Button> */}
+          <Button onClick={() => {if (menuOpacity === 100) {setMenuOpacity(0)} else {setMenuOpacity(100)}}}>Menu</Button>
+          <Button onClick={() => {setShowHelp(!showHelp)}}>Help</Button> */}
           <div className='background'>
 
-            <div className={taClassString}>
+            {/* <div className={taClassString}>
               <TaModule on={false}></TaModule>
               <TaModule on={false}></TaModule>
               <TaModule on={true}></TaModule>
@@ -220,7 +224,7 @@ function App() {
               <TaModule on={true}></TaModule>
               <TaModule on={true}></TaModule>
               <TaModule on={false}></TaModule>
-            </div>
+            </div> */}
 
             <div className="buttons">
               {buttons}
