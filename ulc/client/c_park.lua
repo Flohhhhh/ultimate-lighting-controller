@@ -1,4 +1,4 @@
-print("[ULC]: Park Patterns Loaded")
+--print("[ULC]: Park Patterns Loaded")
 
 local veh = GetVehiclePedIsIn(PlayerPedId())
 local parked = false

@@ -1,4 +1,4 @@
-print("[ULC] Brake Patterns Loaded")
+--print("[ULC] Brake Patterns Loaded")
 local realBrakeThreshold = 3 -- below this speed vehicle is always considered to be braking
 local braking = false
 

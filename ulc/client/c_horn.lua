@@ -1,4 +1,4 @@
-print("[ULC]: Horn Extras Loaded")
+--print("[ULC]: Horn Extras Loaded")
 
 local extraStates = {}
 

@@ -1,4 +1,4 @@
-print("[ULC]: Cruise lights Loaded")
+--print("[ULC]: Cruise lights Loaded")
 
 -- 1 disabled, 0 enabled
 local sbState = 1

@@ -1,4 +1,4 @@
-print("[ULC]: Main Thread Loaded")
+--print("[ULC]: Main Thread Loaded")
 
 ULC = {}
 -- this is all just so resource can be restarted and not break for clients in server
