@@ -62,7 +62,7 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair)
     local canChange = true
     if repair then
         print("Doing checks")
-        if not AreVehicleDoorsClosed(MyVehicle) then canChange = false print("Can't change stage with repair while a door is opne.") end
+        if not AreVehicleDoorsClosed(MyVehicle) then canChange = false print("Can't change stage with repair while a door is open.") end
         if not IsVehicleHealthy(MyVehicle) then canChange = false print("Can't change stage with repair while vehicle is damaged.") end
     end
     if not canChange then return end
