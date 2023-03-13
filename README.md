@@ -1,11 +1,13 @@
 # Ultimate Lighting Controller
-![ulc_banner](https://user-images.githubusercontent.com/48927090/209438952-b931af04-f7b5-45bb-b2df-514d6c28d751.png)<br><br>
+![ulc_banner](https://user-images.githubusercontent.com/48927090/224608424-52e9505c-adc2-47dd-b5ab-30a5f933427f.png)<br><br>
 <img alt="Discord" src="https://img.shields.io/discord/603591936372244501?label=Discord&logo=Discord&logoColor=white">
+
 
 
 ULC is an all-in-one lighting controller for Non-ELS vehicles in FiveM! It uses the extra-based lighting stages on your vehicles and adds extra automation and improvements to create amazing, realistic, and fully-configurable lighting controls.
 
-If you are a vehicle developer, view the full documentation.
+If you are a vehicle developer, view the full documentation.![Uploading ulc_banner.png…]()
+
 
 [Join Discord](https://discord.gg/dwnstr-fivem)<br>
 [Full ULC documentation](https://dawnstar.gitbook.io/vehicle-docs/ulc/overview)<br>
