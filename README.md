@@ -2,6 +2,7 @@
 ![ulc_banner](https://user-images.githubusercontent.com/48927090/224608424-52e9505c-adc2-47dd-b5ab-30a5f933427f.png)<br><br>
 <img alt="Discord" src="https://img.shields.io/discord/603591936372244501?label=Discord&logo=Discord&logoColor=white">
 <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/flohhhhh/ultimate-lighting-controller?label=Version">
+<img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/flohhhhh/ultimate-lighting-controller">
 
 
 
