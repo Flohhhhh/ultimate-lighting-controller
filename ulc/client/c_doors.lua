@@ -37,7 +37,7 @@ CreateThread(function()
     local sleep = 1000
     while true do Wait(sleep)
         if not MyVehicle then sleep = 1000 goto continue end
-        if not MyVehicleConfig.doorConfig or false then print("Not included") sleep = 1000 goto continue end
+        if not MyVehicleConfig.doorConfig or false then sleep = 1000 goto continue end
         if not MyVehicleConfig.doorConfig.useDoors then sleep = 1000 goto continue end
         sleep = 250
 
