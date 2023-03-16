@@ -11,7 +11,7 @@ ULC is an all-in-one lighting controller for Non-ELS vehicles in FiveM! It uses 
 If you are a vehicle developer, view the full documentation.
 
 
-[Join Discord](https://discord.gg/dwnstr-fivem)<br>
+[Join Discord](https://discord.gg/zH3k624aSv)<br>
 [Full ULC documentation](https://dawnstar.gitbook.io/vehicle-docs/ulc/overview)<br>
 [Config Generator](https://ulc.dwnstr.com/)
 
