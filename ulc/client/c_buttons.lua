@@ -72,8 +72,13 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair)
     end
     -- change extra
     SetVehicleExtra(MyVehicle, extra, newState)
+    -- fix deformation if repair is true
+    if repair then
+        SetVehicleDeformationFixed(MyVehicle)
+    end
     -- enable repair
     SetVehicleAutoRepairDisabled(MyVehicle, false)
+
 
     -- if the extra corresponds to a button
     local button = GetButtonByExtra(extra)
