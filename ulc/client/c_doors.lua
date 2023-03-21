@@ -9,7 +9,7 @@ local doors = {
 
 local function intNot(value)
     result = 0
-    if value = 0 then
+    if value == 0 then
         result = 1 
     end
     return result
