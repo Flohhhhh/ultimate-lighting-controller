@@ -9,18 +9,23 @@ local doors = {
 
 -- state 1 = closed, state 0 = open
 local function onDoorStateChange(door, newDoorState)
+    print("Handling door change", door, newDoorState)
     if door == 0 or door == 2 then -- if driver side
         for _, v in pairs(MyVehicleConfig.doorConfig.driverSide.enable) do
+            print("Enable extra:", v)
             ULC:SetStage(v, newDoorState, true, true, false)
         end
         for _, v in pairs(MyVehicleConfig.doorConfig.driverSide.disable) do
+            print("Disable extra:", v, not newDoorState)
             ULC:SetStage(v, not newDoorState, true, true, false)
         end
     elseif door == not newDoorState or door == 3 then -- if pass side
         for _, v in pairs(MyVehicleConfig.doorConfig.passSide.enable) do
+            print("Enable extra:", v)
             ULC:SetStage(v, newDoorState, true, true, false)
         end
         for _, v in pairs(MyVehicleConfig.doorConfig.passSide.disable) do
+            print("Disable extra:", v, not newDoorState)
             ULC:SetStage(v, not newDoorState, true, true, false)
         end
     elseif door == 5 then -- if trunk
