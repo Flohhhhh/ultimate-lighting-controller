@@ -7,8 +7,12 @@ local doors = {
     [5] = false -- trunk
 }
 
-local function boolToNumber(value)
-  return value and 1 or 0
+local function intNot(value)
+    result = 0
+    if value = 0 then
+        result = 1 
+    end
+    return result
 end
 
 -- state 1 = closed, state 0 = open
@@ -20,8 +24,8 @@ local function onDoorStateChange(door, newDoorState)
             ULC:SetStage(v, newDoorState, true, true, false)
         end
         for _, v in pairs(MyVehicleConfig.doorConfig.driverSide.disable) do
-            print("Disable extra:", v, boolToNumber(not newDoorState))
-            ULC:SetStage(v, boolToNumber(not newDoorState), true, true, false)
+            print("Disable extra:", v, intNot(newDoorState))
+            ULC:SetStage(v, intNot(newDoorState), true, true, false)
         end
     elseif door == not newDoorState or door == 3 then -- if pass side
         for _, v in pairs(MyVehicleConfig.doorConfig.passSide.enable) do
@@ -29,15 +33,15 @@ local function onDoorStateChange(door, newDoorState)
             ULC:SetStage(v, newDoorState, true, true, false)
         end
         for _, v in pairs(MyVehicleConfig.doorConfig.passSide.disable) do
-            print("Disable extra:", v, boolToNumber(not newDoorState))
-            ULC:SetStage(v, boolToNumber(not newDoorState), true, true, false)
+            print("Disable extra:", v, intNot(newDoorState))
+            ULC:SetStage(v, intNot(newDoorState), true, true, false)
         end
     elseif door == 5 then -- if trunk
         for _, v in pairs(MyVehicleConfig.doorConfig.trunk.enable) do
             ULC:SetStage(v, newDoorState, true, true, false)
         end
         for _, v in pairs(MyVehicleConfig.doorConfig.trunk.disable) do
-            ULC:SetStage(v, boolToNumber(not newDoorState), true, true, false)
+            ULC:SetStage(v, intNot(newDoorState), true, true, false)
         end
     end
 end
