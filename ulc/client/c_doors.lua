@@ -27,7 +27,7 @@ local function onDoorStateChange(door, newDoorState)
             print("Disable extra:", v, intNot(newDoorState))
             ULC:SetStage(v, intNot(newDoorState), true, true, false)
         end
-    elseif door == not newDoorState or door == 3 then -- if pass side
+    elseif door == 1 or door == 3 then -- if pass side
         for _, v in pairs(MyVehicleConfig.doorConfig.passSide.enable) do
             print("Enable extra:", v)
             ULC:SetStage(v, newDoorState, true, true, false)
