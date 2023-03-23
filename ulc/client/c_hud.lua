@@ -151,6 +151,8 @@ local function loadUserPrefs()
         SetResourceKvpFloat('ulc:scale', 1.0)
         SetResourceKvpInt('ulc:hideUi', 0)
         SetResourceKvp('ulc:useLeftAnchor', 'false')
+
+        loadUserPrefs()
     end
 end
 
