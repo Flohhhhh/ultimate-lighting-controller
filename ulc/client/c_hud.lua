@@ -133,7 +133,7 @@ ClientPrefs = {}
 local function loadUserPrefs()
     -- if prefs already exist
     local prefsExist = GetResourceKvpString('ulc')
-    if prefsExist == "exists2" then
+    if prefsExist == "exists" then
         print("Loading prefs")
         -- load
         ClientPrefs.hideUi = GetResourceKvpInt("ulc:hideUi")
@@ -145,7 +145,7 @@ local function loadUserPrefs()
     else
         print("Creating prefs")
         -- set defaults
-        SetResourceKvp('ulc', "exists2")
+        SetResourceKvp('ulc', "exists")
         SetResourceKvpInt('ulc:x', 0)
         SetResourceKvpInt('ulc:y', 0)
         SetResourceKvpFloat('ulc:scale', 1.0)
