@@ -105,8 +105,10 @@ AddEventHandler('ulc:vehPark', function()
 
                         -- sync other vehicles on my screen
                         for k, v in pairs(vehsToSync) do
-                            SetVehicleSiren(v, false)
-                            SetVehicleSiren(v, true)
+                            if IsVehicleSirenOn(v) then
+                                SetVehicleSiren(v, false)
+                                SetVehicleSiren(v, true)
+                            end
                         end
 
                         -- send sync to other clients nearby
