@@ -30,10 +30,7 @@ RegisterNetEvent("ulc:checkParkState", function(delay)
         local speed = GetVehicleSpeedConverted(MyVehicle)
 
         if speed > Config.ParkSettings.speedThreshold and parked then
-            Wait(effectDelay)
-            if parked then -- double check
                 TriggerEvent("ulc:vehDrive")
-            end
         end
         if speed < Config.ParkSettings.speedThreshold and not parked then
             Wait(effectDelay)

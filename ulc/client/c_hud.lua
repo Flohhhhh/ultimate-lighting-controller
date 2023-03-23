@@ -152,7 +152,15 @@ local function loadUserPrefs()
         SetResourceKvpInt('ulc:hideUi', 0)
         SetResourceKvp('ulc:useLeftAnchor', 'false')
 
+       
         loadUserPrefs()
+		
+		Wait(5000)
+		TriggerEvent('chat:addMessage', {
+			color = { 0, 153, 204},
+			multiline = false,
+			args = {"ULC", "^4This server uses ULC! Type /ulc to view settings and adjust the HUD!"}
+		})
     end
 end
 
