@@ -19,7 +19,7 @@ files {
 
 dependencies {
 	"baseevents",
-	"mapmanger"
+	"mapmanager"
 }
 
 shared_scripts {
