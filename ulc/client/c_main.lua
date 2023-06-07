@@ -63,7 +63,7 @@ AddEventHandler('ulc:lightsOn', function()
     state = Lights
   })
 
-  if not Config.muteBeepForLights then
+  if Config.controlLights then
     PlayBeep(true)
   end
 
@@ -77,7 +77,7 @@ AddEventHandler('ulc:lightsOff', function()
     state = Lights
   })
 
-  if not Config.muteBeepForLights then
+  if Config.controlLights then
     PlayBeep(false)
   end
 

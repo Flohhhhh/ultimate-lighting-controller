@@ -6,9 +6,13 @@
 -- Most of these can be left at their default values.
 -- View documentation for details on each value
 Config = {
-    -- whether to mute beep when sirens/lights are turned on and off;
-    -- should be true if using another resource that adds a beep (ex. Luxart V3)
-    muteBeepForLights = true,
+    -- whether to enable control of lights on/off state using Q key
+    -- disabled by default to allow other scripts to control lights such as Luxart
+    -- enable this if you want to use ULC's light control features such as cycling lights
+    -- make sure to disable light controls in other scripts if you enable this
+    controlLights = false,
+
+    -- HUD SETTINGS
     -- global toggle for UI (affects all clients)
     hideHud = false,
     -- whether to use KPH instead of MPH
