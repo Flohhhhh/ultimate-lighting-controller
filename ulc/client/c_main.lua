@@ -45,28 +45,32 @@ end
 ------------------------------------
 ------------------------------------
 
--- These 2 events need to be received from Luxart, the ones currently below are from luxart v1, need to update
--- From what I can see so far, there is no longer an event for this in luxart v3
--- we can just check every 250 frames or something, and leave this in for anyone using old version i guess?
+if Config.controlLights then
+  RegisterCommand('ulc:toggleLights', function()
+    if Lights then
+      SetVehicleSiren(MyVehicle, false)
+    else
+      SetVehicleSiren(MyVehicle, true)
+    end
+  end)
 
--- Going with loop method for now.
+  RegisterKeyMapping('ulc:toggleLights', 'Toggle Emergency Lights', 'keyboard', 'q')
+end
+
 AddEventHandler('ulc:lightsOn', function()
   --print("Lights On")
   -- set Lights on
   Lights = true
   setDefaultStages()
-
   -- check if parked or driving for park patterns
   TriggerEvent('ulc:checkParkState', GetVehiclePedIsIn(PlayerPedId()), false)
   SendNUIMessage({
     type = 'toggleIndicator',
     state = Lights
   })
-
   if Config.controlLights then
     PlayBeep(true)
   end
-
 end)
 
 AddEventHandler('ulc:lightsOff', function()
@@ -76,11 +80,9 @@ AddEventHandler('ulc:lightsOff', function()
     type = 'toggleIndicator',
     state = Lights
   })
-
   if Config.controlLights then
     PlayBeep(false)
   end
-
 end)
 
 -- check if lights are on 10 times a second;
