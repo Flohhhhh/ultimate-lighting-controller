@@ -34,7 +34,7 @@ end
 
 -- new event
 AddEventHandler('ulc:SetStage', function(extra, action, playSound, extraOnly, repair)
-    ULC:SetStage(extra, action, playSound, extraOnly)
+    ULC:SetStage(extra, action, playSound, extraOnly, repair)
 end)
 
 -- change specified extra, and if not extraOnly, and extra is in a button, act on the linked and off extras as well, acts recursively;
