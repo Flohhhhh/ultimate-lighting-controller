@@ -151,7 +151,7 @@ AddEventHandler('ulc:checkVehicle', function()
         TriggerEvent('ulc:StartCheckingReverseState')
       end
     else
-      MyVehicle = nil
+      --MyVehicle = nil
 	    TriggerEvent('ulc:cleanup')
       TriggerEvent('ulc:StopCheckingReverseState')
     end
@@ -161,8 +161,8 @@ end)
 -- used to hide the hud
 RegisterNetEvent('ulc:cleanup')
 AddEventHandler('ulc:cleanup', function()
-  MyVehicle = nil
-  MyVehicleConfig = nil
+  -- MyVehicle = nil
+  -- MyVehicleConfig = nil
   ULC:SetDisplay(false)
   -- hide hud
   -- SendNUIMessage({

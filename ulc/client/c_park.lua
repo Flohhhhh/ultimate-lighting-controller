@@ -3,7 +3,7 @@
 local veh = GetVehiclePedIsIn(PlayerPedId())
 local parked = false
 local lastSync = 0
-local effectDelay = 2000
+local effectDelay = 1000
 
 CreateThread(function()
     while true do
@@ -26,11 +26,11 @@ RegisterNetEvent("ulc:checkParkState", function(delay)
             --print('Delay...')
             Wait(5000)
         end
-
         local speed = GetVehicleSpeedConverted(MyVehicle)
+        
 
         if speed > Config.ParkSettings.speedThreshold and parked then
-                TriggerEvent("ulc:vehDrive")
+            TriggerEvent("ulc:vehDrive")
         end
         if speed < Config.ParkSettings.speedThreshold and not parked then
             Wait(effectDelay)
@@ -42,7 +42,7 @@ RegisterNetEvent("ulc:checkParkState", function(delay)
 end)
 
 AddEventHandler('ulc:vehPark', function()
-    
+
     if Lights then
 		--print('[ulc:vehPark] My vehicle is parked.')
         parked = true
