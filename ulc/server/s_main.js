@@ -7,13 +7,13 @@ https.get('https://api.countapi.xyz/hit/dwnstr.com/ulcloadcount/', (res) => {
   // here we're only checking for 200.
   if (statusCode !== 200) {
     error = new Error('Request Failed.\n' +
-                      `Status Code: ${statusCode}`);
+    `Status Code: ${statusCode}`);
   } else if (!/^application\/json/.test(contentType)) {
     error = new Error('Invalid content-type.\n' +
-                      `Expected application/json but received ${contentType}`);
+    `Expected application/json but received ${contentType}`);
   }
   if (error) {
-    console.error(error.message);
+    // console.error(error.message);
     // Consume response data to free up memory
     res.resume();
     return;
@@ -27,11 +27,11 @@ https.get('https://api.countapi.xyz/hit/dwnstr.com/ulcloadcount/', (res) => {
       const parsedData = JSON.parse(rawData);
       console.log(`[ULC] ULC has been loaded on servers ${parsedData.value} times :D`);
     } catch (e) {
-      console.error(e.message);
+      // console.error(e.message);
     }
   });
 }).on('error', (e) => {
-  console.error(`Got error: ${e.message}`);
+  // console.error(`Got error: ${e.message}`);
 });
 
 // Create a local server to receive data from
