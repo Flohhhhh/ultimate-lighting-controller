@@ -94,7 +94,7 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair)
         if not extraOnly then
             -- set linked extras
             for _, v in ipairs(button.linkedExtras) do
-                ULC:SetStage(v, newState, false, true)
+                ULC:SetStage(v, newState, false, true, repair)
             end
 
             -- set opposite extras
@@ -102,13 +102,13 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair)
                 local oppState
                 if newState == 1 then oppState = 0 elseif newState == 0 then oppState = 1 end
                 for _, v in pairs(button.oppositeExtras) do
-                    ULC:SetStage(v, oppState, false, true)
+                    ULC:SetStage(v, oppState, false, true, repair)
                 end
             end
                 
             -- set off extras
             for _, v in ipairs(button.offExtras) do
-                ULC:SetStage(v, 1, false, true)
+                ULC:SetStage(v, 1, false, true, repair)
             end
 
         end
