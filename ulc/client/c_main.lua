@@ -32,7 +32,7 @@ local function setDefaultStages()
     if not MyVehicleConfig.defaultStages or false then return end
     if not MyVehicleConfig.defaultStages.useDefaults then return end
     for _, e in pairs(MyVehicleConfig.defaultStages.enableKeys) do
-		  local button = GetButtonByExtra(GetExtraByKey(e))
+      local button = GetButtonByExtra(GetExtraByKey(e))
       ULC:SetStage(GetExtraByKey(e), 0, false, false, button.repair)
     end
     for _, d in pairs(MyVehicleConfig.defaultStages.disableKeys) do
