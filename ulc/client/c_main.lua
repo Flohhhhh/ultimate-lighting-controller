@@ -33,11 +33,11 @@ local function setDefaultStages()
     if not MyVehicleConfig.defaultStages.useDefaults then return end
     for _, e in pairs(MyVehicleConfig.defaultStages.enableKeys) do
       local button = GetButtonByExtra(GetExtraByKey(e))
-      ULC:SetStage(GetExtraByKey(e), 0, false, false, button.repair)
+      ULC:SetStage(GetExtraByKey(e), 0, false, false, button.repair, true)
     end
     for _, d in pairs(MyVehicleConfig.defaultStages.disableKeys) do
       local button = GetButtonByExtra(GetExtraByKey(e))
-      ULC:SetStage(GetExtraByKey(d), 1, false, false, button.repair)
+      ULC:SetStage(GetExtraByKey(d), 1, false, false, button.repair, true)
     end
 end
 
@@ -60,7 +60,7 @@ if Config.controlLights then
 end
 
 AddEventHandler('ulc:lightsOn', function()
-  --print("Lights On")
+  print("Lights On")
   -- set Lights on
   Lights = true
   setDefaultStages()
@@ -76,7 +76,7 @@ AddEventHandler('ulc:lightsOn', function()
 end)
 
 AddEventHandler('ulc:lightsOff', function()
-  --print("Lights Off")
+  print("Lights Off")
   Lights = false
   SendNUIMessage({
     type = 'toggleIndicator',
@@ -92,9 +92,10 @@ end)
 CreateThread(function()
   local sleep = 1000
   while true do Wait(sleep)
-    if not MyVehicle then sleep = 1000 goto continue end
+    --if not MyVehicle then sleep = 1000 goto continue end
     sleep = 100
 
+    if not IsPedInAnyVehicle(PlayerPedId()) then goto continue end
     if IsVehicleSirenOn(GetVehiclePedIsIn(PlayerPedId())) then
       if not Lights then
         TriggerEvent('ulc:lightsOn')

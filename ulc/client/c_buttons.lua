@@ -33,14 +33,14 @@ end
 ---------------
 
 -- new event
-AddEventHandler('ulc:SetStage', function(extra, action, playSound, extraOnly, repair)
-    ULC:SetStage(extra, action, playSound, extraOnly, repair)
+AddEventHandler('ulc:SetStage', function(extra, action, playSound, extraOnly, repair, force)
+    ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
 end)
 
 -- change specified extra, and if not extraOnly, and extra is in a button, act on the linked and off extras as well, acts recursively;
 -- action 0 enables, 1 disables, 2 toggles;
 -- updates ui whenever extra is used in a button
-function ULC:SetStage(extra, action, playSound, extraOnly, repair)
+function ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
     if not MyVehicle then print("[ULC:SetStage()] MyVehicle is not defined right now :/") return false end
 
     local newState
@@ -57,7 +57,9 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair)
     end
 
     -- built in don't try to change if it's the same already!
-    if not newState then return end
+    -- force is used to force the change even if it's the same
+    print("Force", force)
+    if not force and not newState then print("State is already set") return end
 
     local canChange = true
     if repair then
@@ -94,7 +96,7 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair)
         if not extraOnly then
             -- set linked extras
             for _, v in ipairs(button.linkedExtras) do
-                ULC:SetStage(v, newState, false, true, repair)
+                ULC:SetStage(v, newState, false, true, repair, force)
             end
 
             -- set opposite extras
@@ -102,13 +104,13 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair)
                 local oppState
                 if newState == 1 then oppState = 0 elseif newState == 0 then oppState = 1 end
                 for _, v in pairs(button.oppositeExtras) do
-                    ULC:SetStage(v, oppState, false, true, repair)
+                    ULC:SetStage(v, oppState, false, true, repair, force)
                 end
             end
                 
             -- set off extras
             for _, v in ipairs(button.offExtras) do
-                ULC:SetStage(v, 1, false, true, repair)
+                ULC:SetStage(v, 1, false, true, repair, force)
             end
 
         end
