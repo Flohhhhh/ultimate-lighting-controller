@@ -174,7 +174,7 @@ CreateThread(function()
     Wait(1000)
     -- positioning
     if ClientPrefs.x then
-        print("Loaded position from kvp: ", ClientPrefs.x, ClientPrefs.y)
+        --print("Loaded position from kvp: ", ClientPrefs.x, ClientPrefs.y)
         ULC:SetPosition(ClientPrefs.x, ClientPrefs.y)
     end
     if ClientPrefs.scale then

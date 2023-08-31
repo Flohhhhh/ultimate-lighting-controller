@@ -60,7 +60,7 @@ if Config.controlLights then
 end
 
 AddEventHandler('ulc:lightsOn', function()
-  print("Lights On")
+  --print("Lights On")
   -- set Lights on
   Lights = true
   setDefaultStages()
@@ -76,7 +76,7 @@ AddEventHandler('ulc:lightsOn', function()
 end)
 
 AddEventHandler('ulc:lightsOff', function()
-  print("Lights Off")
+  --print("Lights Off")
   Lights = false
   SendNUIMessage({
     type = 'toggleIndicator',
@@ -92,7 +92,7 @@ end)
 CreateThread(function()
   local sleep = 1000
   while true do Wait(sleep)
-    --if not MyVehicle then sleep = 1000 goto continue end
+    if not MyVehicle then sleep = 1000 goto continue end
     sleep = 100
 
     if not IsPedInAnyVehicle(PlayerPedId()) then goto continue end

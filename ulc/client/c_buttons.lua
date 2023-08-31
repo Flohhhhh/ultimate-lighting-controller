@@ -44,7 +44,7 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
     if not MyVehicle then print("[ULC:SetStage()] MyVehicle is not defined right now :/") return false end
 
     local newState
-    print("[ulc:SetStage]", extra, action, playSound, extraOnly)
+    --print("[ulc:SetStage]", extra, action, playSound, extraOnly)
     
     if IsVehicleExtraTurnedOn(MyVehicle, extra) then
         if action == 1 or action == 2 then
@@ -58,8 +58,7 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
 
     -- built in don't try to change if it's the same already!
     -- force is used to force the change even if it's the same
-    print("Force", force)
-    if not force and not newState then print("State is already set") return end
+    if not force and not newState then return end
 
     local canChange = true
     if repair then
