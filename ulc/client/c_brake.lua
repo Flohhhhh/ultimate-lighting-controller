@@ -5,6 +5,10 @@ local braking = false
 local function setBrakes(newState)
 
     for _, v in pairs(MyVehicleConfig.brakeConfig.brakeExtras) do
+        local currentState
+        if IsVehicleExtraTurnedOn(MyVehicle, v) then currentState = 0 else currentState = 1 end
+        --print("[ULC] setBrakes() newState: " .. newState .. " currentState: " .. currentState)
+        if currentState == newState then break end
         ULC:SetStage(v, newState, false, true)
     end
 

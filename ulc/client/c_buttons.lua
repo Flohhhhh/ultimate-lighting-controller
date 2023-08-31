@@ -44,7 +44,7 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair)
     if not MyVehicle then print("[ULC:SetStage()] MyVehicle is not defined right now :/") return false end
 
     local newState
-    --print("[ulc:SetStage]", extra, action, playSound, extraOnly)
+    print("[ulc:SetStage]", extra, action, playSound, extraOnly)
     
     if IsVehicleExtraTurnedOn(MyVehicle, extra) then
         if action == 1 or action == 2 then
