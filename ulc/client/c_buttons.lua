@@ -42,6 +42,8 @@ end)
 -- updates ui whenever extra is used in a button
 function ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
     if not MyVehicle then print("[ULC:SetStage()] MyVehicle is not defined right now :/") return false end
+    -- could add a config switch to allow this later but that may cause issues
+    if not IsPedInAnyVehicle(PlayerPedId(), true) then print("[ULC:SetStage()] Player is not in a vehicle :/") return false end
 
     local newState
     --print("[ulc:SetStage]", extra, action, playSound, extraOnly)
