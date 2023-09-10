@@ -42,8 +42,9 @@ end)
 -- updates ui whenever extra is used in a button
 function ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
     if not MyVehicle then print("[ULC:SetStage()] MyVehicle is not defined right now :/") return false end
+    local button = GetButtonByExtra(extra)
     -- could add a config switch to allow this later but that may cause issues
-    if not IsPedInAnyVehicle(PlayerPedId(), true) then print("[ULC:SetStage()] Player is not in a vehicle :/") return false end
+    if button and not IsPedInAnyVehicle(PlayerPedId(), true) then print("[ULC:SetStage()] Player is not in a vehicle :/") return false end
 
     local newState
     --print("[ulc:SetStage]", extra, action, playSound, extraOnly)
@@ -84,7 +85,6 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
 
 
     -- if the extra corresponds to a button
-    local button = GetButtonByExtra(extra)
     if button then
         if playSound then
             if newState == 0 then
