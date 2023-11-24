@@ -15,6 +15,9 @@ if GetCurrentResourceName() ~= 'ulc' then
   TriggerEvent('ulc:error', "Resource is named incorrectly. Version checks will not work.")
 end
 
+local rblExists = GetResourceState("real-brake-lights")
+if rblExists print("[ULC] Found real-brake-lights resource! Activating integrations!")
+
 PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-controller/releases/latest", function (errorCode, resultData, resultHeaders)
 
   print("[ULC] My Version: [" .. myVersion .. "]")

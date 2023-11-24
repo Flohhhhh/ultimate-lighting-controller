@@ -32,6 +32,7 @@ client_scripts {
 	'client/c_hud.lua',
 	'client/c_buttons.lua',
 	'client/c_brake.lua',
+	'client/c_blackout.lua',
 	'client/c_cruise.lua',
 	'client/c_horn.lua',
 	'client/c_park.lua',
@@ -42,6 +43,7 @@ client_scripts {
 
 server_scripts {
 	'server/s_main.lua',
-	'server/s_main.js'
+	'server/s_main.js',
+	'server/s_blackout.lua',
 }
 
