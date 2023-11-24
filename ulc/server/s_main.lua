@@ -15,8 +15,13 @@ if GetCurrentResourceName() ~= 'ulc' then
   TriggerEvent('ulc:error', "Resource is named incorrectly. Version checks will not work.")
 end
 
-local rblExists = GetResourceState("real-brake-lights")
-if rblExists print("[ULC] Found real-brake-lights resource! Activating integrations!")
+--TODO change loading state to use this instead of events
+-- GlobalState.ULC = {
+--   loaded = false,
+--   brakeMode = "STANDARD"
+-- }
+
+
 
 PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-controller/releases/latest", function (errorCode, resultData, resultHeaders)
 

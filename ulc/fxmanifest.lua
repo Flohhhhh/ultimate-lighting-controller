@@ -5,7 +5,7 @@ lua54 'yes'
 name "Ultimate Lighting Controls"
 description "The ultimate non-els lighting controller. Documentation: https://docs.dwnstr.com/ulc/overview"
 author "Dawnstar"
-version "1.6.3"
+version "1.7.0"
 
 ui_page "html/index.html"
 
@@ -19,7 +19,8 @@ files {
 
 dependencies {
 	"baseevents",
-	"mapmanager"
+	"mapmanager",
+	"/onesync"
 }
 
 shared_scripts {
@@ -31,7 +32,7 @@ client_scripts {
 	'client/c_main.lua',
 	'client/c_hud.lua',
 	'client/c_buttons.lua',
-	'client/c_brake.lua',
+	'client/c_brake_new.lua',
 	'client/c_blackout.lua',
 	'client/c_cruise.lua',
 	'client/c_horn.lua',
