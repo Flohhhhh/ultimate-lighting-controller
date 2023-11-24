@@ -32,7 +32,7 @@ client_scripts {
 	'client/c_main.lua',
 	'client/c_hud.lua',
 	'client/c_buttons.lua',
-	'client/c_brake_new.lua',
+	'client/c_brake.lua',
 	'client/c_blackout.lua',
 	'client/c_cruise.lua',
 	'client/c_horn.lua',
