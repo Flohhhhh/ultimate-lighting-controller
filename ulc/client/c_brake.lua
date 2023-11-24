@@ -24,6 +24,7 @@ local function setBrakeExtras(newState)
     end
     if newState == 0 then
         -- disable the disable extras and save the ones that we change
+        if not MyVehicleConfig.brakeConfig.disableExtras then return end
         for _, v in pairs(MyVehicleConfig.brakeConfig.disableExtras) do
             if IsVehicleExtraTurnedOn(MyVehicle, v) then
                 ULC:SetStage(v, 1, false, true)
@@ -35,6 +36,7 @@ local function setBrakeExtras(newState)
         for _, v in pairs(disabledExtras) do
             ULC:SetStage(v, 0, false, true)
         end
+        disabledExtras = {}
     end
 end
 
