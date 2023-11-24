@@ -1,7 +1,7 @@
 local rblIntegration = false
 
 function ULC:SetBlackout(newState)
-    print("Setting blackout to " .. newState)
+  --print("Setting blackout to " .. newState)
   local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
   if newState == 0 then
     -- do blackout stuff
@@ -21,7 +21,7 @@ function ULC:SetBlackout(newState)
         while true do Wait(500)
           if Entity(vehicle).state.ulc_blackout == 1 then ULC:SetBlackout(1) return end
           local speed = GetEntitySpeed(vehicle) * 2.236936
-          print("Speed is " .. speed)
+          --print("Speed is " .. speed)
           if speed > 5 then ULC:SetBlackout(1) return end
         end
       end)
@@ -36,13 +36,13 @@ end
 AddStateBagChangeHandler('ulc_blackout', null, function(bagName, key, value)
   Wait(0)
   local vehicle = GetEntityFromStateBagName(bagName)
-  print("ulc_blackout listener: Vehicle is " .. vehicle .. " and GetVehiclePedIsIn(PlayerPedId()) is " .. GetVehiclePedIsIn(PlayerPedId()))
+  --print("ulc_blackout listener: Vehicle is " .. vehicle .. " and GetVehiclePedIsIn(PlayerPedId()) is " .. GetVehiclePedIsIn(PlayerPedId()))
   if vehicle == 0 or vehicle ~= GetVehiclePedIsIn(PlayerPedId()) then
       print("ulc_blackout listener: Vehicle is 0 or not mine.")
       return
   end
   local blackout = value
-  print("ulc_blackout listener: new state value is " .. tostring(blackout))
+  --print("ulc_blackout listener: new state value is " .. tostring(blackout))
   if blackout == 0 then
       ULC:SetBlackout(0)
   elseif blackout == 1 then
@@ -55,18 +55,18 @@ AddStateBagChangeHandler('rbl_blackout', null, function(bagName, key, value)
   Wait(0)
   rblIntegration = true
   local vehicle = GetEntityFromStateBagName(bagName)
-  print("rbl_blackout listener: Vehicle is " .. vehicle .. " and GetVehiclePedIsIn(PlayerPedId()) is " .. GetVehiclePedIsIn(PlayerPedId()))
+  --print("rbl_blackout listener: Vehicle is " .. vehicle .. " and GetVehiclePedIsIn(PlayerPedId()) is " .. GetVehiclePedIsIn(PlayerPedId()))
   if vehicle == 0 or vehicle ~= GetVehiclePedIsIn(PlayerPedId()) then
-      print("rbl_blackout listener: Vehicle is 0 or not mine")
+      --print("rbl_blackout listener: Vehicle is 0 or not mine")
       return
   end
   local blackout = value
-  print("rbl_blackout listener: new state value is " .. tostring(blackout))
+  --print("rbl_blackout listener: new state value is " .. tostring(blackout))
   if blackout == true then
-    print("rbl_blackout listener: setting blackout to 0")
+    --print("rbl_blackout listener: setting blackout to 0")
     ULC:SetBlackout(0)
   elseif blackout == false then
-    print("rbl_blackout listener: setting blackout to 1")
+    --print("rbl_blackout listener: setting blackout to 1")
     ULC:SetBlackout(1)
   end
 end)
@@ -88,7 +88,7 @@ RegisterCommand('blackout', function()
     local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
     if not vehicle then return end
     local currentState = Entity(vehicle).state.ulc_blackout
-    print("/blackout: Current state: " .. tostring(currentState))
+    --print("/blackout: Current state: " .. tostring(currentState))
     if currentState == nil or currentState == 1 then
         print("Setting blackout to true/0")
         newState = 0

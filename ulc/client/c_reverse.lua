@@ -5,7 +5,7 @@ local reversing = false
 AddEventHandler('ulc:StartCheckingReverseState', function()
     CreateThread(function()
         while true do Wait(250)
-            print("Checking reverse state")
+            --print("Checking reverse state")
             if not IsPedInAnyVehicle(PlayerPedId()) then return end
             -- this feels unncessary, but I think some people may not have .reverseConfig
             if not MyVehicle then return end
