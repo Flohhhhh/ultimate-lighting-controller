@@ -67,9 +67,10 @@ if Config.ParkSettings.delay < 0.5 then
     TriggerEvent("ulc:warn", 'Park Pattern delay is too short! This will hurt performance! Recommended values are above 0.5s.')
 end
 
-if Config.SteadyBurnSettings.delay <= 2 then
-    TriggerEvent("ulc:error", 'Steady burn delay is too short! Steady burns will be unstable or not work!')
-end
+-- removed v1.7.0
+-- if Config.SteadyBurnSettings.delay <= 2 then
+--     TriggerEvent("ulc:error", 'Steady burn delay is too short! Steady burns will be unstable or not work!')
+-- end
 
 if Config.SteadyBurnSettings.nightStartHour < Config.SteadyBurnSettings.nightEndHour then
     TriggerEvent("ulc:error", 'Steady burn night start hour should be later/higher than night end hour.')
