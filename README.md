@@ -32,8 +32,8 @@ If you are a vehicle developer, view the full documentation.
 
 # Installation
 
-place `ulc` in your `resources` folder<br>
-add `ensure ulc` to your `server.cfg`
+1. place `ulc` in your `resources` folder<br>
+2. add `ensure ulc` to your `server.cfg`
 
 # Dependencies
 
