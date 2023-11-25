@@ -10,8 +10,8 @@ ULC is an all-in-one lighting controller for Non-ELS vehicles in FiveM! It uses 
 If you are a vehicle developer, view the full documentation.
 
 [Join Discord](https://discord.gg/zH3k624aSv)<br>
-[Full ULC documentation](https://dawnstar.gitbook.io/vehicle-docs/ulc/overview)<br>
-[Config Generator](https://ulc.dwnstr.com/)
+[Full ULC documentation](https://docs.dwnstr.com/ulc/overview)<br>
+[Config Generator](https://ulc.dwnstr.com/generator)
 
 [Video Preview](https://www.youtube.com/watch?v=f1H6sohjTao)<br>
 [Video Tutorial](https://youtu.be/FIF3qqRY0Ts)
@@ -24,6 +24,7 @@ If you are a vehicle developer, view the full documentation.
 - Brake Extras
 - Reverse Extras
 - Smart Steady Burns
+- Blackout Command
 - Horn/Honk Patterns & Extras
 - Granular Configuration per Vehicle
 - Re-mappable Keybindings
@@ -46,7 +47,7 @@ ULC offers a wide range of configuration settings, as well as granular vehicle c
 
 **By default, no vehicles are affected by ULC's functionality.** In order to enable ULC for a vehicle, you must configure it. There are two methods for doing so.
 
-[Get Started Here!](https://dawnstar.gitbook.io/vehicle-docs/ulc/overview)
+[Get Started Here!](https://docs.dwnstr.com/ulc/overview)
 
 # Goes Well with:
 
