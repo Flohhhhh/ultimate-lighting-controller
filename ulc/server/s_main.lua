@@ -16,12 +16,7 @@ if GetCurrentResourceName() ~= 'ulc' then
 end
 
 --TODO change loading state to use this instead of events
--- GlobalState.ULC = {
---   loaded = false,
---   brakeMode = "STANDARD"
--- }
-
-
+GlobalState.ulcloaded = false
 
 PerformHttpRequest("https://api.github.com/repos/Flohhhhh/ultimate-lighting-controller/releases/latest", function (errorCode, resultData, resultHeaders)
 
@@ -298,8 +293,9 @@ CreateThread(function ()
     end
     LoadExternalVehicleConfig(v)
   end
-  TriggerClientEvent('ulc:Loaded', -1)
-  --GlobalState.ulcloaded = true
+  --TriggerClientEvent('ulc:Loaded', -1)
+  GlobalState.ulcloaded = true
+  print("[ULC] Loading complete: " .. #Config.Vehicles .. " vehicle configurations loaded. Check: " .. tostring(GlobalState.ulcloaded))
   TriggerClientEvent("UpdateVehicleConfigs", -1 , Config.Vehicles)
   print("[ULC] Done loading external vehicle resources.")
   for _, v in ipairs(Config.Vehicles) do

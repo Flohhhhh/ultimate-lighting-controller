@@ -1,17 +1,6 @@
 --print("[ULC]: Main Thread Loaded")
 
 ULC = {}
--- this is all just so resource can be restarted and not break for clients in server
-Loaded = false
--- this is for when someone joins
-AddEventHandler('onClientMapStart', function()
-    --print("I joined.")
-    Loaded = true
-end)
-
-RegisterNetEvent('ulc:Loaded', function()
-    Loaded = true
-end)
 
 -----------------
 -- DEFINITIONS --
@@ -120,8 +109,8 @@ end)
 RegisterNetEvent('ulc:checkVehicle')
 AddEventHandler('ulc:checkVehicle', function()
   CreateThread(function()
-    --while not GlobalState.ulcloaded do
-    while not Loaded do
+
+    while not GlobalState.ulcloaded do
       print("ULC: Waiting for load.")
       Wait(250)
     end
