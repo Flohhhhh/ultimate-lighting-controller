@@ -295,9 +295,8 @@ CreateThread(function ()
   end
   --TriggerClientEvent('ulc:Loaded', -1)
   GlobalState.ulcloaded = true
-  print("[ULC] Loading complete: " .. #Config.Vehicles .. " vehicle configurations loaded. Check: " .. tostring(GlobalState.ulcloaded))
-  TriggerClientEvent("UpdateVehicleConfigs", -1 , Config.Vehicles)
-  print("[ULC] Done loading external vehicle resources.")
+  TriggerClientEvent("UpdateVehicleConfigs", -1, Config.Vehicles)
+  print("[ULC] Loading complete: " .. #Config.Vehicles .. " external vehicle configurations loaded. State check: " .. tostring(GlobalState.ulcloaded))
   for _, v in ipairs(Config.Vehicles) do
     if v.name then -- if using old single name
       print('[ULC] Loaded: ' .. v.name)
