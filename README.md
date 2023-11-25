@@ -32,14 +32,13 @@ If you are a vehicle developer, view the full documentation.
 
 # Installation
 
-place `ulc` in your `resources` folder<br>
-add `ensure ulc` to your `server.cfg`
+1. place `ulc` in your `resources` folder<br>
+2. add `ensure ulc` to your `server.cfg`
 
 # Dependencies
 
-`onesync` (as of v1.7.0)
-`baseevents` (before v1.7.0)
-`mapmanager` (before v1.7.0) <!-- TODO double check if this is needed in current version)-->
+* `onesync` (as of v1.7.0)
+* `baseevents`
 
 # Configuration
 
