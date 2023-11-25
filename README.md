@@ -37,8 +37,8 @@ add `ensure ulc` to your `server.cfg`
 
 # Dependencies
 
-`onesync` (as of v1.7.0)
-`baseevents`
+* `onesync` (as of v1.7.0)
+* `baseevents`
 
 # Configuration
 
