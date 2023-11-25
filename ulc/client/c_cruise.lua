@@ -25,7 +25,7 @@ CreateThread(function()
         if MyVehicle then
             TriggerEvent('ulc:CheckCruise', false)
         end
-        Wait(Config.SteadyBurnSettings.delay * 1000)
+        Wait(1000)
     end
 end)
 
@@ -48,6 +48,12 @@ end)
 AddEventHandler('ulc:CheckCruise', function()
     sbState = getSteadyBurnState()
     if not MyVehicle then return end
+
+    if Entity(MyVehicle).state.ulc_blackout == 0 then
+        -- print("Blackout is on, disabling cruise lights")
+        setCruiseLights(1)
+        return
+    end
 
     if MyVehicleConfig.steadyBurnConfig.forceOn then
         if sbState == 0 then return end

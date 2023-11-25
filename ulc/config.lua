@@ -38,10 +38,6 @@ Config = {
         nightStartHour = 18,
         -- hour effect ends (extras are disabled)
         nightEndHour = 6,
-        -- time between checks in seconds
-        -- should be high (checks also occur when entering vehicle)
-        -- should NEVER be lower than 2 seconds (bad things will happen)
-        delay = 10,
     },
 
     -- Brake Extras/Patterns Config;
