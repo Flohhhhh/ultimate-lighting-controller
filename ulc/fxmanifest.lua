@@ -19,7 +19,6 @@ files {
 
 dependencies {
 	"baseevents",
-	"mapmanager",
 	"/onesync"
 }
 
