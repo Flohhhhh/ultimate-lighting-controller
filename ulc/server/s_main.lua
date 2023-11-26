@@ -76,9 +76,10 @@ if Config.SteadyBurnSettings.nightStartHour < Config.SteadyBurnSettings.nightEnd
     TriggerEvent("ulc:error", 'Steady burn night start hour should be later/higher than night end hour.')
 end
 
-if Config.SteadyBurnSettings.delay < 2 then
-    TriggerEvent("ulc:error", "Steady burn check delay can never be lower than 2 seconds. Will cause stability issues.")
-end
+-- removed v1.7.0
+-- if Config.SteadyBurnSettings.delay < 2 then
+--     TriggerEvent("ulc:error", "Steady burn check delay can never be lower than 2 seconds. Will cause stability issues.")
+-- end
 
 local function CheckData(data, resourceName)
 
