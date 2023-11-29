@@ -1,10 +1,7 @@
 --print("[ULC] Brake Extras Loaded")
 local realBrakeThreshold = 3
 local shouldUseRealBrakes = function()
-    if Config.BrakeSettings.speedThreshold or 3 <= realBrakeThreshold then
-        return true
-    else return false
-    end
+    return (MyVehicleConfig.brakeConfig.speedThreshold or 3) <= realBrakeThreshold
 end
 local braking = false
 
@@ -74,7 +71,6 @@ if shouldUseRealBrakes then
 
     -- add a statebag change handler for rbl_brakelights
         -- once this is triggered, disable manual checking
-
     AddStateBagChangeHandler('rbl_brakelights', null, function(bagName, key, value)
         Wait(0) -- Nedded as GetEntityFromStateBagName sometimes returns 0 on first frame
         mode = "RBL" -- set mode to RBL to disable manual checking
