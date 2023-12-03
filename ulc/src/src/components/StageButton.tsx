@@ -3,28 +3,29 @@ import { useState, useEffect } from 'react'
 import { Box } from '@mantine/core'
 import './StageButton.css'
 
-function StageButton(props : any) {
+function StageButton(props: any) {
+  const { label, numKey, enabled, color, showHelp } = props
   const [classString, setClassString ] = useState('button')
 
   // color strings = 'red', 'blue, 'amber'
   useEffect(() => {
-  if (props.enabled) {
-    setClassString(`button ${props.color}`)
+  if (enabled) {
+    setClassString(`button ${color}`)
   } else {
     setClassString(`button`)
   }
   }), [props]
 
-  if (props.showHelp) {
+  if (showHelp) {
     return (
       <div className={classString}>
-          {`NUM ${props.numKey}`}
+          {`NUM ${numKey}`}
       </div>
     )
   } else {
     return (
       <div className={classString}>
-          {props.label}
+          {label}
       </div>
     )
   }
