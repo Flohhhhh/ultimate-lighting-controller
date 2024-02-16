@@ -21,6 +21,7 @@ If you are a vehicle developer, view the full documentation.
 - Stage Controls
 - Park Patterns
 - Park Pattern Sync
+- Intuitive & Minimal UI
 - Brake Extras
 - Reverse Extras
 - Smart Steady Burns
