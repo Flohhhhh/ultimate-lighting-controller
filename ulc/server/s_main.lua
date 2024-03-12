@@ -224,7 +224,7 @@ local function LoadExternalVehicleConfig(resourceName)
   local resourceState = GetResourceState(resourceName)
 
   if resourceState == "missing" then
-    TriggerEvent("ulc:error", "^1Couldn't load external ulc.lua file from resource: \"" .. resourceName .. "\". Resource is missing.^0")
+    TriggerEvent("ulc:error", "^1Couldn't load external ulc.lua file from resource: \"" .. resourceName .. "\". Resource is missing. You probably entered the model name in config.lua instead of the resource name.^0")
     return
   end
 
