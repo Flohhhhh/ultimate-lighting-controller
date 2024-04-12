@@ -1,17 +1,16 @@
 --print("[ULC]: Park Patterns Loaded")
 
 local veh = GetVehiclePedIsIn(PlayerPedId())
-local parked = false
+parked = false
 local lastSync = 0
 local effectDelay = 1000
 
 CreateThread(function()
     while true do
         if IsPedInAnyVehicle(PlayerPedId()) then
-
             TriggerEvent('ulc:checkParkState', veh, false)
 
-            Wait(Config.ParkSettings.delay*1000)
+            Wait(Config.ParkSettings.delay * 1000)
         else
             Wait(2000)
         end
@@ -22,12 +21,12 @@ RegisterNetEvent("ulc:checkParkState", function(delay)
     CreateThread(function()
         --print('Checking park state')
 
-        if delay then 
+        if delay then
             --print('Delay...')
             Wait(5000)
         end
         local speed = GetVehicleSpeedConverted(MyVehicle)
-        
+
 
         if speed > Config.ParkSettings.speedThreshold and parked then
             TriggerEvent("ulc:vehDrive")
@@ -42,9 +41,8 @@ RegisterNetEvent("ulc:checkParkState", function(delay)
 end)
 
 AddEventHandler('ulc:vehPark', function()
-
     if Lights then
-		--print('[ulc:vehPark] My vehicle is parked.')
+        --print('[ulc:vehPark] My vehicle is parked.')
         parked = true
 
         if MyVehicle and MyVehicleConfig.parkConfig.usePark then
@@ -59,7 +57,6 @@ AddEventHandler('ulc:vehPark', function()
 
             -- park pattern sync stuff
             if MyVehicleConfig.parkConfig.useSync then
-
                 -- cooldown
                 local gameSeconds = GetGameTimer() / 1000
                 if gameSeconds >= lastSync + Config.ParkSettings.syncCooldown then
@@ -76,7 +73,7 @@ AddEventHandler('ulc:vehPark', function()
                             local pedCoords = GetEntityCoords(PlayerPedId())
                             local distance = GetDistanceBetweenCoords(vehCoords, pedCoords)
 
-                           
+
                             if distance < Config.ParkSettings.syncDistance then
                                 if GetVehicleClass(v) == 18 then
                                     -- check if my vehicle is set to sync with this vehicle
@@ -95,7 +92,6 @@ AddEventHandler('ulc:vehPark', function()
                         end
                     end
                     if #vehsToSync > 0 then
-
                         -- sync my vehicle
                         SetVehicleSiren(veh, false)
                         SetVehicleSiren(veh, true)
@@ -116,11 +112,11 @@ AddEventHandler('ulc:vehPark', function()
                             table.insert(vehsToSyncNet, VehToNet(v))
                         end
                         TriggerServerEvent("sync:send", vehsToSyncNet)
-
                     else --print('Found no vehicles to sync.')
                     end
-
-                else print("Sync on cooldown, time left: " .. Config.ParkSettings.syncCooldown- (gameSeconds - lastSync) .. " seconds.")
+                else
+                    print("Sync on cooldown, time left: " ..
+                        Config.ParkSettings.syncCooldown - (gameSeconds - lastSync) .. " seconds.")
                 end
             end
         end
@@ -137,12 +133,10 @@ RegisterNetEvent('ulc:sync:receive', function(vehicles)
 end)
 
 AddEventHandler('ulc:vehDrive', function()
-
     if Lights then
-		--print('[ulc:vehDrive] My vehicle is driving.')
+        --print('[ulc:vehDrive] My vehicle is driving.')
         parked = false
         if MyVehicle and MyVehicleConfig.parkConfig.usePark then
-
             -- disable pExtras
             for _, v in pairs(MyVehicleConfig.parkConfig.pExtras) do
                 ULC:SetStage(v, 1, false, true)
