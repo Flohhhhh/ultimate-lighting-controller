@@ -1,4 +1,3 @@
-
 -- MAIN FUNCTIONS --
 
 function ULC:PopulateButtons(_buttons, placeholders)
@@ -8,11 +7,11 @@ function ULC:PopulateButtons(_buttons, placeholders)
 
     if placeholders then
         buttons = {
-            {label = 'TEST STAGE', extra = 1, color = 'green', enabled = true},
-            {label = 'TEST STAGE', extra = 2, color = 'blue', enabled = false},
-            {label = 'TEST STAGE', extra = 3, color = 'blue', enabled = false},
-            {label = 'TEST STAGE', extra = 4, color = 'blue', enabled = true},
-            {label = 'TEST STAGE', extra = 5, color = 'red', enabled = true}
+            { label = 'TEST STAGE', extra = 1, color = 'green', enabled = true },
+            { label = 'TEST STAGE', extra = 2, color = 'blue',  enabled = false },
+            { label = 'TEST STAGE', extra = 3, color = 'blue',  enabled = false },
+            { label = 'TEST STAGE', extra = 4, color = 'blue',  enabled = true },
+            { label = 'test stage', extra = 5, color = 'red',   enabled = true }
         }
     end
 
@@ -24,7 +23,7 @@ function ULC:PopulateButtons(_buttons, placeholders)
         thisButton.extra = v.extra
         thisButton.enabled = thisState
         thisButton.color = v.color or 'green'
-        thisButton.label = v.label
+        thisButton.label = string.upper(v.label)
         thisButton.numKey = v.key
 
         --print("Sending button: " .. json.encode(thisButton))
@@ -100,9 +99,9 @@ end
 
 function ULC:SetHelpDisplay(bool)
     if bool then
-        SendNUIMessage({type = 'showHelp'})
+        SendNUIMessage({ type = 'showHelp' })
     else
-        SendNUIMessage({type = 'hideHelp'})
+        SendNUIMessage({ type = 'hideHelp' })
     end
 end
 
@@ -127,23 +126,22 @@ end
 ----------------------
 -- USER PREFERENCES --
 ----------------------
-print("[ULC]: Client Storage Loaded")
+print("[ULC] Client Storage Loaded")
 ClientPrefs = {}
 
 local function loadUserPrefs()
     -- if prefs already exist
     local prefsExist = GetResourceKvpString('ulc')
     if prefsExist == "exists" then
-        print("Loading prefs")
+        print("[ULC] Loading prefs")
         -- load
         ClientPrefs.hideUi = GetResourceKvpInt("ulc:hideUi")
         ClientPrefs.x = GetResourceKvpInt("ulc:x")
         ClientPrefs.y = GetResourceKvpInt("ulc:y")
         ClientPrefs.scale = GetResourceKvpFloat("ulc:scale")
         ClientPrefs.useLeftAnchor = GetResourceKvpString("ulc:useLeftAnchor")
-
     else
-        print("Creating prefs")
+        print("[ULC] Creating prefs")
         -- set defaults
         SetResourceKvp('ulc', "exists")
         SetResourceKvpInt('ulc:x', 0)
@@ -152,15 +150,15 @@ local function loadUserPrefs()
         SetResourceKvpInt('ulc:hideUi', 0)
         SetResourceKvp('ulc:useLeftAnchor', 'false')
 
-       
+
         loadUserPrefs()
-		
-		Wait(5000)
-		TriggerEvent('chat:addMessage', {
-			color = { 0, 153, 204},
-			multiline = false,
-			args = {"ULC", "^4This server uses ULC! Type /ulc to view settings and adjust the HUD!"}
-		})
+
+        Wait(5000)
+        TriggerEvent('chat:addMessage', {
+            color = { 0, 153, 204 },
+            multiline = false,
+            args = { "ULC", "^4This server uses ULC! Type /ulc to view settings and adjust the HUD!" }
+        })
     end
 end
 
@@ -168,8 +166,6 @@ loadUserPrefs()
 
 -- use the values
 CreateThread(function()
-
-
     --print("CLIENT PREF DISABLED =", ClientPrefs.hideUi)
     Wait(1000)
     -- positioning
@@ -178,15 +174,15 @@ CreateThread(function()
         ULC:SetPosition(ClientPrefs.x, ClientPrefs.y)
     end
     if ClientPrefs.scale then
-        print("Loaded saved scale from kvp: " .. ClientPrefs.scale)
+        -- print("Loaded saved scale from kvp: " .. ClientPrefs.scale)
         ULC:SetScale(ClientPrefs.scale + 0.0)
     end
     if ClientPrefs.hideUi then
-        print("Loaded disabled HUD kvp: " .. ClientPrefs.hideUi)
+        -- print("Loaded disabled HUD kvp: " .. ClientPrefs.hideUi)
         ULC:SetHudDisabled(ClientPrefs.hideUi)
     end
     if ClientPrefs.useLeftAnchor then
-        print("Loaded useLeftAnchor from kvp", ClientPrefs.useLeftAnchor)
+        -- print("Loaded useLeftAnchor from kvp", ClientPrefs.useLeftAnchor)
         ULC:SetUseLeftAnchor(ClientPrefs.useLeftAnchor)
     end
 end)
@@ -222,32 +218,28 @@ TriggerEvent('chat:addSuggestion', '/ulcReset', 'Resets all saved ULC settings t
 -- NUI CALLBACKS --
 
 RegisterNUICallback("savePosition", function(data, cb)
-
     --print("NUI Setting position", data.newX, data.newY, "type = ", type(data.newX))
     SetResourceKvpInt('ulc:x', data.newX)
     SetResourceKvpInt('ulc:y', data.newY)
 
-    cb({success = true})
+    cb({ success = true })
 end)
 
 RegisterNUICallback("saveScale", function(data, cb)
-
     --print("NUI Setting Scale " .. data.scale + 0.0)
     SetResourceKvpFloat('ulc:scale', data.scale + 0.0)
 
-    cb({success = true})
+    cb({ success = true })
 end)
 
 RegisterNUICallback("saveAnchor", function(data, cb)
-
     --print("NUI Setting Anchor ", data.useLeftAnchor)
     SetResourceKvp('ulc:useLeftAnchor', data.useLeftAnchor)
 
-    cb({success = true})
+    cb({ success = true })
 end)
 
 RegisterNUICallback("focusGame", function(data, cb)
-
     ULC:SetMenuDisplay(false)
     SetNuiFocus(false, false)
     ULC:SetHelpDisplay(false)
@@ -256,7 +248,7 @@ RegisterNUICallback("focusGame", function(data, cb)
         ULC:SetDisplay(false)
     end
 
-    cb({success = true})
+    cb({ success = true })
 end)
 
 RegisterNUICallback("setHudDisabled", function(data, cb)
@@ -282,6 +274,5 @@ RegisterNUICallback("setHudDisabled", function(data, cb)
         SetResourceKvpInt('ulc:hideUi', 1)
     end
 
-    cb({success = true})
-
+    cb({ success = true })
 end)

@@ -17,17 +17,19 @@ MyVehicleConfig = nil
 --------------------
 
 local function setDefaultStages()
-    -- default stages
-    if not MyVehicleConfig.defaultStages or false then return end
-    if not MyVehicleConfig.defaultStages.useDefaults then return end
-    for _, e in pairs(MyVehicleConfig.defaultStages.enableKeys) do
-      local button = GetButtonByExtra(GetExtraByKey(e))
-      ULC:SetStage(GetExtraByKey(e), 0, false, false, button.repair, true)
-    end
-    for _, d in pairs(MyVehicleConfig.defaultStages.disableKeys) do
-      local button = GetButtonByExtra(GetExtraByKey(e))
-      ULC:SetStage(GetExtraByKey(d), 1, false, false, button.repair, true)
-    end
+  -- default stages
+  if not MyVehicleConfig.defaultStages or false then return end
+  if not MyVehicleConfig.defaultStages.useDefaults then return end
+  for _, e in pairs(MyVehicleConfig.defaultStages.enableKeys) do
+    local button = GetButtonByExtra(GetExtraByKey(e))
+    if not button then break end
+    ULC:SetStage(GetExtraByKey(e), 0, false, false, button.repair, true)
+  end
+  for _, d in pairs(MyVehicleConfig.defaultStages.disableKeys) do
+    local button = GetButtonByExtra(GetExtraByKey(e))
+    if not button then break end
+    ULC:SetStage(GetExtraByKey(d), 1, false, false, button.repair, true)
+  end
 end
 
 ------------------------------------
@@ -80,8 +82,12 @@ end)
 -- used to trigger above events
 CreateThread(function()
   local sleep = 1000
-  while true do Wait(sleep)
-    if not MyVehicle then sleep = 1000 goto continue end
+  while true do
+    Wait(sleep)
+    if not MyVehicle then
+      sleep = 1000
+      goto continue
+    end
     sleep = 100
 
     if not IsPedInAnyVehicle(PlayerPedId()) then goto continue end
@@ -109,12 +115,11 @@ end)
 RegisterNetEvent('ulc:checkVehicle')
 AddEventHandler('ulc:checkVehicle', function()
   CreateThread(function()
-
     while not GlobalState.ulcloaded do
       print("ULC: Waiting for load.")
       Wait(250)
     end
-    --print("Checking for vehicle configuration")
+    print("[ULC:checkVehicle] Checking for vehicle configuration")
     local ped = PlayerPedId()
     local vehicle = GetVehiclePedIsIn(ped)
     local passed, vehicleConfig = GetVehicleFromConfig(vehicle)
@@ -126,8 +131,8 @@ AddEventHandler('ulc:checkVehicle', function()
       MyVehicleConfig = vehicleConfig
       table.sort(MyVehicleConfig.buttons, function(a, b) return a["key"] < b["key"] end)
 
-	  
-      print("Found vehicle.")
+
+      print("[ULC:checkVehicle] Found vehicle, ready to go.")
 
       -- if i am driver
       if ped == GetPedInVehicleSeat(vehicle, -1) then
@@ -136,7 +141,8 @@ AddEventHandler('ulc:checkVehicle', function()
         if not Config.hideHud and ClientPrefs.hideUi == 0 then
           ULC:SetDisplay(true)
         else
-          print("HUD is hidden. Type /ulc to see if you disabled it. Otherwise, the server owner may have disabled the HUD.")
+          print(
+            "HUD is hidden. Type /ulc to see if you disabled it. Otherwise, the server owner may have disabled the HUD.")
         end
 
         TriggerEvent('ulc:CheckCruise')
@@ -144,8 +150,8 @@ AddEventHandler('ulc:checkVehicle', function()
         TriggerEvent('ulc:StartCheckingReverseState')
       end
     else
-      --MyVehicle = nil
-	    TriggerEvent('ulc:cleanup')
+      MyVehicle = nil
+      TriggerEvent('ulc:cleanup')
       TriggerEvent('ulc:StopCheckingReverseState')
     end
   end)
@@ -174,22 +180,23 @@ end)
 
 -- trigger checks when spawning from one vehicle into another directly, or from another seat to driver seat
 CreateThread(function()
-	local lastVehicle
+  local lastVehicle
   local wasDriving
-	while true do Wait(500)
-		if IsPedInAnyVehicle(PlayerPedId()) then
-			local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+  while true do
+    Wait(500)
+    if IsPedInAnyVehicle(PlayerPedId()) then
+      local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
       local driving = GetPedInVehicleSeat(MyVehicle, -1) == PlayerPedId()
-			if currentVehicle ~= lastVehicle then
-				TriggerEvent('ulc:checkVehicle')
-			end
+      if currentVehicle ~= lastVehicle then
+        TriggerEvent('ulc:checkVehicle')
+      end
       if MyVehicle and not wasDriving and driving then
         TriggerEvent('ulc:checkVehicle')
       end
-			lastVehicle = currentVehicle
+      lastVehicle = currentVehicle
       wasDriving = driving
-		end
-	end
+    end
+  end
 end)
 
 
@@ -201,15 +208,16 @@ end)
 
 -- every second set no repair on all vehicles except my own
 CreateThread(function()
-  while true do Wait(1000)
-      local vehicles = GetGamePool("CVehicle")
-      for _, v in pairs(vehicles) do
-          if v ~= GetVehiclePedIsIn(PlayerPedId(), false) then
-              SetVehicleAutoRepairDisabled(v, true)
-          else
-      --print("Enabling repair for" .. v)
-      SetVehicleAutoRepairDisabled(v, false)
-    end
+  while true do
+    Wait(1000)
+    local vehicles = GetGamePool("CVehicle")
+    for _, v in pairs(vehicles) do
+      if v ~= GetVehiclePedIsIn(PlayerPedId(), false) then
+        SetVehicleAutoRepairDisabled(v, true)
+      else
+        --print("Enabling repair for" .. v)
+        SetVehicleAutoRepairDisabled(v, false)
       end
+    end
   end
 end)

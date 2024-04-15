@@ -40,15 +40,20 @@ end)
 -- change specified extra, and if not extraOnly, and extra is in a button, act on the linked and off extras as well, acts recursively;
 -- action 0 enables, 1 disables, 2 toggles;
 -- updates ui whenever extra is used in a button
-function ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
-    if not MyVehicle then print("[ULC:SetStage()] MyVehicle is not defined right now :/") return false end
+function ULC:SetStage(extra, action, playSound, extraOnly, repair, force, allowOutside)
+    if not MyVehicle then
+        print("[ULC:SetStage()] MyVehicle is not defined right now :/")
+        return false
+    end
     local button = GetButtonByExtra(extra)
-    -- could add a config switch to allow this later but that may cause issues
-    if button and not IsPedInAnyVehicle(PlayerPedId(), true) then print("[ULC:SetStage()] Player is not in a vehicle :/") return false end
+    if not allowOutside and not IsPedInAnyVehicle(PlayerPedId(), false) then
+        print("[ULC:SetStage()] Player must be in a vehicle, or allowOutside must be true.")
+        return false
+    end
 
     local newState
     --print("[ulc:SetStage]", extra, action, playSound, extraOnly)
-    
+
     if IsVehicleExtraTurnedOn(MyVehicle, extra) then
         if action == 1 or action == 2 then
             newState = 1
@@ -65,8 +70,14 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
 
     local canChange = true
     if repair then
-        if not AreVehicleDoorsClosed(MyVehicle) then canChange = false print("Can't change stage with repair while a door is open.") end
-        if not IsVehicleHealthy(MyVehicle) then canChange = false print("Can't change stage with repair while vehicle is damaged.") end
+        if not AreVehicleDoorsClosed(MyVehicle) then
+            canChange = false
+            print("[ULC:SetStage] Can't change stage with repair while a door is open.")
+        end
+        if not IsVehicleHealthy(MyVehicle) then
+            canChange = false
+            print("[ULC:SetStage] Can't change stage with repair while vehicle is damaged.")
+        end
     end
     if not canChange then return end
 
@@ -108,12 +119,11 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
                     ULC:SetStage(v, oppState, false, true, repair, force)
                 end
             end
-                
+
             -- set off extras
             for _, v in ipairs(button.offExtras) do
                 ULC:SetStage(v, 1, false, true, repair, force)
             end
-
         end
 
         ULC:SetButton(extra, newState)
@@ -125,6 +135,7 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
         -- })
     end
 end
+
 -----------------------
 -----------------------
 ------ KEYBINDS -------
@@ -134,7 +145,7 @@ end
 
 
 for i = 1, 9, 1 do
-    RegisterKeyMapping('ulc:num' .. i, 'Toggle ULC Slot ' .. i , 'keyboard', 'NUMPAD' .. i)
+    RegisterKeyMapping('ulc:num' .. i, 'Toggle ULC Slot ' .. i, 'keyboard', 'NUMPAD' .. i)
     RegisterCommand('ulc:num' .. i, function()
         local extra = GetExtraByKey(i)
         local button = GetButtonByExtra(extra)
@@ -152,29 +163,27 @@ local showingHelp = false
 
 function ShowHelp()
     CreateThread(function()
-      if not showingHelp then
-        -- show help
-        showingHelp = true
-        for k, v in ipairs(activeButtons) do
-          --print('Showing help for button: ' .. k .. ' : ' .. v.key)
-          SendNUIMessage({
-            type = 'showHelp',
-            button = k,
-            key = v.key,
-          })
+        if not showingHelp then
+            -- show help
+            showingHelp = true
+            for k, v in ipairs(activeButtons) do
+                --print('Showing help for button: ' .. k .. ' : ' .. v.key)
+                SendNUIMessage({
+                    type = 'showHelp',
+                    button = k,
+                    key = v.key,
+                })
+            end
+            Wait(3000)
+            -- hide help
+            showingHelp = false
+            for k, v in ipairs(activeButtons) do
+                SendNUIMessage({
+                    type = 'hideHelp',
+                    button = k,
+                    label = string.upper(v.label),
+                })
+            end
         end
-        Wait(3000)
-        -- hide help
-        showingHelp = false
-        for k, v in ipairs(activeButtons) do
-          SendNUIMessage({
-            type = 'hideHelp',
-            button = k,
-            label = string.upper(v.label),
-          })
-        end
-      end
     end)
 end
-
-

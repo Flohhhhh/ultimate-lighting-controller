@@ -86,17 +86,17 @@ function startTimer()
                     --print("Reverse timer active")
 
                     if GetVehicleSpeedConverted(MyVehicle) > 1 then
-                        print("[ULC] Reverse: Moving, breaking timer")
+                        -- print("[ULC] Reverse: Moving, breaking timer")
                         break
                     end
 
                     if not reversing then
-                        print("[ULC] Reverse: Not reversing, breaking timer")
+                        -- print("[ULC] Reverse: Not reversing, breaking timer")
                         break
                     end
 
                     if not IsPedInAnyVehicle(PlayerPedId()) then
-                        print("[ULC] Reverse: Not in vehicle, breaking timer")
+                        -- print("[ULC] Reverse: Not in vehicle, breaking timer")
                         break
                     end
 
@@ -108,7 +108,7 @@ function startTimer()
                     end
                 end
             else -- if we are in reverse and moving
-                print("[ULC] Reverse: Resetting timer")
+                -- print("[ULC] Reverse: Resetting timer")
                 setReverseExtras(0)
                 timerExpired = false
             end
