@@ -23,6 +23,7 @@ function SetHornExtras(newState)
             table.insert(extraStates, extraState)
             ULC:SetStage(extra, 0, false, true)
         end
+        if not MyVehicleConfig.hornConfig.disableExtras then return end
         for _, extra in pairs(MyVehicleConfig.hornConfig.disableExtras) do
             local extraState = {
                 extra = extra,
@@ -38,6 +39,7 @@ function SetHornExtras(newState)
                 ULC:SetStage(extra, 1, false, true)
             end
         end
+        if not MyVehicleConfig.hornConfig.disableExtras then return end
         for _, extra in pairs(MyVehicleConfig.hornConfig.disableExtras) do
             local prevState = GetPreviousStateByExtra(extra)
             if prevState then
