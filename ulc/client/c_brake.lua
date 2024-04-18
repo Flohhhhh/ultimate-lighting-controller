@@ -9,7 +9,7 @@ local braking = false
 -- MAIN FUNCTIONS --
 -------------------
 
-local disabledExtras= {}
+local disabledExtras = {}
 
 local function setBrakeExtras(newState)
     for _, v in pairs(MyVehicleConfig.brakeConfig.brakeExtras) do
@@ -51,10 +51,22 @@ if shouldUseRealBrakes then
         while true do
             Wait(sleep)
             -- if rbl_brakelights change handler gets triggered that means rbl exists and we want to use that functionality instead, return from this loop
-            if mode == "RBL" then print("real-brake-lights resource detected, integrating brakelight functionality.")return end
-            if not MyVehicle then sleep = 1000 goto continue end
-            if not shouldUseRealBrakes() then sleep = 1000 goto continue end
-            if not MyVehicleConfig.brakeConfig.useBrakes then sleep = 1000 goto continue end
+            if mode == "RBL" then
+                print("real-brake-lights resource detected, integrating brakelight functionality.")
+                return
+            end
+            if not MyVehicle then
+                sleep = 1000
+                goto continue
+            end
+            if not shouldUseRealBrakes() then
+                sleep = 1000
+                goto continue
+            end
+            if not MyVehicleConfig.brakeConfig.useBrakes then
+                sleep = 1000
+                goto continue
+            end
             if braking then goto continue end
             sleep = 250
             local speed = GetVehicleSpeedConverted(MyVehicle)
@@ -70,9 +82,9 @@ if shouldUseRealBrakes then
     end)
 
     -- add a statebag change handler for rbl_brakelights
-        -- once this is triggered, disable manual checking
+    -- once this is triggered, disable manual checking
     AddStateBagChangeHandler('rbl_brakelights', null, function(bagName, key, value)
-        Wait(0) -- Nedded as GetEntityFromStateBagName sometimes returns 0 on first frame
+        Wait(0)      -- Nedded as GetEntityFromStateBagName sometimes returns 0 on first frame
         mode = "RBL" -- set mode to RBL to disable manual checking
         if not MyVehicle then return end
         if not MyVehicleConfig.brakeConfig.useBrakes then return end
@@ -84,7 +96,6 @@ if shouldUseRealBrakes then
         --print("ULC: Setting brakes to state" .. newState)
         setBrakeExtras(newState)
     end)
-
 end
 
 -----------------
