@@ -1,8 +1,6 @@
-
 -- Returns: bool (whether vehicle was found), table (vehicle config info)
 function GetVehicleFromConfig(vehicle)
-    for _,v in pairs(Config.Vehicles) do
-
+    for _, v in pairs(Config.Vehicles) do
         -- if old method with just a string
         if v.name then
             -- find which vehicle matches
@@ -10,7 +8,6 @@ function GetVehicleFromConfig(vehicle)
                 --print("Vehicle [" .. v.name .. "] was found in Config.")
                 return true, v
             end
-
         elseif v.names then -- if new method with a table
             -- for each name check if it matches the vehicle
             for _, n in ipairs(v.names) do
@@ -73,19 +70,30 @@ function IsVehicleHealthy(vehicle)
     end
 end
 
-function SortButtonsByKey (arr)
+function SortButtonsByKey(arr)
     table.sort(arr, function(a, b)
         return a["key"] < b["key"]
     end)
 end
 
 function formatInt(num)
-  local formatted = tostring(num)
-  local length = formatted:len()
-  
-  for i = length - 3, 1, -3 do
-    formatted = formatted:sub(1, i) .. ',' .. formatted:sub(i + 1)
-  end
-  
-  return formatted
+    local formatted = tostring(num)
+    local length = formatted:len()
+
+    for i = length - 3, 1, -3 do
+        formatted = formatted:sub(1, i) .. ',' .. formatted:sub(i + 1)
+    end
+
+    return formatted
+end
+
+function validateButtonText(text)
+    local count = 0
+    for word in text:gmatch("%w+") do
+        count = count + 1
+        if count > 3 or #word > 5 then
+            return false
+        end
+    end
+    return true
 end
