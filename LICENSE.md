@@ -1,4 +1,4 @@
-Copyright 2023 Dawnstar Entertainment
+Copyright 2024 Dawnstar Entertainment
 
 # You can:
 - Download the resource
