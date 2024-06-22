@@ -26,7 +26,7 @@ local function setDefaultStages()
     ULC:SetStage(GetExtraByKey(e), 0, false, false, button.repair, true)
   end
   for _, d in pairs(MyVehicleConfig.defaultStages.disableKeys) do
-    local button = GetButtonByExtra(GetExtraByKey(e))
+    local button = GetButtonByExtra(GetExtraByKey(d))
     if not button then break end
     ULC:SetStage(GetExtraByKey(d), 1, false, false, button.repair, true)
   end
