@@ -24,10 +24,10 @@ AddEventHandler("ulc:LVC_MainSirenStateChange", function(sirenId)
   end
 
   for _, v in pairs(config[sirenId].enable) do
-    ULC:SetStage(v, 0, false, false, false, false, false)
+    ULC:SetStage(v, 0, false, false, false, false, false, false)
   end
 
   for _, v in pairs(config[sirenId].disable) do
-    ULC:SetStage(v, 1, false, false, false, false, false)
+    ULC:SetStage(v, 1, false, false, false, false, false, false)
   end
 end)

@@ -48,11 +48,11 @@ AddEventHandler('ulc:vehPark', function()
         if MyVehicle and MyVehicleConfig.parkConfig.usePark then
             -- enable pExtras
             for _, v in pairs(MyVehicleConfig.parkConfig.pExtras) do
-                ULC:SetStage(v, 0, false, true)
+                ULC:SetStage(v, 0, false, true, false, false, true, false)
             end
             -- disable dExtras
             for _, v in pairs(MyVehicleConfig.parkConfig.dExtras) do
-                ULC:SetStage(v, 1, false, true)
+                ULC:SetStage(v, 1, false, true, false, false, true, false)
             end
 
             -- park pattern sync stuff
@@ -139,11 +139,11 @@ AddEventHandler('ulc:vehDrive', function()
         if MyVehicle and MyVehicleConfig.parkConfig.usePark then
             -- disable pExtras
             for _, v in pairs(MyVehicleConfig.parkConfig.pExtras) do
-                ULC:SetStage(v, 1, false, true)
+                ULC:SetStage(v, 1, false, true, false, false, true, false)
             end
             -- enable dExtras
             for _, v in pairs(MyVehicleConfig.parkConfig.dExtras) do
-                ULC:SetStage(v, 0, false, true)
+                ULC:SetStage(v, 0, false, true, false, false, true, false)
             end
         end
     end

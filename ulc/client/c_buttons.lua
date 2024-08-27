@@ -33,14 +33,17 @@ end
 ---------------
 
 -- new event
-AddEventHandler('ulc:SetStage', function(extra, action, playSound, extraOnly, repair, force)
-    ULC:SetStage(extra, action, playSound, extraOnly, repair, force)
+AddEventHandler('ulc:SetStage', function(extra, action, playSound, extraOnly, repair, forceChange, forceUi)
+    ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, forceUi)
 end)
 
 -- change specified extra, and if not extraOnly, and extra is in a button, act on the linked and off extras as well, acts recursively;
 -- action 0 enables, 1 disables, 2 toggles;
 -- updates ui whenever extra is used in a button
-function ULC:SetStage(extra, action, playSound, extraOnly, repair, force, allowOutside)
+function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, forceUi, allowOutside)
+    -- track button states for UI
+    local buttonStates = {}
+
     if not MyVehicle then
         print("[ULC:SetStage()] MyVehicle is not defined right now :/")
         return false
@@ -65,8 +68,8 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, force, allowO
     end
 
     -- built in don't try to change if it's the same already!
-    -- force is used to force the change even if it's the same
-    if not force and not newState then return end
+    -- forceChange is used to forceChange the change even if it's the same (i dont remember why I needed this only default stages has it true)
+    if not forceChange and not newState then return end
 
     local canChange = true
     if repair then
@@ -97,6 +100,9 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, force, allowO
 
     -- if the extra corresponds to a button
     if button then
+        -- add that button to the new button states for UI with it's extra and new state
+        table.insert(buttonStates, { extra = extra, newState = newState })
+
         if playSound then
             if newState == 0 then
                 PlayBeep(true)
@@ -108,7 +114,9 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, force, allowO
         if not extraOnly then
             -- set linked extras
             for _, v in ipairs(button.linkedExtras) do
-                ULC:SetStage(v, newState, false, true, repair, force)
+                ULC:SetStage(v, newState, false, true, repair, forceChange)
+                -- add linked buttons to the new button states for UI with their extras and new state
+                table.insert(buttonStates, { extra = v, newState = newState })
             end
 
             -- set opposite extras
@@ -116,23 +124,27 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, force, allowO
                 local oppState
                 if newState == 1 then oppState = 0 elseif newState == 0 then oppState = 1 end
                 for _, v in pairs(button.oppositeExtras) do
-                    ULC:SetStage(v, oppState, false, true, repair, force)
+                    ULC:SetStage(v, oppState, false, true, repair, forceChange)
+                    -- add opposite buttons to the new button states for UI with their extras and new state
+                    table.insert(buttonStates, { extra = v, newState = oppState })
                 end
             end
 
             -- set off extras
             for _, v in ipairs(button.offExtras) do
-                ULC:SetStage(v, 1, false, true, repair, force)
+                ULC:SetStage(v, 1, false, true, repair, forceChange)
+                -- add off buttons to the new button states for UI with their extras and new state
+                table.insert(buttonStates, { extra = v, newState = 1 })
             end
         end
 
-        ULC:SetButton(extra, newState)
-        -- update ui
-        -- SendNUIMessage({
-        --     type = 'setButton',
-        --     extra = extra,
-        --     state = newState
-        -- })
+        if not extraOnly or forceUi then
+            -- update UI
+            ULC:SetButtons(buttonStates)
+        end
+
+        -- this is deprecated?
+        -- ULC:SetButton(extra, newState)
     end
 end
 

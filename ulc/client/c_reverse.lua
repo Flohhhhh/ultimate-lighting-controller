@@ -7,7 +7,7 @@ local timerExpired = false
 function setReverseExtras(newState)
     -- set enable extras to match the new state
     for _, v in ipairs(MyVehicleConfig.reverseConfig.reverseExtras) do
-        ULC:SetStage(v, newState, false, true)
+        ULC:SetStage(v, newState, false, true, false, false, true, false)
     end
     if not MyVehicleConfig.reverseConfig.disableExtras then return end
     if newState == 0 then
@@ -15,14 +15,14 @@ function setReverseExtras(newState)
         for _, v in ipairs(MyVehicleConfig.reverseConfig.disableExtras) do
             --print("Checking extra " .. v .. " for reverse state")
             if IsVehicleExtraTurnedOn(MyVehicle, v) then
-                ULC:SetStage(v, 1, false, true)
+                ULC:SetStage(v, 1, false, true, false, false, true, false)
                 table.insert(disabledExtras, v)
             end
         end
     else -- newState == 1
         -- set the disabled extras back on
         for _, v in ipairs(disabledExtras) do
-            ULC:SetStage(v, 0, false, true)
+            ULC:SetStage(v, 0, false, true, false, false, true, false)
         end
         disabledExtras = {}
     end

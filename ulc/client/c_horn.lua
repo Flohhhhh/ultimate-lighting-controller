@@ -21,7 +21,7 @@ function SetHornExtras(newState)
                 state = IsVehicleExtraTurnedOn(MyVehicle, extra)
             }
             table.insert(extraStates, extraState)
-            ULC:SetStage(extra, 0, false, true)
+            ULC:SetStage(extra, 0, false, true, false, false, true, false)
         end
         if not MyVehicleConfig.hornConfig.disableExtras then return end
         for _, extra in pairs(MyVehicleConfig.hornConfig.disableExtras) do
@@ -30,20 +30,20 @@ function SetHornExtras(newState)
                 state = IsVehicleExtraTurnedOn(MyVehicle, extra)
             }
             table.insert(extraStates, extraState)
-            ULC:SetStage(extra, 1, false, true)
+            ULC:SetStage(extra, 1, false, true, false, false, true, false)
         end
     elseif newState == 1 then
         for _, extra in pairs(MyVehicleConfig.hornConfig.hornExtras) do
             local prevState = GetPreviousStateByExtra(extra)
             if not prevState then
-                ULC:SetStage(extra, 1, false, true)
+                ULC:SetStage(extra, 1, false, true, false, false, true, false)
             end
         end
         if not MyVehicleConfig.hornConfig.disableExtras then return end
         for _, extra in pairs(MyVehicleConfig.hornConfig.disableExtras) do
             local prevState = GetPreviousStateByExtra(extra)
             if prevState then
-                ULC:SetStage(extra, 0, false, true)
+                ULC:SetStage(extra, 0, false, true, false, false, true, false)
             end
         end
     end

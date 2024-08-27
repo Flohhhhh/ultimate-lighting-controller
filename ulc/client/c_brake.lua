@@ -17,21 +17,21 @@ local function setBrakeExtras(newState)
         if IsVehicleExtraTurnedOn(MyVehicle, v) then currentState = 0 else currentState = 1 end
         --print("[ULC] setBrakeExtras() newState: " .. newState .. " currentState: " .. currentState)
         if currentState == newState then break end
-        ULC:SetStage(v, newState, false, true)
+        ULC:SetStage(v, newState, false, true, false, false, true, false)
     end
     if newState == 0 then
         -- disable the disable extras and save the ones that we change
         if not MyVehicleConfig.brakeConfig.disableExtras then return end
         for _, v in pairs(MyVehicleConfig.brakeConfig.disableExtras) do
             if IsVehicleExtraTurnedOn(MyVehicle, v) then
-                ULC:SetStage(v, 1, false, true)
+                ULC:SetStage(v, 1, false, true, false, false, true, false)
                 table.insert(disabledExtras, v)
             end
         end
     elseif newState == 1 then
         -- re-enable any extras that were disabled
         for _, v in pairs(disabledExtras) do
-            ULC:SetStage(v, 0, false, true)
+            ULC:SetStage(v, 0, false, true, false, false, true, false)
         end
         disabledExtras = {}
     end

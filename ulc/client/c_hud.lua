@@ -36,6 +36,7 @@ function ULC:PopulateButtons(_buttons, placeholders)
     })
 end
 
+-- deprecated in exchange for "SetButtons"
 function ULC:SetButton(extra, enabled)
     local newState
     if enabled == 0 then
@@ -48,6 +49,25 @@ function ULC:SetButton(extra, enabled)
         type = 'setButton',
         extra = extra,
         newState = newState
+    })
+end
+
+function ULC:SetButtons(buttonStates)
+    print("Setting buttons", json.encode(buttonStates))
+    -- go through the buttons and replace newState with a boolean
+    -- newState = 1 means false, 0 means true
+
+    for k, v in pairs(buttonStates) do
+        if v.newState == 1 then
+            v.newState = false
+        elseif v.newState == 0 then
+            v.newState = true
+        end
+    end
+
+    SendNUIMessage({
+        type = 'setButtons',
+        buttonStates = buttonStates
     })
 end
 

@@ -8,12 +8,12 @@ local function setCruiseLights(newState)
     sbState = newState
     for _, v in pairs(MyVehicleConfig.steadyBurnConfig.sbExtras) do
         --print("Setting cruise lights extra: " .. v)
-        ULC:SetStage(v, newState, false, true)
+        ULC:SetStage(v, newState, false, true, false, false, true, false)
     end
 end
 
 local function getSteadyBurnState()
-    if IsVehicleExtraTurnedOn(MyVehicle,  MyVehicleConfig.steadyBurnConfig.sbExtras[1]) then
+    if IsVehicleExtraTurnedOn(MyVehicle, MyVehicleConfig.steadyBurnConfig.sbExtras[1]) then
         return 0
     else
         return 1
@@ -60,10 +60,9 @@ AddEventHandler('ulc:CheckCruise', function()
         if Lights and MyVehicleConfig.steadyBurnConfig.disableWithLights then return end
         --print("Setting cruise lights on")
         setCruiseLights(0)
-
     elseif MyVehicleConfig.steadyBurnConfig.useTime then
-
-        local isTime = GetClockHours() > Config.SteadyBurnSettings.nightStartHour or GetClockHours() < Config.SteadyBurnSettings.nightEndHour
+        local isTime = GetClockHours() > Config.SteadyBurnSettings.nightStartHour or
+        GetClockHours() < Config.SteadyBurnSettings.nightEndHour
         if isTime then
             -- if lights are already on do nothing
             if sbState == 0 then return end
@@ -74,6 +73,5 @@ AddEventHandler('ulc:CheckCruise', function()
             if sbState == 1 then return end
             setCruiseLights(1)
         end
-
     end
 end)
