@@ -148,6 +148,7 @@ AddEventHandler('ulc:checkVehicle', function()
         TriggerEvent('ulc:CheckCruise')
         TriggerEvent('ulc:checkParkState', true)
         TriggerEvent('ulc:StartCheckingReverseState')
+        currentStage = 0
       end
     else
       MyVehicle = nil

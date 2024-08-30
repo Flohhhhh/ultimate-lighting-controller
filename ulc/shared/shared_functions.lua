@@ -97,3 +97,14 @@ function validateButtonText(text)
     end
     return true
 end
+
+-- Function to check if a value exists in a table
+-- Returns: bool (whether value is contained), int (index of value if contained)
+function contains(table, val)
+    for i, v in ipairs(table) do
+        if v == val then
+            return i
+        end
+    end
+    return false
+end

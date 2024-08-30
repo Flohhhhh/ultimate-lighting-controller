@@ -26,6 +26,22 @@ function GetButtonByExtra(extra)
     return result
 end
 
+function ULC:ChangeExtra(extra, newState, repair)
+    print("[ULC:ChangeExtra()] Changing extra: " .. extra .. " to: " .. newState)
+    -- disable repair
+    if not repair then
+        SetVehicleAutoRepairDisabled(MyVehicle, true)
+    end
+    -- change extra
+    SetVehicleExtra(MyVehicle, extra, newState)
+    -- fix deformation if repair is true
+    if repair then
+        SetVehicleDeformationFixed(MyVehicle)
+    end
+    -- enable repair
+    SetVehicleAutoRepairDisabled(MyVehicle, false)
+end
+
 ---------------
 ---------------
 -- MAIN CODE --
@@ -41,22 +57,29 @@ end)
 -- action 0 enables, 1 disables, 2 toggles;
 -- updates ui whenever extra is used in a button
 function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, forceUi, allowOutside)
-    -- track button states for UI
-    local buttonStates = {}
-
+    ----------
+    -- checks
     if not MyVehicle then
         print("[ULC:SetStage()] MyVehicle is not defined right now :/")
         return false
     end
-    local button = GetButtonByExtra(extra)
+
     if not allowOutside and not IsPedInAnyVehicle(PlayerPedId(), false) then
         print("[ULC:SetStage()] Player must be in a vehicle, or allowOutside must be true.")
         return false
     end
 
-    local newState
     --print("[ulc:SetStage]", extra, action, playSound, extraOnly)
 
+    --------------
+    -- definitions
+    local button = GetButtonByExtra(extra)
+    local buttonStates = {} -- track button states for UI
+
+
+    --------------------------
+    -- determine the new state
+    local newState
     if IsVehicleExtraTurnedOn(MyVehicle, extra) then
         if action == 1 or action == 2 then
             newState = 1
@@ -67,6 +90,7 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
         end
     end
 
+    ---------------------------------------------------------
     -- built in don't try to change if it's the same already!
     -- forceChange is used to forceChange the change even if it's the same (i dont remember why I needed this only default stages has it true)
     if not forceChange and not newState then return end
@@ -82,27 +106,12 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
             print("[ULC:SetStage] Can't change stage with repair while vehicle is damaged.")
         end
     end
+
     if not canChange then return end
 
-    -- disable repair
-    if not repair then
-        SetVehicleAutoRepairDisabled(MyVehicle, true)
-    end
-    -- change extra
-    SetVehicleExtra(MyVehicle, extra, newState)
-    -- fix deformation if repair is true
-    if repair then
-        SetVehicleDeformationFixed(MyVehicle)
-    end
-    -- enable repair
-    SetVehicleAutoRepairDisabled(MyVehicle, false)
-
-
+    ---------------------------------------
     -- if the extra corresponds to a button
     if button then
-        -- add that button to the new button states for UI with it's extra and new state
-        table.insert(buttonStates, { extra = extra, newState = newState })
-
         if playSound then
             if newState == 0 then
                 PlayBeep(true)
@@ -110,6 +119,62 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
                 PlayBeep(false)
             end
         end
+
+
+
+
+        -- smart stages stuff
+        -- # TODO what happens when other features toggle extras that are keys that are stages?
+        local key = button.key
+        local keyStage = contains(MyVehicleConfig.stages.stageKeys, key) -- find whether MyVehicleConfig.stages.stageKeys contain the key
+
+        -- if the key pressed is not a stage, just change the extra
+        if not keyStage then
+            ULC:ChangeExtra(extra, newState, repair)
+        end
+
+        -- if the key pressed is a stage and extraOnly is false
+        if keyStage and not extraOnly then
+            -- print("key: " .. key .. " keyStage: " .. tostring(keyStage) .. " currentStage: " .. currentStage)
+            -- if it's the same as the current stage, change the extra and proceed normally
+            if keyStage == currentStage then
+                print("Key is the same as current stage")
+                ULC:ChangeExtra(extra, newState, repair)
+                -- set the stage to 0
+                print("Setting stage to: 0")
+                currentStage = 0
+            else
+                -- if it's a different stage then we want to change to a state where that stage is enabled
+                print("Key is not the same as current stage")
+                newState = 0 -- change to newState to 0 since we want the new stage to be enabled
+
+                local currentPrimaryExtraState = IsVehicleExtraTurnedOn(MyVehicle, extra)
+                print("New state: " ..
+                    newState .. "Extra " .. extra .. " current state: " .. tostring(currentPrimaryExtraState))
+
+                if not IsVehicleExtraTurnedOn(MyVehicle, extra) and newState == 0 then
+                    print("Extra needs to be turned on")
+                    ULC:ChangeExtra(extra, newState, repair)
+                elseif IsVehicleExtraTurnedOn(MyVehicle, extra) and newState == 1 then
+                    print("Extra needs to be turned off")
+                    ULC:ChangeExtra(extra, newState, repair)
+                else
+                    -- if it's in the correct state
+                    print("Extra is already in the correct state")
+                end
+                -- set the new stage
+                print("Setting stage to: " .. keyStage)
+                currentStage = keyStage
+            end
+        else -- if the key pressed is not a stage or extraOnly is true
+            ULC:ChangeExtra(extra, newState, repair)
+        end
+
+
+
+        -- add that button to the new button states for UI with it's extra and new state
+        table.insert(buttonStates, { extra = extra, newState = newState })
+
 
         if not extraOnly then
             -- set linked extras
@@ -145,6 +210,8 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
 
         -- this is deprecated?
         -- ULC:SetButton(extra, newState)
+    else -- if it's not a button, we just change the extra because we don't care about stages or linked extras etc.
+        ULC:ChangeExtra(extra, newState, repair)
     end
 end
 

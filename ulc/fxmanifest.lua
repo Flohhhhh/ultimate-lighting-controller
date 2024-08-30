@@ -38,7 +38,9 @@ client_scripts {
 	'client/c_park.lua',
 	'client/c_doors.lua',
 	'client/c_reverse.lua',
-	'client/c_beeps.lua'
+	'client/c_stages.lua',
+	'client/c_beeps.lua',
+
 }
 
 server_scripts {
@@ -46,4 +48,3 @@ server_scripts {
 	'server/s_main.js',
 	'server/s_blackout.lua',
 }
-

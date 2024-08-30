@@ -53,7 +53,7 @@ function ULC:SetButton(extra, enabled)
 end
 
 function ULC:SetButtons(buttonStates)
-    print("Setting buttons", json.encode(buttonStates))
+    -- print("Setting buttons", json.encode(buttonStates))
     -- go through the buttons and replace newState with a boolean
     -- newState = 1 means false, 0 means true
 
