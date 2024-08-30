@@ -7,9 +7,8 @@ LVC_SirenState = 0
 -- sirenId is an int representing the index of a siren in lvc/SIRENS.lua:SIRENS
 RegisterNetEvent("ulc:LVC_MainSirenStateChange")
 AddEventHandler("ulc:LVC_MainSirenStateChange", function(sirenId)
-  local src = source
   print("[ulc:LVC_MainSirenStateChange] " .. sirenId)
-  -- TODO check how much of this is actually needed
+  -- # TODO check how much of this is actually needed
   if not MyVehicle then return end
   if not MyVehicleConfig.luxartVehicleControlConfig then return end
   if not MyVehicleConfig.luxartVehicleControlConfig.useLVC then return end

@@ -112,6 +112,8 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
     ---------------------------------------
     -- if the extra corresponds to a button
     if button then
+        --------------------
+        -- sound
         if playSound then
             if newState == 0 then
                 PlayBeep(true)
@@ -120,9 +122,7 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
             end
         end
 
-
-
-
+        ----------------------
         -- smart stages stuff
         -- # TODO what happens when other features toggle extras that are keys that are stages?
         local key = button.key
@@ -170,12 +170,13 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
             ULC:ChangeExtra(extra, newState, repair)
         end
 
-
-
+        ----------------------
+        -- initialize UI changes
         -- add that button to the new button states for UI with it's extra and new state
         table.insert(buttonStates, { extra = extra, newState = newState })
 
-
+        -----------------------------
+        -- additional actions/extras
         if not extraOnly then
             -- set linked extras
             for _, v in ipairs(button.linkedExtras) do
@@ -207,9 +208,6 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
             -- update UI
             ULC:SetButtons(buttonStates)
         end
-
-        -- this is deprecated?
-        -- ULC:SetButton(extra, newState)
     else -- if it's not a button, we just change the extra because we don't care about stages or linked extras etc.
         ULC:ChangeExtra(extra, newState, repair)
     end
@@ -220,8 +218,6 @@ end
 ------ KEYBINDS -------
 -----------------------
 -----------------------
-
-
 
 for i = 1, 9, 1 do
     RegisterKeyMapping('ulc:num' .. i, 'Toggle ULC Slot ' .. i, 'keyboard', 'NUMPAD' .. i)
