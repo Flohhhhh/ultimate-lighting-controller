@@ -27,7 +27,7 @@ function GetButtonByExtra(extra)
 end
 
 function ULC:ChangeExtra(extra, newState, repair)
-    print("[ULC:ChangeExtra()] Changing extra: " .. extra .. " to: " .. newState)
+    --print("[ULC:ChangeExtra()] Changing extra: " .. extra .. " to: " .. newState)
     -- disable repair
     if not repair then
         SetVehicleAutoRepairDisabled(MyVehicle, true)
@@ -63,7 +63,6 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
         print("[ULC:SetStage()] MyVehicle is not defined right now :/")
         return false
     end
-
     if not allowOutside and not IsPedInAnyVehicle(PlayerPedId(), false) then
         print("[ULC:SetStage()] Player must be in a vehicle, or allowOutside must be true.")
         return false
@@ -75,7 +74,6 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
     -- definitions
     local button = GetButtonByExtra(extra)
     local buttonStates = {} -- track button states for UI
-
 
     --------------------------
     -- determine the new state
@@ -92,7 +90,10 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
 
     ---------------------------------------------------------
     -- built in don't try to change if it's the same already!
-    -- forceChange is used to forceChange the change even if it's the same (i dont remember why I needed this only default stages has it true)
+    --[[ forceChange is used to forceChange the change even if it's the same
+    this is used to trigger the additional actions like linked and off extras
+    even if the extra is already in the state we want it to be
+    (used in cycling stages and one other place i cant remember)]]
     if not forceChange and not newState then return end
 
     local canChange = true
@@ -124,51 +125,54 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
 
         ----------------------
         -- smart stages stuff
-        -- # TODO what happens when other features toggle extras that are keys that are stages?
         local key = button.key
-        local keyStage = contains(MyVehicleConfig.stages.stageKeys, key) -- find whether MyVehicleConfig.stages.stageKeys contain the key
+        if MyVehicleConfig.stages then
+            local keyStage = contains(MyVehicleConfig.stages.stageKeys, key) -- find whether MyVehicleConfig.stages.stageKeys contain the key
 
-        -- if the key pressed is not a stage, just change the extra
-        if not keyStage then
-            ULC:ChangeExtra(extra, newState, repair)
-        end
-
-        -- if the key pressed is a stage and extraOnly is false
-        if keyStage and not extraOnly then
-            -- print("key: " .. key .. " keyStage: " .. tostring(keyStage) .. " currentStage: " .. currentStage)
-            -- if it's the same as the current stage, change the extra and proceed normally
-            if keyStage == currentStage then
-                print("Key is the same as current stage")
+            -- # TODO we're not getting here for some reason when cycling stages at max stage
+            -- if the key pressed is not a stage, just change the extra
+            if not keyStage then
                 ULC:ChangeExtra(extra, newState, repair)
-                -- set the stage to 0
-                print("Setting stage to: 0")
-                currentStage = 0
-            else
-                -- if it's a different stage then we want to change to a state where that stage is enabled
-                print("Key is not the same as current stage")
-                newState = 0 -- change to newState to 0 since we want the new stage to be enabled
-
-                local currentPrimaryExtraState = IsVehicleExtraTurnedOn(MyVehicle, extra)
-                print("New state: " ..
-                    newState .. "Extra " .. extra .. " current state: " .. tostring(currentPrimaryExtraState))
-
-                if not IsVehicleExtraTurnedOn(MyVehicle, extra) and newState == 0 then
-                    print("Extra needs to be turned on")
-                    ULC:ChangeExtra(extra, newState, repair)
-                elseif IsVehicleExtraTurnedOn(MyVehicle, extra) and newState == 1 then
-                    print("Extra needs to be turned off")
-                    ULC:ChangeExtra(extra, newState, repair)
-                else
-                    -- if it's in the correct state
-                    print("Extra is already in the correct state")
-                end
-                -- set the new stage
-                print("Setting stage to: " .. keyStage)
-                currentStage = keyStage
             end
-        else -- if the key pressed is not a stage or extraOnly is true
-            ULC:ChangeExtra(extra, newState, repair)
+
+            -- if the key pressed is a stage and extraOnly is false
+            if keyStage and not extraOnly then
+                print("key: " .. key .. " keyStage: " .. tostring(keyStage) .. " currentStage: " .. currentStage)
+                -- if it's the same as the current stage, change the extra and proceed normally
+                if keyStage == currentStage then
+                    print("Key is the same as current stage")
+                    ULC:ChangeExtra(extra, newState, repair)
+                    -- set the stage to 0
+                    print("Setting stage to: 0")
+                    currentStage = 0
+                else
+                    -- if it's a different stage then we want to change to a state where that stage is enabled
+                    print("Key is not the same as current stage")
+                    newState = 0 -- change to newState to 0 since we want the new stage to be enabled
+
+                    local currentPrimaryExtraState = IsVehicleExtraTurnedOn(MyVehicle, extra)
+                    print("New state: " ..
+                        newState .. "Extra " .. extra .. " current state: " .. tostring(currentPrimaryExtraState))
+
+                    if not IsVehicleExtraTurnedOn(MyVehicle, extra) and newState == 0 then
+                        print("Extra needs to be turned on")
+                        ULC:ChangeExtra(extra, newState, repair)
+                    elseif IsVehicleExtraTurnedOn(MyVehicle, extra) and newState == 1 then
+                        print("Extra needs to be turned off")
+                        ULC:ChangeExtra(extra, newState, repair)
+                    else
+                        -- if it's in the correct state
+                        print("Extra is already in the correct state")
+                    end
+                    -- set the new stage
+                    print("Setting stage to: " .. keyStage)
+                    currentStage = keyStage
+                end
+            else -- if extraOnly is true
+                ULC:ChangeExtra(extra, newState, repair)
+            end
         end
+
 
         ----------------------
         -- initialize UI changes
@@ -220,7 +224,7 @@ end
 -----------------------
 
 for i = 1, 9, 1 do
-    RegisterKeyMapping('ulc:num' .. i, 'Toggle ULC Slot ' .. i, 'keyboard', 'NUMPAD' .. i)
+    RegisterKeyMapping('ulc:num' .. i, 'ULC: Toggle Button ' .. i, 'keyboard', 'NUMPAD' .. i)
     RegisterCommand('ulc:num' .. i, function()
         local extra = GetExtraByKey(i)
         local button = GetButtonByExtra(extra)

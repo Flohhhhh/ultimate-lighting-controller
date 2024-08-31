@@ -64,4 +64,4 @@ RegisterCommand('-ulc:horn', function()
     end
 end)
 
-RegisterKeyMapping('+ulc:horn', 'Toggle Horn Extras', 'keyboard', 'e')
+RegisterKeyMapping('+ulc:horn', 'ULC: Activate Horn Extras', 'keyboard', 'e')

@@ -134,4 +134,4 @@ RegisterCommand('-ulc:brakePattern', function()
     })
 end)
 
-RegisterKeyMapping('+ulc:brakePattern', 'Enable Brake Pattern (Hold)', 'keyboard', 's')
+RegisterKeyMapping('+ulc:brakePattern', 'ULC: Activate Brake Pattern (Hold)', 'keyboard', 's')
