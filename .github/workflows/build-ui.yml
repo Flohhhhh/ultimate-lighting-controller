@@ -1,4 +1,5 @@
 name: Build UI on Changes
+
 on:
   push:
     paths:
@@ -6,7 +7,8 @@ on:
   pull_request:
     paths:
       - 'ulc/src/**'
-
+  workflow_dispatch:
+  
 jobs:
   build:
     runs-on: ubuntu-latest
