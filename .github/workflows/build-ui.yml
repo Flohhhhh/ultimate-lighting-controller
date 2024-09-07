@@ -1,4 +1,4 @@
-name: Build UI on Changes
+name: Build and Deploy
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
     paths:
       - 'ulc/src/**'
   workflow_dispatch:
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Specify the Node.js version to use
+          node-version: '18'
 
       - name: Install dependencies
         run: |
@@ -31,3 +31,22 @@ jobs:
         run: |
           cd ulc/src
           npm run build
+
+      - name: Copy build output
+        run: |
+          mkdir -p html
+          cp -r ulc/src/dist/* html/
+
+      - name: Commit build output
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd html
+          git init
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Deploy build output"
+          git branch -M main
+          git remote add origin https://github.com/${{ github.repository }}.git
+          git push --force origin main
