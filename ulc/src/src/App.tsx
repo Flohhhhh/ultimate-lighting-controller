@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import { Box } from "@mantine/core";
-import "./app.css";
+import "./App.css";
 import StageButton from "./components/StageButton";
 // import TaModule from "./components/TaModule";
 import Menu from "./components/Menu";
