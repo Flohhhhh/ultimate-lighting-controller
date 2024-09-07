@@ -9,7 +9,6 @@ We follow a **GitFlow** workflow. Here's a summary of the branches and their pur
 - **`main`**: This branch always contains production-ready code. Only stable and fully tested features should be merged into `main`.
 - **`develop`**: Active development happens here. Features and fixes are integrated here before they reach `main`.
 - **`feature/*`**: Use these branches for developing specific features or enhancements. Once completed and reviewed, merge them into `develop`.
-- **`hotfix/*`**: These branches are used to address critical issues in `main`. After the fix, merge the branch into both `main` and `develop` to ensure all codebases are up-to-date.
 
 ## How to Contribute
 
