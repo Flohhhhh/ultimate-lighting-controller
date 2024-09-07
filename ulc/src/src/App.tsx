@@ -29,7 +29,6 @@ function App() {
   // SENDING DATA TO LUA
 
   useEffect(() => {
-    //console.log(`saveScale useEffect sending scale of ${scale} to lua`)
     let response = fetch(`https://ulc/saveScale`, {
       method: "POST",
       headers: {
