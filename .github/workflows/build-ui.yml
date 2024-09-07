@@ -32,21 +32,12 @@ jobs:
           cd ulc/src
           npm run build
 
-      - name: Copy build output
-        run: |
-          mkdir -p html
-          cp -r ulc/src/dist/* html/
-
-      - name: Commit build output
+      - name: Commit and push build output
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd html
-          git init
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add .
-          git commit -m "Deploy build output"
-          git branch -M main
-          git remote add origin https://github.com/${{ github.repository }}.git
-          git push --force origin main
+          git add html/
+          git commit -m "Deploy build output" || echo "No changes to commit"
+          git push origin main
