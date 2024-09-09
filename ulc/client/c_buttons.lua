@@ -171,6 +171,9 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
             else -- if extraOnly is true
                 ULC:ChangeExtra(extra, newState, repair)
             end
+        else
+            -- if there are no stages, just change the extra
+            ULC:ChangeExtra(extra, newState, repair)
         end
 
 
@@ -183,10 +186,12 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
         -- additional actions/extras
         if not extraOnly then
             -- set linked extras
-            for _, v in ipairs(button.linkedExtras) do
-                ULC:SetStage(v, newState, false, true, repair, forceChange)
-                -- add linked buttons to the new button states for UI with their extras and new state
-                table.insert(buttonStates, { extra = v, newState = newState })
+            if button.linkedExtras then
+                for _, v in ipairs(button.linkedExtras) do
+                    ULC:SetStage(v, newState, false, true, repair, forceChange)
+                    -- add linked buttons to the new button states for UI with their extras and new state
+                    table.insert(buttonStates, { extra = v, newState = newState })
+                end
             end
 
             -- set opposite extras
@@ -201,10 +206,12 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
             end
 
             -- set off extras
-            for _, v in ipairs(button.offExtras) do
-                ULC:SetStage(v, 1, false, true, repair, forceChange)
-                -- add off buttons to the new button states for UI with their extras and new state
-                table.insert(buttonStates, { extra = v, newState = 1 })
+            if button.offExtras then
+                for _, v in ipairs(button.offExtras) do
+                    ULC:SetStage(v, 1, false, true, repair, forceChange)
+                    -- add off buttons to the new button states for UI with their extras and new state
+                    table.insert(buttonStates, { extra = v, newState = 1 })
+                end
             end
         end
 

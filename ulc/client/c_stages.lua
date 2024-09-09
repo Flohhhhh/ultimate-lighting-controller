@@ -45,6 +45,10 @@ function stageUp()
 
   local extra = GetExtraByKey(key)
   local button = GetButtonByExtra(extra)
+  if not button then
+    print("[stageUp()] Could not find button for extra " .. extra)
+    return
+  end
   print("Setting stage to: " .. nextStage .. " using key " .. key .. " with extra " .. extra)
   ULC:SetStage(extra, 0, true, false, button.repair or false, false, true, false)
 end
@@ -65,11 +69,15 @@ function stageDown()
   local key = MyVehicleConfig.stages.stageKeys[nextStage]
   local extra = GetExtraByKey(key)
   local button = GetButtonByExtra(extra)
+  if not button then
+    print("[stageDown()] Could not find button for extra " .. extra)
+    return
+  end
   print("Setting stage to: " .. nextStage .. " using key " .. key .. " with extra " .. extra)
   ULC:SetStage(extra, 0, true, false, button.repair or false, false, true, false)
 end
 
-function CycleStages()
+function cycleStages()
   if not checks() then return end
   if currentStage == getMaxStage() then
     print("Tried to cycle stages at max stage, resetting to 0")
@@ -77,6 +85,10 @@ function CycleStages()
     local key = MyVehicleConfig.stages.stageKeys[currentStage]
     local extra = GetExtraByKey(key)
     local button = GetButtonByExtra(extra)
+    if not button then
+      print("[cycleStages()] Could not find button for extra " .. extra)
+      return
+    end
     print("Setting stage to: 0 using key " .. key .. " with extra " .. extra)
     ULC:SetStage(extra, 1, true, false, button.repair or false, true, true, false)
     return
@@ -100,5 +112,5 @@ end)
 RegisterKeyMapping("ulc:stage_cycle", "ULC: Cycle Stages", "keyboard", "NUMPAD0")
 RegisterCommand("ulc:stage_cycle", function()
   if not checks() then return end
-  CycleStages()
+  cycleStages()
 end)

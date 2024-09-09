@@ -13,7 +13,7 @@ local function GetPreviousStateByExtra(extra)
 end
 
 function SetHornExtras(newState)
-    print('SetHornExtras: ' .. newState)
+    -- print('SetHornExtras: ' .. newState)
     if newState == 0 then
         for _, extra in pairs(MyVehicleConfig.hornConfig.hornExtras) do
             local extraState = {

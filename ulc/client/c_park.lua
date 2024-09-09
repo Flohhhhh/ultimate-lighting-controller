@@ -76,7 +76,7 @@ AddEventHandler('ulc:vehPark', function()
 
                             if distance < Config.ParkSettings.syncDistance then
                                 if GetVehicleClass(v) == 18 then
-                                    -- check if my vehicle is set to sync with this vehicle
+                                    -- check if my vehicle is set to sync with this vehicle or if the vehicle is the same model as my vehicle
                                     if IsVehicleInTable(v, MyVehicleConfig.parkConfig.syncWith) or GetEntityModel(v) == GetEntityModel(MyVehicle) then
                                         --print('Vehicle' .. v .. ' should sync with me.')
 
