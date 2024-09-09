@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import { Box } from "@mantine/core";
-import "./app.css";
+import "./App.css";
 import StageButton from "./components/StageButton";
 // import TaModule from "./components/TaModule";
 import Menu from "./components/Menu";
@@ -15,6 +15,7 @@ interface ButtonObject {
 }
 
 function App() {
+  const [test, setTest] = useState(0);
   const [opacity, setOpacity] = useState(0);
   const [menuOpacity, setMenuOpacity] = useState(0);
   const [scale, setScale] = useState(1.0);
@@ -29,7 +30,6 @@ function App() {
   // SENDING DATA TO LUA
 
   useEffect(() => {
-    //console.log(`saveScale useEffect sending scale of ${scale} to lua`)
     let response = fetch(`https://ulc/saveScale`, {
       method: "POST",
       headers: {

@@ -1,0 +1,44 @@
+name: Build and Deploy
+
+on:
+  push:
+    paths:
+      - 'ulc/src/**'
+  pull_request:
+    paths:
+      - 'ulc/src/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd ulc/src
+          npm install
+
+      - name: Build project
+        run: |
+          cd ulc/src
+          npm run build
+
+      - name: Commit and push build output
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          cd ulc
+          git add html/
+          git commit -m "Deploy build output" || echo "No changes to commit"
+          git push origin main
