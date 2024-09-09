@@ -8,3 +8,5 @@ AddEventHandler("lvc:SetLxSirenState_s", function(newState)
   print("[lvc:SetLxSirenState_s] " .. src .. " " .. newState)
   TriggerClientEvent("ulc:LVC_MainSirenStateChange", src, newState)
 end)
+
+-- TODO: this isn't use anywhere yet

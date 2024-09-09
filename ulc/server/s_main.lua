@@ -123,12 +123,6 @@ local function CheckData(data, resourceName)
         'A config in "' ..
         resourceName .. '" uses Park Patterns, but no park or drive extras were specified (pExtras = {}, dExtras = {})')
     end
-
-    if data.parkConfig.useSync and #data.parkConfig.syncWith == 0 then
-      TriggerEvent("ulc:warn",
-        'A config in "' ..
-        resourceName .. '" uses Park Pattern Syncing, but no other vehicle models were specified (syncWith = {})')
-    end
   end
 
   -- check if brakes enabled but no extras specified
@@ -141,6 +135,43 @@ local function CheckData(data, resourceName)
   if data.hornConfig.useHorn and #data.hornConfig.hornExtras == 0 then
     TriggerEvent("ulc:warn", 'A config in "' .. resourceName .. '" uses Horn Extras, but no horn extras were specified.')
   end
+
+  -- stages
+  if data.stages then
+    -- check if stages are enabled but no keys specified
+    if data.stages.useStages and #data.stages.stageKeys == 0 then
+      TriggerEvent("ulc:warn",
+        'A config in "' .. resourceName .. '" uses Stages, but no keys were specified.')
+    end
+
+    -- check each key
+    for _, v in pairs(data.stages.stageKeys) do
+      -- if key is not a numpad value
+      if v > 9 then
+        TriggerEvent("ulc:error",
+          'A config in "' ..
+          resourceName ..
+          '" has an invalid key in stageKeys (' .. v .. '). Value must be 1-9 representing numpad keys.')
+        break
+      end
+
+      -- make sure each item in data.stages.stageKeys corresponds to a button with key = the value
+      local buttonExists = false
+      for _, b in pairs(data.buttons) do
+        if b.key == v then
+          buttonExists = true
+          break
+        end
+      end
+      if not buttonExists then
+        TriggerEvent("ulc:error",
+          'A config in "' ..
+          resourceName ..
+          '" has a key in stageKeys (' .. v .. ') that does not correspond to a key assigned to a button.')
+      end
+    end
+  end
+
 
   --------------------
   -- DEFAULT STAGES --
