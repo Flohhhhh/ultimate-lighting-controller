@@ -114,3 +114,44 @@ RegisterCommand("ulc:stage_cycle", function()
   if not checks() then return end
   cycleStages()
 end)
+
+--------------------
+--------------------
+-- DEFAULT STAGES --
+--------------------
+--------------------
+
+-- checks if the button.key is contained in the stageKeys array and returns the index
+function getStageFromButton(button)
+  if not button then return false end
+  if not MyVehicle then return false end
+  -- if MyVehicleConfig.stages.stageKeys is nil or doesn't contain the button.key return false
+  if not MyVehicleConfig.stages.stageKeys then return false end
+  for i, key in pairs(MyVehicleConfig.stages.stageKeys) do
+    if key == button.key then
+      return i
+    end
+  end
+  return false
+end
+
+function setDefaultStages()
+  -- default stages
+  if not MyVehicleConfig.defaultStages or false then return end
+  if not MyVehicleConfig.defaultStages.useDefaults then return end
+  for _, e in pairs(MyVehicleConfig.defaultStages.enableKeys) do
+    local button = GetButtonByExtra(GetExtraByKey(e))
+    if not button then break end
+    -- if the button is a stage
+    local stage = getStageFromButton(button)
+    -- if the index of this stage = the current stage do nothing
+    if stage and stage == currentStage then return end
+    -- if this button is not a stage or the stage is not the current stage proceed normally
+    ULC:SetStage(GetExtraByKey(e), 0, false, false, button.repair, true, true, false)
+  end
+  for _, d in pairs(MyVehicleConfig.defaultStages.disableKeys) do
+    local button = GetButtonByExtra(GetExtraByKey(d))
+    if not button then break end
+    ULC:SetStage(GetExtraByKey(d), 1, false, false, button.repair, true, true, false)
+  end
+end

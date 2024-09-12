@@ -10,28 +10,6 @@ Lights = false
 MyVehicle = nil
 MyVehicleConfig = nil
 
---------------------
---------------------
--- DEFAULT STAGES --
---------------------
---------------------
-
-local function setDefaultStages()
-  -- default stages
-  if not MyVehicleConfig.defaultStages or false then return end
-  if not MyVehicleConfig.defaultStages.useDefaults then return end
-  for _, e in pairs(MyVehicleConfig.defaultStages.enableKeys) do
-    local button = GetButtonByExtra(GetExtraByKey(e))
-    if not button then break end
-    ULC:SetStage(GetExtraByKey(e), 0, false, false, button.repair, true, true, false)
-  end
-  for _, d in pairs(MyVehicleConfig.defaultStages.disableKeys) do
-    local button = GetButtonByExtra(GetExtraByKey(d))
-    if not button then break end
-    ULC:SetStage(GetExtraByKey(d), 1, false, false, button.repair, true, true, false)
-  end
-end
-
 ------------------------------------
 ------------------------------------
 ------- LIGHTS STATE HANDLER -------
