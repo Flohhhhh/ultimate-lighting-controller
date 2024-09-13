@@ -8,7 +8,6 @@
 Config = {
     -- whether to enable control of lights on/off state using Q key
     -- disabled by default to allow other scripts to control lights such as Luxart
-    -- enable this if you want to use ULC's light control features such as cycling lights
     -- make sure to disable light controls in other scripts if you enable this
     controlLights = false,
 
@@ -27,7 +26,7 @@ Config = {
         delay = 0.5,
         -- distance at which to check for other vehicles to sync patterns with
         syncDistance = 32,
-        -- seconds before a single client triggers sync again 
+        -- seconds before a single client triggers sync again
         syncCooldown = 4,
     },
 
