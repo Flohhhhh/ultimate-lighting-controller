@@ -9,7 +9,7 @@ currentStage = 0
 
 
 -- helpers
-function checks()
+local function checks()
   if not MyVehicle then return end
   if not MyVehicleConfig.stages then return end
   if not MyVehicleConfig.stages.useStages then return end
