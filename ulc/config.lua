@@ -43,6 +43,20 @@ Config = {
     -- temporarily empty as of v1.3.0
     BrakeSettings = {},
 
+    -- Reverse Extras/Patterns Config;
+    -- introduced in v1.8.0
+    ReverseSettings = {
+        -- these options control the expiration of the reverse extras
+        -- if enabled, reverse extras will turn off after a random time between min and max
+        -- this is to simulate more realistic behavior where the vehicle would shifted out of reverse
+        -- after being stopped for some time
+        useRandomExpiration = true,
+        -- minimum time in seconds extras will stay on after stopping
+        minExpiration = 3,
+        -- maximum time in seconds extras will stay on after stopping
+        maxExpiration = 8,
+    },
+
     -- Import confiurations here
     -- Add the resource names of vehicle resources that include a ulc.lua config file
     ExternalVehResources = {

@@ -57,9 +57,12 @@ end)
 
 -- handle disabling lights after some time
 function startTimer()
+    -- if disabled in config, don't start timer , if enabled or missing config, start timer
+    if Config and Config.ReverseSettings and not Config.ReverseSettings.useRandomExpiration then return end
+    -- timer thread
     CreateThread(function()
         local speed
-        local duration
+        local duration = math.random(3, 8) * 1000
         local expirationTime
 
         while true do
@@ -79,7 +82,12 @@ function startTimer()
                 if timerExpired then
                     goto continue
                 end
-                duration = math.random(3000, 8000)
+                if Config and Config.ReverseSettings then
+                    duration = math.random(
+                        (Config.ReverseSettings.minExpiration or 3) * 1000,
+                        (Config.ReverseSettings.maxExpiration or 8) * 1000
+                    )
+                end
                 expirationTime = GetGameTimer() + duration
                 while GetGameTimer() < expirationTime do
                     Wait(500)
@@ -89,17 +97,14 @@ function startTimer()
                         -- print("[ULC] Reverse: Moving, breaking timer")
                         break
                     end
-
                     if not reversing then
                         -- print("[ULC] Reverse: Not reversing, breaking timer")
                         break
                     end
-
                     if not IsPedInAnyVehicle(PlayerPedId()) then
                         -- print("[ULC] Reverse: Not in vehicle, breaking timer")
                         break
                     end
-
                     if GetGameTimer() > expirationTime then
                         print("[ULC] Reverse: Timer expired, disabling extras")
                         timerExpired = true
