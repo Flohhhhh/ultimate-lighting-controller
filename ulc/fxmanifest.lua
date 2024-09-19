@@ -5,7 +5,7 @@ lua54 'yes'
 name "Ultimate Lighting Controls"
 description "The ultimate non-els lighting controller. Documentation: https://docs.dwnstr.com/ulc/overview"
 author "Dawnstar"
-version "1.8.0"
+version "1.9.0"
 
 ui_page "html/index.html"
 
@@ -40,6 +40,7 @@ client_scripts {
 	'client/c_reverse.lua',
 	'client/c_stages.lua',
 	'client/c_beeps.lua',
+	'client/c_signals.lua'
 
 }
 

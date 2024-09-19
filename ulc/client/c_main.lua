@@ -123,9 +123,11 @@ AddEventHandler('ulc:checkVehicle', function()
             "HUD is hidden. Type /ulc to see if you disabled it. Otherwise, the server owner may have disabled the HUD.")
         end
 
+
         TriggerEvent('ulc:CheckCruise')
         TriggerEvent('ulc:checkParkState', true)
         TriggerEvent('ulc:StartCheckingReverseState')
+        TriggerEvent("ulc:SetupSignalExtrasTable")
         currentStage = 0
       end
     else
