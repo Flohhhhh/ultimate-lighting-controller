@@ -10,13 +10,10 @@ currentStage = 0
 
 -- helpers
 local function checks()
-  if not MyVehicle then return end
-  if not MyVehicleConfig.stages then return end
-  if not MyVehicleConfig.stages.useStages then return end
-  if not MyVehicleConfig.stages.stageKeys
-  then
-    return false
-  end
+  if not MyVehicle then return false end
+  if not MyVehicleConfig.stages then return false end
+  if not MyVehicleConfig.stages.useStages then return false end
+  if not MyVehicleConfig.stages.stageKeys then return false end
   return true
 end
 
