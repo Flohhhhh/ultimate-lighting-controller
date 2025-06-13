@@ -111,7 +111,9 @@ AddEventHandler('ulc:vehPark', function()
                             --print("Candidate: " .. VehToNet(v))
                             table.insert(vehsToSyncNet, VehToNet(v))
                         end
-                        TriggerServerEvent("sync:send", vehsToSyncNet)
+                        -- send vehicle sync info to server
+                        -- prefix with 'ulc:' to match server event name
+                        TriggerServerEvent("ulc:sync:send", vehsToSyncNet)
                     else --print('Found no vehicles to sync.')
                     end
                 else
