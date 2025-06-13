@@ -34,7 +34,7 @@ AddEventHandler('ulc:lightsOn', function()
   Lights = true
   setDefaultStages()
   -- check if parked or driving for park patterns
-  TriggerEvent('ulc:checkParkState', GetVehiclePedIsIn(PlayerPedId()), false)
+  TriggerEvent('ulc:checkParkState', false)
   SendNUIMessage({
     type = 'toggleIndicator',
     state = Lights

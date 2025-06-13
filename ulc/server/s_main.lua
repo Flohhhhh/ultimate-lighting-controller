@@ -369,8 +369,9 @@ CreateThread(function()
   for k, v in ipairs(Config.ExternalVehResources) do
     local resourceState = GetResourceState(v)
     while resourceState == "starting" do
-      print("^3[ULC] Waiting for resource: " .. resourceName .. " to load.")
+      print("^3[ULC] Waiting for resource: " .. v .. " to load.")
       Wait(100)
+      resourceState = GetResourceState(v)
     end
     LoadExternalVehicleConfig(v)
   end

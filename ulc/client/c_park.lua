@@ -1,6 +1,5 @@
 --print("[ULC]: Park Patterns Loaded")
 
-local veh = GetVehiclePedIsIn(PlayerPedId())
 parked = false
 local lastSync = 0
 local effectDelay = 1000
@@ -8,7 +7,7 @@ local effectDelay = 1000
 CreateThread(function()
     while true do
         if IsPedInAnyVehicle(PlayerPedId()) then
-            TriggerEvent('ulc:checkParkState', veh, false)
+            TriggerEvent('ulc:checkParkState', false)
 
             Wait(Config.ParkSettings.delay * 1000)
         else
@@ -68,7 +67,7 @@ AddEventHandler('ulc:vehPark', function()
 
                     for k, v in pairs(loadedVehicles) do
                         -- don't include my vehicle
-                        if v ~= veh then
+                        if v ~= MyVehicle then
                             local vehCoords = GetEntityCoords(v)
                             local pedCoords = GetEntityCoords(PlayerPedId())
                             local distance = GetDistanceBetweenCoords(vehCoords, pedCoords)
@@ -80,7 +79,7 @@ AddEventHandler('ulc:vehPark', function()
                                     if IsVehicleInTable(v, MyVehicleConfig.parkConfig.syncWith) or GetEntityModel(v) == GetEntityModel(MyVehicle) then
                                         --print('Vehicle' .. v .. ' should sync with me.')
 
-                                        local speed = GetVehicleSpeedConverted(veh)
+                                        local speed = GetVehicleSpeedConverted(MyVehicle)
 
                                         if speed < Config.ParkSettings.speedThreshold then
                                             --print("Found an eligible sync vehicle.")
@@ -93,8 +92,8 @@ AddEventHandler('ulc:vehPark', function()
                     end
                     if #vehsToSync > 0 then
                         -- sync my vehicle
-                        SetVehicleSiren(veh, false)
-                        SetVehicleSiren(veh, true)
+                        SetVehicleSiren(MyVehicle, false)
+                        SetVehicleSiren(MyVehicle, true)
 
                         -- sync other vehicles on my screen
                         for k, v in pairs(vehsToSync) do
