@@ -1,4 +1,4 @@
-# Contributing to [Your Project Name]
+# Contributing to ULC
 
 Thank you for your interest in contributing to this project! Follow the guidelines below to maintain a clean, stable codebase and ensure smooth collaboration.
 
