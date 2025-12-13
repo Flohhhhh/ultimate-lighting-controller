@@ -325,7 +325,7 @@ local function LoadExternalVehicleConfig(resourceName)
       end
       
       if txtFileData then
-        TriggerEvent("ulc:error", '^1ERROR: Found "ulc.lua.txt" file in resource: "' .. resourceName .. '". You need to rename it to "ulc.lua" (without the .txt extension). Make sure file extensions are visible in your file explorer.^0')
+        TriggerEvent("ulc:error", '^1Found "ulc.lua.txt" file in resource: "' .. resourceName .. '". You need to rename it to "ulc.lua" (without the .txt extension). Make sure file extensions are visible in your file explorer.^0')
         return
       end
       
@@ -379,7 +379,7 @@ CreateThread(function()
   for k, v in ipairs(Config.ExternalVehResources) do
     local resourceState = GetResourceState(v)
     while resourceState == "starting" do
-      print("^3[ULC] Waiting for resource: " .. resourceName .. " to load.")
+      print("^3[ULC] Waiting for resource: " .. v .. " to load.")
       Wait(100)
     end
     LoadExternalVehicleConfig(v)
