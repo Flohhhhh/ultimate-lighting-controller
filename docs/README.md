@@ -1,48 +1,55 @@
 # ULC Developer Documentation
 
-This documentation provides technical details for contributors and developers working on the Ultimate Lighting Controller (ULC).
+Documentation for contributors and agents to understand ULC's architecture and development approach.
 
-## Structure
+## Purpose
 
-- **[Architecture](./architecture/)** - System design and component interaction
-- **[Features](./features/)** - Individual feature implementations
-- **[Configuration](./configuration/)** - Vehicle configuration and validation
+ULC is built around a modular, opt-in architecture where:
+- No vehicle is affected without explicit configuration
+- Each feature operates independently
+- Backwards compatibility is non-negotiable
+- Configuration validation happens server-side before distribution
 
-## Quick Reference
+## Documentation Structure
 
-### Key Files
+- **[Architecture Overview](./architecture/overview.md)** - Core design principles, component flow, and state management
+- **[Development Patterns](./development-patterns.md)** - Common patterns and approaches used throughout the codebase
 
-- **`c_main.lua`** - Main client thread, vehicle detection, and light state management
-- **`s_main.lua`** - Server index file, loads and validates vehicle configurations
-- **Feature files** - `c_[feature].lua` for client-side features
-- **`config.lua`** - Global configuration settings
-- **`shared_functions.lua`** - Shared utility functions
+## Key Architectural Concepts
 
-### Client Features (c_*.lua)
+### Modular Feature Design
+Each feature is self-contained in its own `c_[feature].lua` file. Features:
+- Check for their own configuration before running
+- Operate independently in their own threads
+- Share state through global variables (`MyVehicle`, `MyVehicleConfig`)
+- Control vehicle extras through a central function (`ULC:SetStage`)
 
-Each feature has its own file:
-- `c_stages.lua` - Stage controls and cycling
-- `c_park.lua` - Park patterns and vehicle sync
-- `c_buttons.lua` - UI button management
-- `c_brake.lua` - Brake light extras
-- `c_reverse.lua` - Reverse light extras
-- `c_horn.lua` - Horn patterns and extras
-- `c_blackout.lua` - Blackout mode
-- `c_cruise.lua` - Cruise control integration
-- `c_signals.lua` - Turn signal handling
-- `c_doors.lua` - Door state monitoring
-- `c_beeps.lua` - Audio feedback
-- `c_hud.lua` - UI/HUD management
+### Configuration-First Approach
+Vehicle configurations define what features are enabled:
+- Server loads and validates all configs on startup
+- Validation catches errors before they reach clients
+- Clients receive only validated configurations
+- Configuration changes require server restart
 
-### Server Components (s_*.lua)
+### Opt-In Everything
+Features must be explicitly enabled in vehicle config. Default behavior is always "off" for new features.
 
-- `s_main.lua` - Configuration loading and validation
-- `s_blackout.lua` - Server-side blackout coordination
-- `s_lvc.lua` - LVC compatibility
+## File Organization
 
-## Development Workflow
+```
+ulc/
+├── client/          # Feature modules (c_[feature].lua)
+│   └── c_main.lua   # Entry point: vehicle detection & state
+├── server/
+│   └── s_main.lua   # Configuration loader & validator
+├── shared/          # Utility functions
+└── config.lua       # Global settings
+```
 
-1. Features are opt-in via vehicle configuration
-2. All config changes must be backwards compatible
-3. Server validates configurations on startup
-4. Client receives validated configs and enables features per vehicle
+## Contributing
+
+When making changes:
+1. **Maintain backwards compatibility** - Old configs must continue to work
+2. **Validate new config fields** - Add checks in `s_main.lua` `CheckData()`
+3. **Default to disabled** - New features should be opt-in
+4. **Keep features independent** - Avoid tight coupling between feature modules
