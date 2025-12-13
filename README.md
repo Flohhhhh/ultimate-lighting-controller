@@ -96,7 +96,4 @@ To build the UI to the `html` folder:
 
 <!-- TODO: need to formalize this in a contributing.md -->
 
-1. All changes that effect the `ulc.lua` config in any way must be 100% backwards compatible. That is, a `ulc.lua` file that was created on the first day ULC was released must still work today.
-   1. Any new features should never throw errors if that config section is not present and by default the new behavior should be entirely disabled.
-   2. Changes to the configuration format of an existing feature must also still support the old format.
-   3. For this reason, it's imperative that new features be well though-out in terms of the format of their configuration in the `ulc.lua` files.
+See the ``/docs`` folder for information on project architecture.
