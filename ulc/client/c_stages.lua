@@ -138,7 +138,10 @@ end
 
 function setDefaultStages()
   -- default stages
-  if not MyVehicleConfig then return end
+  if not MyVehicleConfig then
+    print("[ULC:setDefaultStages] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
+    return
+  end
   if not MyVehicleConfig.defaultStages or false then return end
   if not MyVehicleConfig.defaultStages.useDefaults then return end
   for _, e in pairs(MyVehicleConfig.defaultStages.enableKeys) do

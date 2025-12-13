@@ -5,7 +5,10 @@ local sbState = 1
 
 -- 0 on, 1 off
 local function setCruiseLights(newState)
-    if not MyVehicleConfig then return end
+    if not MyVehicleConfig then
+        print("[ULC:setCruiseLights] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
+        return
+    end
     sbState = newState
     for _, v in pairs(MyVehicleConfig.steadyBurnConfig.sbExtras) do
         --print("Setting cruise lights extra: " .. v)
@@ -14,7 +17,10 @@ local function setCruiseLights(newState)
 end
 
 local function getSteadyBurnState()
-    if not MyVehicleConfig then return 1 end
+    if not MyVehicleConfig then
+        print("[ULC:getSteadyBurnState] WARNING: Function called but MyVehicleConfig is not loaded. Check server console for configuration errors.")
+        return 1
+    end
     if IsVehicleExtraTurnedOn(MyVehicle, MyVehicleConfig.steadyBurnConfig.sbExtras[1]) then
         return 0
     else
@@ -50,7 +56,10 @@ end)
 AddEventHandler('ulc:CheckCruise', function()
     sbState = getSteadyBurnState()
     if not MyVehicle then return end
-    if not MyVehicleConfig then return end
+    if not MyVehicleConfig then
+        print("[ULC:CheckCruise] WARNING: Event handler called but MyVehicleConfig is not loaded. This should not happen.")
+        return
+    end
 
     if Entity(MyVehicle).state.ulc_blackout == 0 then
         -- print("Blackout is on, disabling cruise lights")

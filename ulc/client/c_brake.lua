@@ -1,7 +1,10 @@
 --print("[ULC] Brake Extras Loaded")
 local realBrakeThreshold = 3
 local shouldUseRealBrakes = function()
-    if not MyVehicleConfig then return false end
+    if not MyVehicleConfig then
+        print("[ULC:shouldUseRealBrakes] WARNING: Function called but MyVehicleConfig is not loaded. Check server console for configuration errors.")
+        return false
+    end
     return (MyVehicleConfig.brakeConfig.speedThreshold or 3) <= realBrakeThreshold
 end
 local braking = false
@@ -13,7 +16,10 @@ local braking = false
 local disabledExtras = {}
 
 local function setBrakeExtras(newState)
-    if not MyVehicleConfig then return end
+    if not MyVehicleConfig then
+        print("[ULC:setBrakeExtras] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
+        return
+    end
     for _, v in pairs(MyVehicleConfig.brakeConfig.brakeExtras) do
         local currentState
         if IsVehicleExtraTurnedOn(MyVehicle, v) then currentState = 0 else currentState = 1 end
