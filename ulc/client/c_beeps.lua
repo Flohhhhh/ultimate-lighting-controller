@@ -4,6 +4,7 @@
 -------------------------
 
 function PlayBeep(highPitched)
+    if not Config.enableBeeps then return end
     if highPitched then
         PlaySoundFrontend(-1, "5_SEC_WARNING", "HUD_MINI_GAME_SOUNDSET", 1)
     else
