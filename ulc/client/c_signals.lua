@@ -4,6 +4,9 @@ local combinedExtrasTable = {}
 AddEventHandler("ulc:SetupSignalExtrasTable", function()
   print('[ulc:SetupSignalExtrasTable] Setting up signal extras table')
 
+  if not MyVehicleConfig then return end
+  if not MyVehicleConfig.signalConfig then return end
+
   local extras = {}
 
 
@@ -41,6 +44,8 @@ IndicatorState = 0
 local savedExtraStates = {}
 
 local function saveExtraStates()
+  if not MyVehicleConfig then return end
+  if not MyVehicleConfig.signalConfig then return end
   -- get states of all extras listed in signalConfig
   local extras = {}
   for _, side in pairs({ "left", "right", "hazard" }) do

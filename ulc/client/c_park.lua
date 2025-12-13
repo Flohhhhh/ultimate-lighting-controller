@@ -45,7 +45,7 @@ AddEventHandler('ulc:vehPark', function()
         --print('[ulc:vehPark] My vehicle is parked.')
         parked = true
 
-        if MyVehicle and MyVehicleConfig.parkConfig.usePark then
+        if MyVehicle and MyVehicleConfig and MyVehicleConfig.parkConfig.usePark then
             -- enable pExtras
             for _, v in pairs(MyVehicleConfig.parkConfig.pExtras) do
                 ULC:SetStage(v, 0, false, true, false, false, true, false)
@@ -136,7 +136,7 @@ AddEventHandler('ulc:vehDrive', function()
     if Lights then
         --print('[ulc:vehDrive] My vehicle is driving.')
         parked = false
-        if MyVehicle and MyVehicleConfig.parkConfig.usePark then
+        if MyVehicle and MyVehicleConfig and MyVehicleConfig.parkConfig.usePark then
             -- disable pExtras
             for _, v in pairs(MyVehicleConfig.parkConfig.pExtras) do
                 ULC:SetStage(v, 1, false, true, false, false, true, false)

@@ -53,13 +53,13 @@ RegisterCommand('+ulc:horn', function()
     --print('horn')
     extraStates = {}
 
-    if MyVehicle and MyVehicleConfig.hornConfig.useHorn then
+    if MyVehicle and MyVehicleConfig and MyVehicleConfig.hornConfig.useHorn then
         SetHornExtras(0)
     end
 end)
 
 RegisterCommand('-ulc:horn', function()
-    if MyVehicle and MyVehicleConfig.hornConfig.useHorn then
+    if MyVehicle and MyVehicleConfig and MyVehicleConfig.hornConfig.useHorn then
         SetHornExtras(1)
     end
 end)
