@@ -327,7 +327,8 @@ local function LoadExternalVehicleConfig(resourceName)
   local f, err = load(data)
   if err then
     TriggerEvent("ulc:error",
-      '^1Could not load external configuration in: "' .. resourceName .. '"; error: "' .. err .. '"^0')
+      '^1Could not load external configuration in: "' .. resourceName .. '"; SYNTAX ERROR: ' .. err .. '^0')
+    print("^3[ULC] HINT: Check the ulc.lua file in '" .. resourceName .. "' for syntax errors like missing commas, brackets, or quotes.^0")
     return
   end
   if not f or not f() then

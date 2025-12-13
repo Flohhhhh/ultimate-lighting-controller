@@ -11,6 +11,7 @@ currentStage = 0
 -- helpers
 local function checks()
   if not MyVehicle then return false end
+  if not MyVehicleConfig then return false end
   if not MyVehicleConfig.stages then return false end
   if not MyVehicleConfig.stages.useStages then return false end
   if not MyVehicleConfig.stages.stageKeys then return false end
@@ -19,6 +20,7 @@ end
 
 function getMaxStage()
   if not MyVehicle then return end
+  if not MyVehicleConfig then return end
   if not MyVehicleConfig.stages then return end
   if not MyVehicleConfig.stages.stageKeys then return end
   return #MyVehicleConfig.stages.stageKeys
@@ -122,7 +124,9 @@ end)
 function getStageFromButton(button)
   if not button then return false end
   if not MyVehicle then return false end
-  -- if MyVehicleConfig.stages.stageKeys is nil or doesn't contain the button.key return false
+  if not MyVehicleConfig then return false end
+  if not MyVehicleConfig.stages then return false end
+  -- if stageKeys doesn't exist or doesn't contain the button.key return false
   if not MyVehicleConfig.stages.stageKeys then return false end
   for i, key in pairs(MyVehicleConfig.stages.stageKeys) do
     if key == button.key then
@@ -134,6 +138,10 @@ end
 
 function setDefaultStages()
   -- default stages
+  if not MyVehicleConfig then
+    print("[ULC:setDefaultStages] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
+    return
+  end
   if not MyVehicleConfig.defaultStages or false then return end
   if not MyVehicleConfig.defaultStages.useDefaults then return end
   for _, e in pairs(MyVehicleConfig.defaultStages.enableKeys) do

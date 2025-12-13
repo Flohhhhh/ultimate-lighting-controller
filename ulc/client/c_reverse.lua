@@ -5,6 +5,10 @@ local disabledExtras = {}
 local timerExpired = false
 
 function setReverseExtras(newState)
+    if not MyVehicleConfig then
+        print("[ULC:setReverseExtras] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
+        return
+    end
     -- set enable extras to match the new state
     for _, v in ipairs(MyVehicleConfig.reverseConfig.reverseExtras) do
         ULC:SetStage(v, newState, false, true, false, false, true, false)
@@ -36,6 +40,7 @@ AddEventHandler('ulc:StartCheckingReverseState', function()
             if not IsPedInAnyVehicle(PlayerPedId()) then return end
             -- this feels unncessary, but I think some people may not have .reverseConfig
             if not MyVehicle then return end
+            if not MyVehicleConfig then return end
             if not MyVehicleConfig.reverseConfig then return end
             if not MyVehicleConfig.reverseConfig.useReverse then return end
             local gear = GetVehicleCurrentGear(MyVehicle)

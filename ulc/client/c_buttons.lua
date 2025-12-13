@@ -7,6 +7,10 @@
 -------------------
 
 function GetExtraByKey(key)
+    if not MyVehicleConfig then
+        print("[ULC:GetExtraByKey] ERROR: MyVehicleConfig is not loaded. This usually means there's a syntax error in your ulc.lua file. Check server console for details.")
+        return nil
+    end
     local result = nil
     for _, v in pairs(MyVehicleConfig.buttons) do
         if v.key == key then
@@ -17,6 +21,10 @@ function GetExtraByKey(key)
 end
 
 function GetButtonByExtra(extra)
+    if not MyVehicleConfig then
+        print("[ULC:GetButtonByExtra] ERROR: MyVehicleConfig is not loaded. This usually means there's a syntax error in your ulc.lua file. Check server console for details.")
+        return nil
+    end
     local result = nil
     for _, v in pairs(MyVehicleConfig.buttons) do
         if v.extra == extra then
@@ -126,7 +134,7 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
         ----------------------
         -- smart stages stuff
         local key = button.key
-        if MyVehicleConfig.stages then
+        if MyVehicleConfig and MyVehicleConfig.stages then
             local keyStage = contains(MyVehicleConfig.stages.stageKeys, key) -- find whether MyVehicleConfig.stages.stageKeys contain the key
 
             -- # TODO we're not getting here for some reason when cycling stages at max stage
