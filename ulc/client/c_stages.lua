@@ -125,8 +125,8 @@ function getStageFromButton(button)
   if not button then return false end
   if not MyVehicle then return false end
   if not MyVehicleConfig then return false end
-  -- if MyVehicleConfig.stages.stageKeys is nil or doesn't contain the button.key return false
   if not MyVehicleConfig.stages then return false end
+  -- if stageKeys doesn't exist or doesn't contain the button.key return false
   if not MyVehicleConfig.stages.stageKeys then return false end
   for i, key in pairs(MyVehicleConfig.stages.stageKeys) do
     if key == button.key then
