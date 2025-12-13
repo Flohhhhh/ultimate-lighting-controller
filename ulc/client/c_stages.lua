@@ -136,6 +136,7 @@ function setDefaultStages()
   -- default stages
   if not MyVehicleConfig.defaultStages or false then return end
   if not MyVehicleConfig.defaultStages.useDefaults then return end
+  if not IsPedInAnyVehicle(PlayerPedId(), false) then return end
   for _, e in pairs(MyVehicleConfig.defaultStages.enableKeys) do
     local button = GetButtonByExtra(GetExtraByKey(e))
     if not button then break end
