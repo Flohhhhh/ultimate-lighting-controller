@@ -2,7 +2,7 @@
 local realBrakeThreshold = 3
 local shouldUseRealBrakes = function()
     if not MyVehicleConfig then
-        print("[ULC:shouldUseRealBrakes] WARNING: Function called but MyVehicleConfig is not loaded. Check server console for configuration errors.")
+        print("[ULC:shouldUseRealBrakes] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
         return false
     end
     return (MyVehicleConfig.brakeConfig.speedThreshold or 3) <= realBrakeThreshold

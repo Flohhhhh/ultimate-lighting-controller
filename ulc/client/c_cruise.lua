@@ -18,7 +18,7 @@ end
 
 local function getSteadyBurnState()
     if not MyVehicleConfig then
-        print("[ULC:getSteadyBurnState] WARNING: Function called but MyVehicleConfig is not loaded. Check server console for configuration errors.")
+        print("[ULC:getSteadyBurnState] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
         return 1
     end
     if IsVehicleExtraTurnedOn(MyVehicle, MyVehicleConfig.steadyBurnConfig.sbExtras[1]) then
