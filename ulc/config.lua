@@ -63,6 +63,7 @@ Config = {
 
     -- Import confiurations here
     -- Add the resource names of vehicle resources that include a ulc.lua config file
+    -- NOTE: THESE ARE CASE SENSITIVE.
     ExternalVehResources = {
         -- ex. "my-police-vehicle",
     },
