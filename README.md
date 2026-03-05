@@ -5,7 +5,7 @@
 <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/flohhhhh/ultimate-lighting-controller?label=Version">
 <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/flohhhhh/ultimate-lighting-controller">
 
-ULC is an all-in-one lighting controller for non-ELS vehicles in FiveM! It uses the extra-based lighting stages on your vehicles and adds extra automation and improvements to create amazing, realistic, and fully-configurable lighting controls.
+ULC (Ultimate Lighting Controller) is an all-in-one lighting controller for non-ELS vehicles in FiveM! It uses the extra-based lighting stages on your vehicles and adds extra automation and improvements to create amazing, realistic, and fully-configurable lighting controls.
 
 If you are a vehicle developer, [view the full documentation](https://docs.dwnstr.com/ulc/overview).
 
