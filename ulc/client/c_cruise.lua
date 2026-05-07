@@ -9,6 +9,10 @@ local function setCruiseLights(newState)
         print("[ULC:setCruiseLights] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
         return
     end
+    if not MyVehicleConfig.steadyBurnConfig then
+        print("[ULC:setCruiseLights] WARNING: steadyBurnConfig is missing from MyVehicleConfig. This function should not be called without steady burn settings.")
+        return
+    end
     sbState = newState
     for _, v in pairs(MyVehicleConfig.steadyBurnConfig.sbExtras) do
         --print("Setting cruise lights extra: " .. v)
@@ -19,6 +23,10 @@ end
 local function getSteadyBurnState()
     if not MyVehicleConfig then
         print("[ULC:getSteadyBurnState] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
+        return 1
+    end
+    if not MyVehicleConfig.steadyBurnConfig then
+        print("[ULC:getSteadyBurnState] WARNING: steadyBurnConfig is missing from MyVehicleConfig. This function should not be called without steady burn settings.")
         return 1
     end
     if IsVehicleExtraTurnedOn(MyVehicle, MyVehicleConfig.steadyBurnConfig.sbExtras[1]) then
@@ -41,25 +49,29 @@ end)
 
 AddEventHandler('ulc:lightsOn', function()
     --print("Lights on")
-    if MyVehicle and MyVehicleConfig and (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) then
+    if MyVehicle and MyVehicleConfig and MyVehicleConfig.steadyBurnConfig and (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) then
         setCruiseLights(1)
     end
 end)
 
 AddEventHandler('ulc:lightsOff', function()
     --print("Lights off")
-    if MyVehicle and MyVehicleConfig and (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) then
+    if MyVehicle and MyVehicleConfig and MyVehicleConfig.steadyBurnConfig and (MyVehicleConfig.steadyBurnConfig.disableWithLights or false) then
         TriggerEvent('ulc:CheckCruise')
     end
 end)
 
 AddEventHandler('ulc:CheckCruise', function()
-    sbState = getSteadyBurnState()
     if not MyVehicle then return end
     if not MyVehicleConfig then
         print("[ULC:CheckCruise] WARNING: Event handler called but MyVehicleConfig is not loaded. This should not happen.")
         return
     end
+    if not MyVehicleConfig.steadyBurnConfig then
+        print("[ULC:CheckCruise] WARNING: steadyBurnConfig is missing from MyVehicleConfig. This event should not run without steady burn settings.")
+        return
+    end
+    sbState = getSteadyBurnState()
 
     if Entity(MyVehicle).state.ulc_blackout == 0 then
         -- print("Blackout is on, disabling cruise lights")

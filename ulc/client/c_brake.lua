@@ -5,6 +5,10 @@ local shouldUseRealBrakes = function()
         print("[ULC:shouldUseRealBrakes] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
         return false
     end
+    if not MyVehicleConfig.brakeConfig then
+        print("[ULC:shouldUseRealBrakes] WARNING: brakeConfig is missing from MyVehicleConfig. This function should not be called without brake settings.")
+        return false
+    end
     return (MyVehicleConfig.brakeConfig.speedThreshold or 3) <= realBrakeThreshold
 end
 local braking = false
@@ -18,6 +22,10 @@ local disabledExtras = {}
 local function setBrakeExtras(newState)
     if not MyVehicleConfig then
         print("[ULC:setBrakeExtras] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
+        return
+    end
+    if not MyVehicleConfig.brakeConfig then
+        print("[ULC:setBrakeExtras] WARNING: brakeConfig is missing from MyVehicleConfig. This function should not be called without brake settings.")
         return
     end
     for _, v in pairs(MyVehicleConfig.brakeConfig.brakeExtras) do
@@ -71,7 +79,7 @@ if shouldUseRealBrakes then
                 sleep = 1000
                 goto continue
             end
-            if not MyVehicleConfig or not MyVehicleConfig.brakeConfig.useBrakes then
+            if not MyVehicleConfig or not MyVehicleConfig.brakeConfig or not MyVehicleConfig.brakeConfig.useBrakes then
                 sleep = 1000
                 goto continue
             end
@@ -95,7 +103,7 @@ if shouldUseRealBrakes then
         Wait(0)      -- Nedded as GetEntityFromStateBagName sometimes returns 0 on first frame
         mode = "RBL" -- set mode to RBL to disable manual checking
         if not MyVehicle then return end
-        if not MyVehicleConfig or not MyVehicleConfig.brakeConfig.useBrakes then return end
+        if not MyVehicleConfig or not MyVehicleConfig.brakeConfig or not MyVehicleConfig.brakeConfig.useBrakes then return end
         local vehicle = GetEntityFromStateBagName(bagName)
         --print("state changed for vehicle")
         if vehicle == 0 or vehicle ~= MyVehicle then return end
@@ -113,7 +121,7 @@ end
 -- pressed brakes
 RegisterCommand('+ulc:brakePattern', function()
     braking = true
-    if MyVehicle and MyVehicleConfig and MyVehicleConfig.brakeConfig.useBrakes then
+    if MyVehicle and MyVehicleConfig and MyVehicleConfig.brakeConfig and MyVehicleConfig.brakeConfig.useBrakes then
         if GetVehicleCurrentGear(MyVehicle) == 0 then return end -- disable while reversing
         --print("Enabling brakes")
         local speed = GetVehicleSpeedConverted(MyVehicle)
@@ -130,7 +138,7 @@ end)
 
 RegisterCommand('-ulc:brakePattern', function()
     braking = false
-    if MyVehicle and MyVehicleConfig and MyVehicleConfig.brakeConfig.useBrakes then
+    if MyVehicle and MyVehicleConfig and MyVehicleConfig.brakeConfig and MyVehicleConfig.brakeConfig.useBrakes then
         local speed = GetVehicleSpeedConverted(MyVehicle)
         if shouldUseRealBrakes() and speed < realBrakeThreshold then return end
         --print("Disabling brakes")

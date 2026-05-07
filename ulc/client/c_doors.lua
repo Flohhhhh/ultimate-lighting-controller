@@ -21,6 +21,10 @@ local function onDoorStateChange(door, newDoorState)
         print("[ULC:onDoorStateChange] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
         return
     end
+    if not MyVehicleConfig.doorConfig then
+        print("[ULC:onDoorStateChange] WARNING: doorConfig is missing from MyVehicleConfig. This function should not be called without door settings.")
+        return
+    end
     --print("Handling door change", door, newDoorState)
     if door == 0 or door == 2 then -- if driver side
         for _, v in pairs(MyVehicleConfig.doorConfig.driverSide.enable) do

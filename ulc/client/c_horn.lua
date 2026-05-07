@@ -14,6 +14,14 @@ end
 
 function SetHornExtras(newState)
     -- print('SetHornExtras: ' .. newState)
+    if not MyVehicleConfig then
+        print("[ULC:SetHornExtras] WARNING: Function called but MyVehicleConfig is not loaded. This function should not be called without a valid configuration.")
+        return
+    end
+    if not MyVehicleConfig.hornConfig then
+        print("[ULC:SetHornExtras] WARNING: hornConfig is missing from MyVehicleConfig. This function should not be called without horn settings.")
+        return
+    end
     if newState == 0 then
         for _, extra in pairs(MyVehicleConfig.hornConfig.hornExtras) do
             local extraState = {
@@ -53,13 +61,13 @@ RegisterCommand('+ulc:horn', function()
     --print('horn')
     extraStates = {}
 
-    if MyVehicle and MyVehicleConfig and MyVehicleConfig.hornConfig.useHorn then
+    if MyVehicle and MyVehicleConfig and MyVehicleConfig.hornConfig and MyVehicleConfig.hornConfig.useHorn then
         SetHornExtras(0)
     end
 end)
 
 RegisterCommand('-ulc:horn', function()
-    if MyVehicle and MyVehicleConfig and MyVehicleConfig.hornConfig.useHorn then
+    if MyVehicle and MyVehicleConfig and MyVehicleConfig.hornConfig and MyVehicleConfig.hornConfig.useHorn then
         SetHornExtras(1)
     end
 end)
