@@ -11,6 +11,10 @@ Config = {
     -- make sure to disable light controls in other scripts if you enable this
     controlLights = false,
 
+    -- AUDIO SETTINGS
+    -- whether to enable beep sounds when toggling lights and extras
+    enableBeeps = true,
+
     -- HUD SETTINGS
     -- global toggle for UI (affects all clients)
     hideHud = false,
