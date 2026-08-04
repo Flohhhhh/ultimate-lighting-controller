@@ -61,6 +61,19 @@ Config = {
         maxExpiration = 8,
     },
 
+    -- Horn Hold Timing Config;
+    -- global defaults for the horn-hold extras feature (c_horn.lua).
+    -- both can be overridden per-vehicle via MyVehicleConfig.hornConfig.holdDelay
+    -- and MyVehicleConfig.hornConfig.extraHoldTime
+    HornSettings = {
+        -- delay after pressing the horn key before horn extras turn on, in milliseconds
+        -- 0 = instant, same as legacy behavior
+        defaultHoldDelay = 500,
+        -- how long horn extras stay on after releasing the horn key, in seconds
+        -- 0 = instant restore, same as legacy behavior
+        defaultExtraHoldTime = 5,
+    },
+    
     -- Import confiurations here
     -- Add the resource names of vehicle resources that include a ulc.lua config file
     ExternalVehResources = {
