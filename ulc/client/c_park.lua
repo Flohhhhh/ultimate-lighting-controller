@@ -42,6 +42,12 @@ end)
 
 AddEventHandler('ulc:vehPark', function()
     if Lights then
+        -- horn extras currently own the extras (Intersection Mode / horn
+        -- hold is active) - don't fight it for control. The periodic
+        -- ulc:checkParkState poll will re-evaluate and catch this vehicle
+        -- up to the correct parked/driving state once the horn releases.
+        if ULC.IsHornExtrasActive and ULC:IsHornExtrasActive() then return end
+
         --print('[ulc:vehPark] My vehicle is parked.')
         parked = true
 
@@ -134,6 +140,9 @@ end)
 
 AddEventHandler('ulc:vehDrive', function()
     if Lights then
+        -- see the matching guard in ulc:vehPark above
+        if ULC.IsHornExtrasActive and ULC:IsHornExtrasActive() then return end
+
         --print('[ulc:vehDrive] My vehicle is driving.')
         parked = false
         if MyVehicle and MyVehicleConfig.parkConfig.usePark then

@@ -61,6 +61,56 @@ Config = {
         maxExpiration = 8,
     },
 
+    -- Fake Environmental Light Config;
+    -- Lets a light-head extra (e.g. a TKD or alley light) be toggled as a
+    -- pure visual mesh, without the vehicle's real environmental lighting
+    -- actually running. A soft "spill" bulb of light is drawn near the
+    -- vehicle opposite the light head to sell the effect, saving on
+    -- running full environmental extras/sirens.
+    FakeEnvSettings = {
+        -- global master switch. false = feature is fully disabled for every
+        -- vehicle regardless of what any individual vehicle's fakeEnvConfig
+        -- says. Each vehicle still needs its own fakeEnvConfig.useFakeEnv = true
+        -- on top of this - this is just the server-wide kill switch.
+        enabled = true,
+        defaultKeys = {
+            left = 'NUMPAD7',
+            tk = 'NUMPAD8',
+            right = 'NUMPAD9',
+        },
+        -- color of the fake light (r, g, b, 0-255)
+        color = { r = 255, g = 244, b = 214 },
+        -- how far out to the side the left/right lights sit (meters)
+        sideDistance = 5.0,
+        -- how far out in front the tk (take-down) light sits (meters)
+        frontDistance = 8.0,
+        -- how high above the vehicle's position the light sits (meters)
+        heightOffset = 1.2,
+        -- size of the light's sphere of influence (meters) - this is the
+        -- "range" the native actually expects, bigger = a larger, further-
+        -- reaching pool of light
+        lightRange = 15.0,
+        -- brightness multiplier for the light
+        lightIntensity = 4.0,
+
+        -- stop drawing (not toggling, just rendering) past this distance from the player, for performance
+        drawRange = 30.0,
+    },
+
+    -- Horn Hold Timing Config;
+    -- global defaults for the horn-hold extras feature (c_horn.lua).
+    -- both can be overridden per-vehicle via MyVehicleConfig.hornConfig.holdDelay
+    -- and MyVehicleConfig.hornConfig.extraHoldTime
+    HornSettings = {
+        -- delay after pressing the horn key before horn extras turn on, in milliseconds
+        -- 0 = instant, same as legacy behavior
+        defaultHoldDelay = 500,
+        -- how long horn extras stay on after releasing the horn key, in seconds
+        -- 0 = instant restore, same as legacy behavior
+        defaultExtraHoldTime = 5,
+    },
+
+
     -- Import confiurations here
     -- Add the resource names of vehicle resources that include a ulc.lua config file
     ExternalVehResources = {

@@ -19,9 +19,11 @@ return {names = {""},
     dExtras = {}
   },
   hornConfig = {
-    useHorn = false,
+    useHorn = true,
     hornExtras = {},
-    disableExtras = {}
+    disableExtras = {},
+    holdDelay = 1500,        -- optional override, in milliseconds, Default 1.5sec (1500ms)
+    extraHoldTime = 5,      -- optional override, in seconds, Default 5sec (5000ms)
   },
   brakeConfig = {
     useBrakes = false,
@@ -57,5 +59,14 @@ return {names = {""},
     useDefaults = false,
     enableKeys = {},
     disableKeys = {}
-  }
+  },
+  fakeEnvConfig = {
+    useFakeEnv = true, -- opt-in per vehicle, off by default
+    lights = {
+      { extra = 10, direction = 'left' },  -- left alley
+      { extra = 11, direction = 'tk' },    -- take-down
+      { extra = 12, direction = 'right' }, -- right alley
+    }
+  },
+}
 }
