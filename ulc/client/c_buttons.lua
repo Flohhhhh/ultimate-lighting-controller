@@ -56,7 +56,11 @@ end)
 -- change specified extra, and if not extraOnly, and extra is in a button, act on the linked and off extras as well, acts recursively;
 -- action 0 enables, 1 disables, 2 toggles;
 -- updates ui whenever extra is used in a button
-function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, forceUi, allowOutside)
+-- hornOverride: bypasses the horn-active lock below. Used internally by
+-- c_horn.lua to change its own extras while active, and by the fake env
+-- (scene) lights in c_lights.lua so those stay toggleable during horn
+-- extras/Intersection Mode. Don't pass this true from anywhere else.
+function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, forceUi, allowOutside, hornOverride)
     ----------
     -- checks
     if not MyVehicle then
@@ -65,6 +69,13 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
     end
     if not allowOutside and not IsPedInAnyVehicle(PlayerPedId(), false) then
         print("[ULC:SetStage()] Player must be in a vehicle, or allowOutside must be true.")
+        return false
+    end
+    -- horn extras (Intersection Mode) currently own the extras - lock out
+    -- every other source of stage changes so nothing can stomp the horn
+    -- pattern while it's active. c_horn.lua bypasses this via hornOverride.
+    if not hornOverride and ULC.IsHornExtrasActive and ULC:IsHornExtrasActive() then
+        print("[ULC:SetStage()] Blocked - horn extras are currently active.")
         return false
     end
 
