@@ -24,6 +24,8 @@ dependencies {
 
 shared_scripts {
 	'config.lua',
+	'config.local*.lua',
+	'shared/config_local_notice.lua',
 	'shared/shared_functions.lua'
 }
 
