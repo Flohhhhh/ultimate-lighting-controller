@@ -1,6 +1,5 @@
 --print("[ULC]: Park Patterns Loaded")
 
-local veh = GetVehiclePedIsIn(PlayerPedId())
 parked = false
 local lastSync = 0
 local effectDelay = 1000
@@ -8,7 +7,7 @@ local effectDelay = 1000
 CreateThread(function()
     while true do
         if IsPedInAnyVehicle(PlayerPedId()) then
-            TriggerEvent('ulc:checkParkState', veh, false)
+            TriggerEvent('ulc:checkParkState', false)
 
             Wait(Config.ParkSettings.delay * 1000)
         else
@@ -45,18 +44,19 @@ AddEventHandler('ulc:vehPark', function()
         --print('[ulc:vehPark] My vehicle is parked.')
         parked = true
 
-        if MyVehicle and MyVehicleConfig.parkConfig.usePark then
+        local parkConfig = MyVehicleConfig and MyVehicleConfig.parkConfig
+        if MyVehicle and parkConfig and parkConfig.usePark then
             -- enable pExtras
-            for _, v in pairs(MyVehicleConfig.parkConfig.pExtras) do
+            for _, v in pairs(parkConfig.pExtras or {}) do
                 ULC:SetStage(v, 0, false, true, false, false, true, false)
             end
             -- disable dExtras
-            for _, v in pairs(MyVehicleConfig.parkConfig.dExtras) do
+            for _, v in pairs(parkConfig.dExtras or {}) do
                 ULC:SetStage(v, 1, false, true, false, false, true, false)
             end
 
             -- park pattern sync stuff
-            if MyVehicleConfig.parkConfig.useSync then
+            if parkConfig.useSync then
                 -- cooldown
                 local gameSeconds = GetGameTimer() / 1000
                 if gameSeconds >= lastSync + Config.ParkSettings.syncCooldown then
@@ -68,7 +68,7 @@ AddEventHandler('ulc:vehPark', function()
 
                     for k, v in pairs(loadedVehicles) do
                         -- don't include my vehicle
-                        if v ~= veh then
+                        if v ~= MyVehicle then
                             local vehCoords = GetEntityCoords(v)
                             local pedCoords = GetEntityCoords(PlayerPedId())
                             local distance = GetDistanceBetweenCoords(vehCoords, pedCoords)
@@ -77,10 +77,10 @@ AddEventHandler('ulc:vehPark', function()
                             if distance < Config.ParkSettings.syncDistance then
                                 if GetVehicleClass(v) == 18 then
                                     -- check if my vehicle is set to sync with this vehicle or if the vehicle is the same model as my vehicle
-                                    if IsVehicleInTable(v, MyVehicleConfig.parkConfig.syncWith) or GetEntityModel(v) == GetEntityModel(MyVehicle) then
+                                    if IsVehicleInTable(v, parkConfig.syncWith or {}) or GetEntityModel(v) == GetEntityModel(MyVehicle) then
                                         --print('Vehicle' .. v .. ' should sync with me.')
 
-                                        local speed = GetVehicleSpeedConverted(veh)
+                                        local speed = GetVehicleSpeedConverted(v)
 
                                         if speed < Config.ParkSettings.speedThreshold then
                                             --print("Found an eligible sync vehicle.")
@@ -93,8 +93,8 @@ AddEventHandler('ulc:vehPark', function()
                     end
                     if #vehsToSync > 0 then
                         -- sync my vehicle
-                        SetVehicleSiren(veh, false)
-                        SetVehicleSiren(veh, true)
+                        SetVehicleSiren(MyVehicle, false)
+                        SetVehicleSiren(MyVehicle, true)
 
                         -- sync other vehicles on my screen
                         for k, v in pairs(vehsToSync) do
@@ -136,13 +136,14 @@ AddEventHandler('ulc:vehDrive', function()
     if Lights then
         --print('[ulc:vehDrive] My vehicle is driving.')
         parked = false
-        if MyVehicle and MyVehicleConfig.parkConfig.usePark then
+        local parkConfig = MyVehicleConfig and MyVehicleConfig.parkConfig
+        if MyVehicle and parkConfig and parkConfig.usePark then
             -- disable pExtras
-            for _, v in pairs(MyVehicleConfig.parkConfig.pExtras) do
+            for _, v in pairs(parkConfig.pExtras or {}) do
                 ULC:SetStage(v, 1, false, true, false, false, true, false)
             end
             -- enable dExtras
-            for _, v in pairs(MyVehicleConfig.parkConfig.dExtras) do
+            for _, v in pairs(parkConfig.dExtras or {}) do
                 ULC:SetStage(v, 0, false, true, false, false, true, false)
             end
         end

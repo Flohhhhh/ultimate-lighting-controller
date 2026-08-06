@@ -1,13 +1,15 @@
---[[ 
+--[[
   Ultimate Lighting Controller Config
   the ULC resource is required to use this configuration
   get the resource here: https://github.com/Flohhhhh/ultimate-lighting-controller/releases/latest
   To learn how to setup and use ULC visit here: https://docs.dwnstr.com/ulc/overview
 ]]
-                
-return {names = {""},
+
+return {
+  names = { "" },
   steadyBurnConfig = {
-    forceOn = false, useTime = false,
+    forceOn = false,
+    useTime = false,
     disableWithLights = false,
     sbExtras = {}
   },
@@ -21,7 +23,9 @@ return {names = {""},
   hornConfig = {
     useHorn = false,
     hornExtras = {},
-    disableExtras = {}
+    disableExtras = {},
+    hornPressDelay = nil,
+    hornReleaseDelay = nil
   },
   brakeConfig = {
     useBrakes = false,
@@ -42,12 +46,11 @@ return {names = {""},
   },
   doorConfig = {
     useDoors = false,
-    driverSide = {enable = {}, disable = {}},
-    passSide = {enable = {}, disable = {}},
-    trunk = {enable ={}, disable = {}}
-  }, 
+    driverSide = { enable = {}, disable = {} },
+    passSide = { enable = {}, disable = {} },
+    trunk = { enable = {}, disable = {} }
+  },
   buttons = {
-    
   },
   stages = {
     useStages = false,

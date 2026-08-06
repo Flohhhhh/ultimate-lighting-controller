@@ -11,15 +11,11 @@ Config = {
     -- make sure to disable light controls in other scripts if you enable this
     controlLights = false,
 
-    -- AUDIO SETTINGS
-    -- whether to enable beep sounds when toggling lights and extras
-    enableBeeps = true,
-
     -- HUD SETTINGS
     -- global toggle for UI (affects all clients)
     hideHud = false,
     -- whether to use KPH instead of MPH
-    useKPH = false,
+    useKPH = true,
 
     -- Park Pattern Settings;
     ParkSettings = {
@@ -43,6 +39,14 @@ Config = {
         nightEndHour = 6,
     },
 
+    -- Horn Hold Timing Config;
+    -- global defaults for hornConfig.hornPressDelay/hornReleaseDelay (c_horn.lua),
+    -- used when a vehicle's ulc.lua doesn't set its own. 0 = instant, legacy behavior.
+    HornSettings = {
+        hornPressDelay = 0, -- in milliseconds (ms)
+        hornReleaseDelay = 0, -- in milliseconds (ms) -- For example, 5000ms is 5 seconds.
+    },
+    
     -- Brake Extras/Patterns Config;
     -- temporarily empty as of v1.3.0
     BrakeSettings = {},
@@ -54,7 +58,7 @@ Config = {
         -- if enabled, reverse extras will turn off after a random time between min and max
         -- this is to simulate more realistic behavior where the vehicle would shifted out of reverse
         -- after being stopped for some time
-        useRandomExpiration = true,
+        useRandomExpiration = false,
         -- minimum time in seconds extras will stay on after stopping
         minExpiration = 3,
         -- maximum time in seconds extras will stay on after stopping
