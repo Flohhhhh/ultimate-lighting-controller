@@ -17,14 +17,14 @@ local function GetHornPressDelay()
     local cfg = MyVehicleConfig.hornConfig
     if cfg.hornPressDelay ~= nil then return cfg.hornPressDelay end
     local hornSettings = Config.HornSettings or {}
-    return hornSettings.defaultHornPressDelay or 0
+    return hornSettings.hornPressDelay or 0
 end
 
 local function GetHornReleaseDelay()
     local cfg = MyVehicleConfig.hornConfig
     if cfg.hornReleaseDelay ~= nil then return cfg.hornReleaseDelay end
     local hornSettings = Config.HornSettings or {}
-    return hornSettings.defaultHornReleaseDelay or 0
+    return hornSettings.hornReleaseDelay or 0
 end
 
 local function ApplyHornExtrasOn()
