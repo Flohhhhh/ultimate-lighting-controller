@@ -81,10 +81,18 @@ function ULC:SetStage(extra, action, playSound, extraOnly, repair, forceChange, 
     if IsVehicleExtraTurnedOn(MyVehicle, extra) then
         if action == 1 or action == 2 then
             newState = 1
+        elseif action == 0 then
+            -- extra is already ON and we want to enable it (action 0)
+            -- set newState to 0 (ON) to handle forceChange correctly
+            newState = 0
         end
     else
         if action == 0 or action == 2 then
             newState = 0
+        elseif action == 1 then
+            -- extra is already OFF and we want to disable it (action 1)
+            -- set newState to 1 (OFF) to handle forceChange correctly
+            newState = 1
         end
     end
 
