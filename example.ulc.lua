@@ -22,8 +22,6 @@ return {names = {""},
     useHorn = false,
     hornExtras = {},
     disableExtras = {},
-    -- both are optional and in milliseconds. Leaving them out falls back
-    -- to Config.HornSettings, then to 0 (legacy - instant, no delay/hold).
     hornPressDelay = nil,
     hornReleaseDelay = nil
   },
