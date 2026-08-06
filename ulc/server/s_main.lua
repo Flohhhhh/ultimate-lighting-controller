@@ -381,6 +381,7 @@ CreateThread(function()
     while resourceState == "starting" do
       print("^3[ULC] Waiting for resource: " .. v .. " to load.")
       Wait(100)
+      resourceState = GetResourceState(v)
     end
     LoadExternalVehicleConfig(v)
   end
