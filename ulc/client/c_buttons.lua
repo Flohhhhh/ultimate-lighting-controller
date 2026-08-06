@@ -6,6 +6,75 @@
 -------------------
 -------------------
 
+-- Buttons currently visible in the HUD and available through numpad keybinds.
+local activeButtons = {}
+-- Last known states of visibility requirements, used to detect external extra changes.
+local requiredExtraStates = {}
+
+-- Finds a button extra only when its button is currently available to the player.
+local function GetActiveExtraByKey(key)
+    for _, button in ipairs(activeButtons) do
+        if button.key == key then
+            return button.extra
+        end
+    end
+    return nil
+end
+
+-- Returns whether every optional visibility requirement for a button is currently enabled.
+local function AreRequiredExtrasEnabled(button)
+    if not button.requiredExtras then return true end
+
+    for _, extra in pairs(button.requiredExtras) do
+        if not IsVehicleExtraTurnedOn(MyVehicle, extra) then
+            return false
+        end
+    end
+
+    return true
+end
+
+-- Produces a stable key list so the HUD only rebuilds when visible buttons change.
+local function GetActiveButtonSignature(buttons)
+    local keys = {}
+    for _, button in ipairs(buttons) do
+        table.insert(keys, button.key)
+    end
+    return table.concat(keys, ',')
+end
+
+function ULC:RefreshRequiredExtraButtons(force)
+    if not MyVehicle or not MyVehicleConfig or not MyVehicleConfig.buttons then return end
+
+    local eligibleButtons = {}
+    local newRequiredExtraStates = {}
+
+    for _, button in ipairs(MyVehicleConfig.buttons) do
+        if button.requiredExtras then
+            for _, extra in pairs(button.requiredExtras) do
+                newRequiredExtraStates[extra] = IsVehicleExtraTurnedOn(MyVehicle, extra)
+            end
+        end
+
+        if AreRequiredExtrasEnabled(button) then
+            table.insert(eligibleButtons, button)
+        end
+    end
+
+    local changed = force or GetActiveButtonSignature(activeButtons) ~= GetActiveButtonSignature(eligibleButtons)
+    activeButtons = eligibleButtons
+    requiredExtraStates = newRequiredExtraStates
+
+    if changed then
+        ULC:PopulateButtons(activeButtons)
+    end
+end
+
+function ULC:ClearRequiredExtraButtons()
+    activeButtons = {}
+    requiredExtraStates = {}
+end
+
 function GetExtraByKey(key)
     if not MyVehicleConfig then
         print("[ULC:GetExtraByKey] ERROR: MyVehicleConfig is not loaded. This usually means there's a syntax error in your ulc.lua file. Check server console for details.")
@@ -249,18 +318,34 @@ end
 for i = 1, 9, 1 do
     RegisterKeyMapping('ulc:num' .. i, 'ULC: Toggle Button ' .. i, 'keyboard', 'NUMPAD' .. i)
     RegisterCommand('ulc:num' .. i, function()
-        local extra = GetExtraByKey(i)
+        local extra = GetActiveExtraByKey(i)
         local button = GetButtonByExtra(extra)
         if not button then return end
         ULC:SetStage(extra, 2, true, false, button.repair or false)
     end)
 end
 
+-- FiveM does not expose an event for arbitrary vehicle-extra state changes. Poll only
+-- the extras used as visibility requirements so external resources can update the HUD.
+CreateThread(function()
+    while true do
+        Wait(1000)
+
+        if MyVehicle and MyVehicleConfig and IsPedInAnyVehicle(PlayerPedId(), false) then
+            for extra, previousState in pairs(requiredExtraStates) do
+                if IsVehicleExtraTurnedOn(MyVehicle, extra) ~= previousState then
+                    ULC:RefreshRequiredExtraButtons(false)
+                    break
+                end
+            end
+        end
+    end
+end)
+
 ------------------
 ------ HELP ------
 ------------------
 
-local activeButtons = {}
 local showingHelp = false
 
 function ShowHelp()

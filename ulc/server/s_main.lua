@@ -63,6 +63,66 @@ local function IsIntInTable(table, int)
   return false
 end
 
+local function AddManagedExtras(managedExtras, extras)
+  if type(extras) ~= "table" then return end
+  for _, extra in pairs(extras) do
+    if type(extra) == "number" then
+      managedExtras[extra] = true
+    end
+  end
+end
+
+local function GetManagedExtras(data)
+  local managedExtras = {}
+
+  for _, button in ipairs(data.buttons or {}) do
+    if type(button) == "table" then
+      if type(button.extra) == "number" then managedExtras[button.extra] = true end
+      AddManagedExtras(managedExtras, button.linkedExtras)
+      AddManagedExtras(managedExtras, button.oppositeExtras)
+      AddManagedExtras(managedExtras, button.offExtras)
+    end
+  end
+
+  AddManagedExtras(managedExtras, data.steadyBurnConfig and data.steadyBurnConfig.sbExtras)
+  AddManagedExtras(managedExtras, data.parkConfig and data.parkConfig.pExtras)
+  AddManagedExtras(managedExtras, data.parkConfig and data.parkConfig.dExtras)
+  AddManagedExtras(managedExtras, data.hornConfig and data.hornConfig.hornExtras)
+  AddManagedExtras(managedExtras, data.hornConfig and data.hornConfig.disableExtras)
+  AddManagedExtras(managedExtras, data.brakeConfig and data.brakeConfig.brakeExtras)
+  AddManagedExtras(managedExtras, data.brakeConfig and data.brakeConfig.disableExtras)
+  AddManagedExtras(managedExtras, data.reverseConfig and data.reverseConfig.reverseExtras)
+  AddManagedExtras(managedExtras, data.reverseConfig and data.reverseConfig.disableExtras)
+
+  for _, configName in ipairs({ "signalConfig", "doorConfig" }) do
+    local config = data[configName]
+    if type(config) == "table" then
+      for _, section in pairs(config) do
+        if type(section) == "table" then
+          AddManagedExtras(managedExtras, section.enable)
+          AddManagedExtras(managedExtras, section.disable)
+        end
+      end
+    end
+  end
+
+  local lvcConfig = data.luxartVehicleControlConfig
+  if type(lvcConfig) == "table" then
+    for _, sirenConfig in pairs(lvcConfig) do
+      if type(sirenConfig) == "table" then
+        AddManagedExtras(managedExtras, sirenConfig.enable)
+        AddManagedExtras(managedExtras, sirenConfig.disable)
+      end
+    end
+  end
+
+  return managedExtras
+end
+
+local function IsValidExtraId(extra)
+  return type(extra) == "number" and extra >= 0 and extra % 1 == 0
+end
+
 if Config.ParkSettings.delay < 0.5 then
   TriggerEvent("ulc:warn",
     'Park Pattern delay is too short! This will hurt performance! Recommended values are above 0.5s.')
@@ -219,6 +279,7 @@ local function CheckData(data, resourceName)
 
   local usedButtons = {}
   local usedExtras = {}
+  local managedExtras = GetManagedExtras(data)
   for i, b in ipairs(data.buttons) do
     -- check if key is valid
     if b.key > 9 or b.key < 1 then
@@ -247,6 +308,31 @@ local function CheckData(data, resourceName)
       TriggerEvent("ulc:error",
         'A config in "' ..
         resourceName .. '" has a button with an invalid color input: "' .. b.color .. '" is not a supported color.')
+    end
+    if b.requiredExtras ~= nil then
+      if type(b.requiredExtras) ~= "table" then
+        TriggerEvent("ulc:error",
+          'A config in "' .. resourceName .. '" has a button with key ' .. b.key ..
+          ' where requiredExtras is not a table of extra numbers. Ensure correct syntax and types.')
+        return false
+      end
+
+      for _, requiredExtra in pairs(b.requiredExtras) do
+        if not IsValidExtraId(requiredExtra) then
+          TriggerEvent("ulc:error",
+            'A config in "' .. resourceName .. '" has a button with key ' .. b.key ..
+            ' where requiredExtras contains "' .. tostring(requiredExtra) ..
+            '", which is not a valid non-negative whole-number extra ID. Ensure correct syntax and types.')
+          return false
+        end
+        if managedExtras[requiredExtra] then
+          TriggerEvent("ulc:error",
+            'A config in "' .. resourceName .. '" has a button with key ' .. b.key ..
+            ' where requiredExtras includes extra ' .. requiredExtra ..
+            ', but ULC controls that extra. Required extras cannot be managed by ULC.')
+          return false
+        end
+      end
     end
     -- check if any keys are used twice
     if IsIntInTable(usedButtons, b.key) then

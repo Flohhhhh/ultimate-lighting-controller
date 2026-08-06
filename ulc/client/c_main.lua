@@ -116,7 +116,7 @@ AddEventHandler('ulc:checkVehicle', function()
 
       -- if i am driver
       if ped == GetPedInVehicleSeat(vehicle, -1) then
-        ULC:PopulateButtons(MyVehicleConfig.buttons)
+        ULC:RefreshRequiredExtraButtons(true)
         --ShowHelp()
         if not Config.hideHud and ClientPrefs.hideUi == 0 then
           ULC:SetDisplay(true)
@@ -131,6 +131,8 @@ AddEventHandler('ulc:checkVehicle', function()
         TriggerEvent('ulc:StartCheckingReverseState')
         TriggerEvent("ulc:SetupSignalExtrasTable")
         currentStage = 0
+      else
+        ULC:ClearRequiredExtraButtons()
       end
     else
       MyVehicle = nil
@@ -143,6 +145,7 @@ end)
 -- used to hide the hud
 RegisterNetEvent('ulc:cleanup')
 AddEventHandler('ulc:cleanup', function()
+  ULC:ClearRequiredExtraButtons()
   -- MyVehicle = nil
   -- MyVehicleConfig = nil
   ULC:SetDisplay(false)
