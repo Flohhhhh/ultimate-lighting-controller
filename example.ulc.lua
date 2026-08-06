@@ -5,9 +5,11 @@
   To learn how to setup and use ULC visit here: https://docs.dwnstr.com/ulc/overview
 ]]
 
-return {names = {""},
+return {
+  names = { "" },
   steadyBurnConfig = {
-    forceOn = false, useTime = false,
+    forceOn = false,
+    useTime = false,
     disableWithLights = false,
     sbExtras = {}
   },
@@ -44,9 +46,9 @@ return {names = {""},
   },
   doorConfig = {
     useDoors = false,
-    driverSide = {enable = {}, disable = {}},
-    passSide = {enable = {}, disable = {}},
-    trunk = {enable ={}, disable = {}}
+    driverSide = { enable = {}, disable = {} },
+    passSide = { enable = {}, disable = {} },
+    trunk = { enable = {}, disable = {} }
   },
   buttons = {
 
