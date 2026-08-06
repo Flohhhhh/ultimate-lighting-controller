@@ -39,6 +39,14 @@ Config = {
         nightEndHour = 6,
     },
 
+    -- Horn Hold Timing Config;
+    -- global defaults for hornConfig.hornPressDelay/hornReleaseDelay (c_horn.lua),
+    -- used when a vehicle's ulc.lua doesn't set its own. 0 = instant, legacy behavior.
+    HornSettings = {
+        hornPressDelay = 0,
+        hornReleaseDelay = 0,
+    },
+    
     -- Brake Extras/Patterns Config;
     -- temporarily empty as of v1.3.0
     BrakeSettings = {},
@@ -57,14 +65,6 @@ Config = {
         maxExpiration = 8,
     },
 
-    -- Horn Hold Timing Config;
-    -- global defaults for hornConfig.hornPressDelay/hornReleaseDelay (c_horn.lua),
-    -- used when a vehicle's ulc.lua doesn't set its own. 0 = instant, legacy behavior.
-    HornSettings = {
-        hornPressDelay = 0,
-        hornReleaseDelay = 0,
-    },
-    
     -- Import confiurations here
     -- Add the resource names of vehicle resources that include a ulc.lua config file
     ExternalVehResources = {
