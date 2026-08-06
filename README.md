@@ -45,6 +45,34 @@ If you are a vehicle developer, [view the full documentation](https://docs.dwnst
 
 For more installation help view the [video tutorial!](https://youtu.be/FIF3qqRY0Ts)
 
+## Local development configuration
+
+If you are running the resource in your local game server directly from your
+cloned repository, you can use `ulc/config.local.lua` to avoid making changes to
+the default `config.lua` that is provided. This is useful when the resource is
+linked or junctioned into your server's resources directory and you do not want
+to accidentally commit settings that only apply to your development server.
+
+The `fxmanifest.lua` loads `config.lua` first, followed by files matching
+`config.local*.lua`. This means `config.local.lua` can override only the default
+values you need:
+
+```lua
+Config.hideHud = true
+Config.ExternalVehResources = {
+  "my-development-vehicle",
+}
+```
+
+`ulc/config.local.lua` is optional and ignored by Git. The manifest uses a glob,
+so when the file is absent it matches nothing and ULC continues using the
+provided defaults without reporting a missing-script error. FiveM handles this
+manifest glob on supported server operating systems rather than relying on the
+host shell.
+
+Do not store passwords, tokens, or other secrets in `config.local.lua` because
+it is a shared script and is also loaded by FiveM clients.
+
 # Dependencies
 
 - `onesync` (as of v1.7.0)
