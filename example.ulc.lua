@@ -1,10 +1,10 @@
---[[ 
+--[[
   Ultimate Lighting Controller Config
   the ULC resource is required to use this configuration
   get the resource here: https://github.com/Flohhhhh/ultimate-lighting-controller/releases/latest
   To learn how to setup and use ULC visit here: https://docs.dwnstr.com/ulc/overview
 ]]
-                
+
 return {names = {""},
   steadyBurnConfig = {
     forceOn = false, useTime = false,
@@ -21,7 +21,11 @@ return {names = {""},
   hornConfig = {
     useHorn = false,
     hornExtras = {},
-    disableExtras = {}
+    disableExtras = {},
+    -- both are optional and in milliseconds. Leaving them out falls back
+    -- to Config.HornSettings, then to 0 (legacy - instant, no delay/hold).
+    hornPressDelay = nil,
+    hornReleaseDelay = nil
   },
   brakeConfig = {
     useBrakes = false,
@@ -45,9 +49,9 @@ return {names = {""},
     driverSide = {enable = {}, disable = {}},
     passSide = {enable = {}, disable = {}},
     trunk = {enable ={}, disable = {}}
-  }, 
+  },
   buttons = {
-    
+
   },
   stages = {
     useStages = false,
