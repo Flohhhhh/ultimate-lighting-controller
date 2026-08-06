@@ -1,43 +1,34 @@
 --print("[ULC]: Horn Extras Loaded")
 
 local extraStates = {}
-
--- generation counter used to invalidate stale delayed threads when the
--- player presses/releases the horn key rapidly, so an old timer can't
--- turn extras on/off after a newer press has already changed state
-local hornGeneration = 0
-local hornActive = false
+local hornGeneration = 0 -- bumped on every press/release, invalidates stale delayed threads
+local hornActive = false -- true once extras are actually on, guards against re-capturing state
 
 local function GetPreviousStateByExtra(extra)
     for k, v in pairs(extraStates) do
-        --print(v.extra, v.state)
         if extra == v.extra then
-            --print('Found state of : ' .. tostring(v.state) .. ' for extra ' .. extra)
             return v.state
         end
     end
 end
 
--- resolves per-vehicle overrides, falling back to the global defaults
-local function GetHoldDelay()
+-- nil/missing at every level = 0 = legacy instant behavior
+local function GetHornPressDelay()
     local cfg = MyVehicleConfig.hornConfig
-    if cfg.holdDelay ~= nil then return cfg.holdDelay end
-    return Config.HornSettings.defaultHoldDelay
+    if cfg.hornPressDelay ~= nil then return cfg.hornPressDelay end
+    local hornSettings = Config.HornSettings or {}
+    return hornSettings.defaultHornPressDelay or 0
 end
 
-local function GetExtraHoldTime()
+local function GetHornReleaseDelay()
     local cfg = MyVehicleConfig.hornConfig
-    if cfg.extraHoldTime ~= nil then return cfg.extraHoldTime end
-    return Config.HornSettings.defaultExtraHoldTime
+    if cfg.hornReleaseDelay ~= nil then return cfg.hornReleaseDelay end
+    local hornSettings = Config.HornSettings or {}
+    return hornSettings.defaultHornReleaseDelay or 0
 end
 
--- Turns horn extras on and captures the pre-horn state so it can be
--- restored later. Guarded by hornActive so that re-pressing the horn key
--- while extras are already active (e.g. mashing it, or pressing again
--- before the previous release's restore timer fired) can never overwrite
--- the originally captured states with the "horn on" states.
 local function ApplyHornExtrasOn()
-    if hornActive then return end
+    if hornActive then return end -- don't re-capture state over an active hold
 
     extraStates = {}
 
@@ -64,8 +55,6 @@ local function ApplyHornExtrasOn()
     hornActive = true
 end
 
--- Restores extras to the state captured in ApplyHornExtrasOn. Guarded by
--- hornActive so it's only ever meaningful once, matching ApplyHornExtrasOn.
 local function RestoreHornExtrasOff()
     if not hornActive then return end
 
@@ -95,23 +84,18 @@ RegisterCommand('+ulc:horn', function()
     hornGeneration = hornGeneration + 1
     local myGeneration = hornGeneration
 
-    -- extras are already active - this press just cancelled any pending
-    -- restore timer (via the generation bump above). Don't re-capture
-    -- state and don't start another on-delay, or the real "before horn"
-    -- state would get lost.
-    if hornActive then return end
+    if hornActive then return end -- already on, this press just cancelled any pending restore
 
-    local holdDelay = GetHoldDelay()
+    local pressDelay = GetHornPressDelay()
 
-    if holdDelay <= 0 then
+    if pressDelay <= 0 then
         ApplyHornExtrasOn()
         return
     end
 
     CreateThread(function()
-        Wait(holdDelay)
-        -- bail if the key was released (or pressed again) before the delay finished
-        if myGeneration ~= hornGeneration then return end
+        Wait(pressDelay)
+        if myGeneration ~= hornGeneration then return end -- released/pressed again mid-delay
         if not (MyVehicle and MyVehicleConfig.hornConfig.useHorn) then return end
 
         ApplyHornExtrasOn()
@@ -124,26 +108,18 @@ RegisterCommand('-ulc:horn', function()
     hornGeneration = hornGeneration + 1
     local myGeneration = hornGeneration
 
-    -- the horn never actually triggered (released before holdDelay elapsed)
-    -- nothing to restore
-    if not hornActive then return end
+    if not hornActive then return end -- never triggered, nothing to restore
 
-    local extraHoldTime = GetExtraHoldTime()
+    local releaseDelay = GetHornReleaseDelay()
 
-    if extraHoldTime <= 0 then
+    if releaseDelay <= 0 then
         RestoreHornExtrasOff()
         return
     end
 
-    -- every release starts exactly one fresh countdown. If the horn gets
-    -- pressed and released again before this fires, the generation bump
-    -- from that later release invalidates this thread and starts its own
-    -- - the hold time never adds up, it just restarts from full each time.
     CreateThread(function()
-        Wait(extraHoldTime * 1000)
-        -- bail if the horn was pressed again before the hold time finished,
-        -- that press's own logic now owns restoring state
-        if myGeneration ~= hornGeneration then return end
+        Wait(releaseDelay)
+        if myGeneration ~= hornGeneration then return end -- pressed again, that press owns the restore now
 
         RestoreHornExtrasOff()
     end)
