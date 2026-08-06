@@ -51,7 +51,6 @@ return {
     trunk = { enable = {}, disable = {} }
   },
   buttons = {
-
   },
   stages = {
     useStages = false,

@@ -409,12 +409,15 @@ local function LoadExternalVehicleConfig(resourceName)
       if not txtFileData then
         txtFileData = LoadResourceFile(resourceName, "ulc.lua.txt")
       end
-      
+
       if txtFileData then
-        TriggerEvent("ulc:error", '^1Found "ulc.lua.txt" file in resource: "' .. resourceName .. '". You need to rename it to "ulc.lua" (without the .txt extension). Make sure file extensions are visible in your file explorer.^0')
+        TriggerEvent("ulc:error",
+          '^1Found "ulc.lua.txt" file in resource: "' ..
+          resourceName ..
+          '". You need to rename it to "ulc.lua" (without the .txt extension). Make sure file extensions are visible in your file explorer.^0')
         return
       end
-      
+
       print("Error loading 'ulc.lua' file. Make sure it is at the root of your resource or in the 'data' folder.")
       TriggerEvent("ulc:error", '^1Could not load external configuration in: "' .. resourceName .. '"^0')
       return
@@ -425,7 +428,8 @@ local function LoadExternalVehicleConfig(resourceName)
   if err then
     TriggerEvent("ulc:error",
       '^1Could not load external configuration in: "' .. resourceName .. '"; SYNTAX ERROR: ' .. err .. '^0')
-    print("^3[ULC] HINT: Check the ulc.lua file in '" .. resourceName .. "' for syntax errors like missing commas, brackets, or quotes.^0")
+    print("^3[ULC] HINT: Check the ulc.lua file in '" ..
+      resourceName .. "' for syntax errors like missing commas, brackets, or quotes.^0")
     return
   end
   if not f or not f() then
